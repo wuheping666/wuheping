@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>风险管理 · 财务自由系列第 12 篇（真正终章）</title>
+<style>
+  :root{
+    --bg:#f7f8fa; --card:#ffffff; --ink:#1a2233; --sub:#5b6577;
+    --line:#e6e9ef; --red:#c0392b; --red-soft:#fdecea; --red-deep:#922b21;
+    --gold:#b8860b; --gold-soft:#fbf3df; --green:#178a4c; --green-soft:#e7f6ee;
+    --blue:#1f5fd6; --blue-soft:#eaf1fd; --purple:#6b46c1; --purple-soft:#f1ebfb;
+    --teal:#0d8a8a; --teal-soft:#e0f3f3;
+    --shadow:0 2px 12px rgba(20,40,80,.06);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",Segoe UI,Roboto,sans-serif;
+    background:var(--bg);color:var(--ink);line-height:1.7;font-size:15px}
+  .wrap{max-width:940px;margin:0 auto;padding:24px 18px 80px}
+  .nav{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px;font-size:11.5px}
+  .nav a{color:var(--sub);text-decoration:none;background:var(--card);
+    border:1px solid var(--line);padding:4px 9px;border-radius:20px;transition:.2s}
+  .nav a:hover{color:var(--red-deep);border-color:var(--red)}
+  .nav a.cur{color:#fff;background:var(--red);border-color:var(--red)}
+  header.hero{background:linear-gradient(135deg,#922b21,#c0392b);color:#fff;
+    border-radius:16px;padding:30px 28px;box-shadow:var(--shadow);margin-bottom:24px}
+  header.hero .tag{display:inline-block;background:rgba(255,255,255,.2);
+    padding:3px 12px;border-radius:20px;font-size:12px;margin-bottom:10px}
+  header.hero h1{font-size:27px;letter-spacing:.5px;margin-bottom:8px}
+  header.hero p{opacity:.94;font-size:14.5px;max-width:700px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:22px 22px;margin-bottom:20px;box-shadow:var(--shadow)}
+  .card h2{font-size:19px;margin-bottom:6px;display:flex;align-items:center;gap:9px}
+  .card h2 .n{background:var(--red);color:#fff;width:26px;height:26px;border-radius:8px;
+    display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:none}
+  .card h3{font-size:15.5px;margin:16px 0 8px;color:var(--red-deep)}
+  .lead{color:var(--sub);font-size:14px;margin-bottom:6px}
+  table{width:100%;border-collapse:collapse;font-size:13.5px;margin:10px 0}
+  th,td{border:1px solid var(--line);padding:9px 11px;text-align:left;vertical-align:top}
+  th{background:var(--red-soft);color:var(--red-deep);font-weight:600}
+  tr:nth-child(even) td{background:#fafbfd}
+  .hl{background:var(--red-soft);border-left:4px solid var(--red);
+    padding:13px 15px;border-radius:0 10px 10px 0;margin:14px 0;font-size:14px}
+  .hl.b{background:var(--blue-soft);border-left-color:var(--blue)}
+  .hl.g{background:var(--green-soft);border-left-color:var(--green)}
+  .hl.r{background:var(--gold-soft);border-left-color:var(--gold)}
+  .hl.p{background:var(--purple-soft);border-left-color:var(--purple)}
+  .calc{background:var(--red-soft);border:1px solid #f3c9c4;border-radius:12px;
+    padding:16px 18px;margin:16px 0}
+  .calc h4{font-size:14.5px;color:var(--red-deep);margin-bottom:12px}
+  .row{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin:8px 0}
+  .row label{font-size:13px;color:var(--sub);min-width:130px}
+  .row input,.row select{font-size:14px;padding:7px 10px;border:1px solid var(--line);
+    border-radius:8px;width:175px;background:#fff;color:var(--ink)}
+  .row input:focus,.row select:focus{outline:none;border-color:var(--red)}
+  .btn{background:var(--red);color:#fff;border:none;padding:8px 18px;border-radius:8px;
+    font-size:14px;cursor:pointer;transition:.2s}
+  .btn:hover{background:#922b21}
+  .res{margin-top:12px;padding:13px 15px;background:#fff;border:1px dashed var(--red);
+    border-radius:10px;font-size:14px;display:none}
+  .res b{color:var(--red-deep)}
+  .pill{display:inline-block;font-size:12px;padding:2px 9px;border-radius:20px;margin:2px 3px}
+  .pill.g{background:var(--green-soft);color:var(--green)}
+  .pill.r{background:var(--red-soft);color:var(--red)}
+  .pill.b{background:var(--blue-soft);color:var(--blue)}
+  .pill.p{background:var(--purple-soft);color:var(--purple)}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:680px){.two{grid-template-columns:1fr}.row label{min-width:100%}}
+  .chain{background:var(--gold-soft);border:1px solid #ecdca8;border-radius:12px;
+    padding:16px 18px;margin-top:8px}
+  .chain h4{color:var(--gold-deep);font-size:14.5px;margin-bottom:8px;color:#8a6508}
+  .chain a{color:#8a6508;text-decoration:none;font-weight:600}
+  .chain a:hover{text-decoration:underline}
+  .audit{font-size:14px}
+  .audit .q{display:flex;align-items:flex-start;gap:10px;padding:9px 4px;border-bottom:1px solid var(--line)}
+  .audit .q:last-child{border-bottom:none}
+  .audit input{margin-top:5px;width:16px;height:16px;flex:none;accent-color:var(--red)}
+  .audit label{flex:1}
+  .score{font-size:22px;font-weight:700;color:var(--red-deep)}
+  .tips{font-size:13.5px;color:var(--sub);margin-top:10px;line-height:1.6}
+  footer{text-align:center;color:var(--sub);font-size:12.5px;margin-top:30px;line-height:1.8}
+  .finale{background:linear-gradient(135deg,#1a2233,#2e3a52);color:#fff;border-radius:14px;
+    padding:24px 26px;margin:20px 0;box-shadow:var(--shadow)}
+  .finale h3{color:#f0c560;margin-bottom:10px}
+  .finale ul{margin:8px 0 0 18px;font-size:14px;opacity:.95}
+  .finale li{margin:5px 0}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="nav">
+    <a href="红利股指南.html">① 红利股</a>
+    <a href="泡沫破裂征兆.html">② 泡沫征兆</a>
+    <a href="美联储周期与资产走势.html">③ 美联储周期</a>
+    <a href="美联储决策依据与周期机会.html">④ 决策与机会</a>
+    <a href="复利引擎.html">⑤ 复利引擎</a>
+    <a href="估值安全边际.html">⑥ 估值边际</a>
+    <a href="资产配置再平衡.html">⑦ 资产配置</a>
+    <a href="税务与渠道.html">⑧ 税务与渠道</a>
+    <a href="行为与纪律.html">⑨ 行为与纪律</a>
+    <a href="财务自由路径.html">⑩ 财务自由路径</a>
+    <a href="宏观监测仪表盘.html">⑪ 仪表盘</a>
+    <a href="风险管理.html" class="cur">⑫ 风险管理</a>
+  </div>
+
+  <header class="hero">
+    <span class="tag">财务自由系列 · 第 12 篇（真正终章）</span>
+    <h1>风险管理</h1>
+    <p>前面 11 篇教你「怎么赚、怎么配、怎么自由」。本篇是地基下的地基——<b>活下来</b>。索罗斯说「重要的不是你对错，而是对时赚多少、错时亏多少」。第 2 篇教你识别泡沫，本篇教你在泡沫（甚至黑天鹅）里<b>怎么不被清零</b>。</p>
+  </header>
+
+  <!-- 1 -->
+  <div class="card">
+    <h2><span class="n">1</span>为什么风险管理排第一</h2>
+    <p class="lead">复利的敌人是<b>负复利</b>（第 5 篇算过：亏 50% 要涨 100% 回本）。一次归零，前面十年白干。所以：</p>
+    <div class="hl"><b>「先求不输，再求赢」</b>。风险管理不是保守，是让复利有资格继续滚的前提。它和「进攻」不是对立，而是同一枚硬币的两面——没有防守的进攻，只是赌。</div>
+  </div>
+
+  <!-- 2 风险维度 -->
+  <div class="card">
+    <h2><span class="n">2</span>六类风险，逐一拆解</h2>
+    <table>
+      <tr><th>风险</th><th>是什么</th><th>典型场景</th></tr>
+      <tr><td><b>市场风险</b>（系统性）</td><td>整个市场下跌，个股难独善</td><td>2008、2020 熔断、A股2015</td></tr>
+      <tr><td><b>个股风险</b>（非系统性）</td><td>单只暴雷</td><td>财务造假、退市、黑天鹅</td></tr>
+      <tr><td><b>流动性风险</b></td><td>想卖卖不出 / 折价甩卖</td><td>跌停、停牌、小盘股无承接</td></tr>
+      <tr><td><b>汇率风险</b></td><td>外币资产因汇率缩水</td><td>美元走强、人民币贬值</td></tr>
+      <tr><td><b>杠杆风险</b></td><td>借的钱放大亏损</td><td>爆仓、强平（致命）</td></tr>
+      <tr><td><b>行为风险</b></td><td>恐慌割肉 / 贪婪追高</td><td>第 9 篇八大偏差</td></tr>
+    </table>
+    <div class="hl r">最危险的排序：<b>杠杆 &gt; 个股满仓 &gt; 单一市场 &gt; 行为失控</b>。杠杆是普通人财富归零的头号杀手——第 2、9 篇都反复警告，本篇给工具。</div>
+  </div>
+
+  <!-- 3 工具 -->
+  <div class="card">
+    <h2><span class="n">3</span>五件套防守工具</h2>
+
+    <h3>① 仓位管理（最重要的纪律）</h3>
+    <table>
+      <tr><th>规则</th><th>经验值</th><th>作用</th></tr>
+      <tr><td>单只上限</td><td>≤ 总资金 10%~15%</td><td>单只暴雷不致命</td></tr>
+      <tr><td>单行业上限</td><td>≤ 30%</td><td>防行业黑天鹅</td></tr>
+      <tr><td>单笔最大亏损</td><td>≤ 总资金 1%~2%</td><td>用止损反推仓位</td></tr>
+    </table>
+
+    <h3>② 回撤控制与止损</h3>
+    <p class="lead">最大回撤 =（峰值−谷值）/ 峰值。组合级回撤 &gt; 20% 会严重打击心态与再投资能力。<b>个股 -15% 强制减半</b>（第 9 篇纪律），组合级设「心理止损线」。</p>
+
+    <h3>③ 现金弹药（Dry Powder）</h3>
+    <p class="lead">留 5%~10% 现金/货基（第 7 篇）。暴跌时别人没子弹，你有——这是第 2 篇「别人恐惧我贪婪」的<b>可执行版本</b>。</p>
+
+    <h3>④ 分散与低相关（已在第 7 篇）</h3>
+    <p class="lead">股/债/黄金/现金低相关组合，是天然的「不爆仓」结构。这里强调：<b>分散要跨市场、跨资产、跨币种</b>，不能只买同一类。</p>
+
+    <h3>⑤ 对冲与压力测试</h3>
+    <p class="lead">黄金是股市的天然逆相关缓冲；极端情况可用期权/国债对冲。<b>定期做压力测试</b>：如果股市再跌 30%，我的组合剩多少？能睡得着吗？</p>
+    <div class="hl b">风险管理的本质三问：① 我最大会亏多少？② 亏了还能活吗？③ 我有反脆弱的弹药吗？答得上来，才算真懂投资。</div>
+  </div>
+
+  <!-- 4 计算器 -->
+  <div class="card">
+    <h2><span class="n">⚙</span>四个互动计算器</h2>
+
+    <div class="calc">
+      <h4>① 最大回撤 + 回本难度</h4>
+      <div class="row"><label>峰值（元）</label><input id="dd_peak" type="number" value="100"></div>
+      <div class="row"><label>谷值（元）</label><input id="dd_trough" type="number" value="60"></div>
+      <button class="btn" onclick="calcDD()">计算</button>
+      <div class="res" id="dd_res"></div>
+    </div>
+
+    <div class="calc">
+      <h4>② 仓位计算器（用止损反推买多少）</h4>
+      <div class="row"><label>总资金（元）</label><input id="ps_total" type="number" value="1000000"></div>
+      <div class="row"><label>单笔可亏（%）</label><input id="ps_risk" type="number" value="2" step="0.5"></div>
+      <div class="row"><label>个股止损（%）</label><input id="ps_stop" type="number" value="15" step="1"></div>
+      <button class="btn" onclick="calcPos()">算仓位</button>
+      <div class="res" id="ps_res"></div>
+    </div>
+
+    <div class="calc">
+      <h4>③ 黑天鹅压力测试（组合抗震）</h4>
+      <div class="row"><label>股票占比（%）</label><input id="st_eq" type="number" value="50"></div>
+      <div class="row"><label>债券占比（%）</label><input id="st_bd" type="number" value="30"></div>
+      <div class="row"><label>黄金占比（%）</label><input id="st_gd" type="number" value="10"></div>
+      <div class="row"><label>现金占比（%）</label><input id="st_ca" type="number" value="10"></div>
+      <div class="row"><label>冲击情景</label>
+        <select id="st_scn">
+          <option value="crash">2008式股灾（股-50/债+5/金+5）</option>
+          <option value="hike">加息冲击（股-20/债-10/金-5）</option>
+          <option value="covid">2020熔断（股-35/债+3/金+8）</option>
+        </select>
+      </div>
+      <button class="btn" onclick="calcStress()">测试</button>
+      <div class="res" id="st_res"></div>
+    </div>
+
+    <div class="calc">
+      <h4>④ 风险防护自检（勾选你已有的）</h4>
+      <div class="audit" id="rk">
+        <div class="q"><input type="checkbox" data-w="1"><label>单只持仓不超过总资金 15%</label></div>
+        <div class="q"><input type="checkbox" data-w="1"><label>从不使用杠杆 / 融资</label></div>
+        <div class="q"><input type="checkbox" data-w="1"><label>持有 5%~10% 现金弹药</label></div>
+        <div class="q"><input type="checkbox" data-w="1"><label>资产跨股/债/黄金/现金分散</label></div>
+        <div class="q"><input type="checkbox" data-w="1"><label>有止损纪律（个股-15%减半）</label></div>
+        <div class="q"><input type="checkbox" data-w="1"><label>跨市场/跨币种配置</label></div>
+        <div class="q"><input type="checkbox" data-w="1"><label>定期做压力测试</label></div>
+        <div class="q"><input type="checkbox" data-w="1"><label>不用短期要用的钱投资</label></div>
+      </div>
+      <button class="btn" onclick="calcRK()">测我的防护分</button>
+      <div class="res" id="rk_res"></div>
+      <div class="tips">每勾 1 项 = 一道防线。分数低不代表会亏，而是「一旦出事更脆弱」。逐步补齐即可。</div>
+    </div>
+  </div>
+
+  <!-- 收官 -->
+  <div class="card">
+    <h2><span class="n">★</span>全系列地图（12 篇完整闭环）</h2>
+    <div class="chain">
+      <h4>🧩 知识树 8 大模块 → 12 篇文章</h4>
+      <p>
+        <b>认知层</b>：① 红利股（攒什么）· ② 泡沫征兆（避什么）· ③ 美联储周期（宏观动）· ④ 决策与机会（央行想）<br>
+        <b>数学层</b>：⑤ 复利引擎（r/n/早投）· ⑥ 估值边际（便宜买）<br>
+        <b>落地层</b>：⑦ 资产配置（怎么配）· ⑧ 税务与渠道（税后 r）· ⑨ 行为与纪律（拿得住）<br>
+        <b>目标层</b>：⑩ 财务自由路径（终点：年支出×25）· ⑪ 宏观监测仪表盘（每周自检）· <b>⑫ 风险管理（活下来）</b>
+      </p>
+    </div>
+    <div class="finale">
+      <h3>🔑 一句话真正收官</h3>
+      <ul>
+        <li><b>买什么</b>：高股息 + 多元配置（①②③⑦）</li>
+        <li><b>便宜买</b>：估值安全边际 + 税后口径（⑥⑧）</li>
+        <li><b>宏观温度</b>：仪表盘每周自检（⑪）</li>
+        <li><b>活下来</b>：仓位 + 现金弹药 + 不杠杆 + 压力测试（⑫）</li>
+        <li><b>拿得住</b>：行为纪律（⑨）</li>
+        <li><b>数学内核</b>：复利 + 早投 + 高储蓄率（⑤③）</li>
+        <li><b>终点</b>：被动收入 ≥ 支出 = 年支出 × 25（⑩）</li>
+      </ul>
+      <p style="margin-top:12px;opacity:.9;font-size:13.5px">12 篇、8 大模块，从「红利股有哪些」到「怎么在风险中活下来」——你的财务自由知识树，现在真正闭环了。剩下的，是时间 + 纪律 + 不中断。</p>
+    </div>
+  </div>
+
+  <footer>
+    本手册为风险管理常识与机构框架整理，含互动计算器演示，<b>不构成投资建议</b>。<br>
+    仓位/止损/压力测试参数均为经验参考，须结合你的风险承受力与流动性需求；投资有风险，必要时咨询持牌顾问。
+  </footer>
+
+</div>
+
+<script>
+function fmt(n){return n.toLocaleString('zh-CN',{maximumFractionDigits:1});}
+function calcDD(){
+  var p=+document.getElementById('dd_peak').value||0;
+  var t=+document.getElementById('dd_trough').value||0;
+  var dd=(p-t)/p*100;
+  var rec=dd/(100-dd)*100;
+  var el=document.getElementById('dd_res');
+  el.style.display='block';
+  el.innerHTML='最大回撤：<b>'+dd.toFixed(1)+'%</b><br>'+
+    '回到峰值需上涨：<b style="color:#922b21">'+rec.toFixed(1)+'%</b><br>'+
+    '→ 回撤越大，回本越难（第5篇负复利）。守住回撤，就是守住复利资格。';
+}
+function calcPos(){
+  var total=+document.getElementById('ps_total').value||0;
+  var risk=(+document.getElementById('ps_risk').value||0)/100;
+  var stop=(+document.getElementById('ps_stop').value||0)/100;
+  var pos=risk/stop*100;
+  var amt=total*pos/100;
+  var el=document.getElementById('ps_res');
+  el.style.display='block';
+  el.innerHTML='单笔最多亏总资金 <b>'+(risk*100)+'%</b>（='+fmt(total*risk)+'元）<br>'+
+    '个股止损 <b>'+(stop*100)+'%</b> → 该股仓位应 ≤ <b style="color:#922b21">'+pos.toFixed(1)+'%</b><br>'+
+    '对应金额：<b>'+fmt(amt)+' 元</b>（超过即超风险）';
+}
+function calcStress(){
+  var eq=(+document.getElementById('st_eq').value||0)/100;
+  var bd=(+document.getElementById('st_bd').value||0)/100;
+  var gd=(+document.getElementById('st_gd').value||0)/100;
+  var ca=(+document.getElementById('st_ca').value||0)/100;
+  var scn=document.getElementById('st_scn').value;
+  var s={crash:{e:-0.5,b:0.05,g:0.05,c:0},hike:{e:-0.2,b:-0.1,g:-0.05,c:0},covid:{e:-0.35,b:0.03,g:0.08,c:0}}[scn];
+  var ch=eq*s.e+bd*s.b+gd*s.g+ca*s.c;
+  var remain=100+ch*100;
+  var el=document.getElementById('st_res');
+  el.style.display='block';
+  el.innerHTML='该情景下组合变动：<b style="color:#922b21">'+(ch*100).toFixed(1)+'%</b><br>'+
+    '组合剩余：<b style="color:#922b21">'+remain.toFixed(1)+'%</b><br>'+
+    (remain>85?'<span class="pill g">缓冲充足</span>':'<span class="pill r">冲击较大</span>')+
+    ' → 现金/黄金占比越高，抗震越强（这就是分散+弹药的价值）。';
+}
+function calcRK(){
+  var boxes=document.querySelectorAll('#rk input');
+  var n=0; boxes.forEach(function(b){if(b.checked)n++;});
+  var el=document.getElementById('rk_res');
+  el.style.display='block';
+  var msg;
+  if(n>=7) msg='<span class="pill g">防护严密</span> 防线齐全，抗打击能力强。';
+  else if(n>=4) msg='<span class="pill b">基本合格</span> '+n+'/8 道，补齐杠杆与现金弹药最关键。';
+  else if(n>=1) msg='<span class="pill r">脆弱</span> 仅 '+n+'/8 道防线，建议优先「不用杠杆 + 留现金」。';
+  else msg='<span class="pill r">裸奔</span> 0 道防线，先做到「不杠杆 + 分散」再谈收益。';
+  el.innerHTML='防护分 <span class="score">'+n+'</span> / 8<br>'+msg;
+}
+</script>
+<script src="assets/site.js"></script>
+</body>
+</html>

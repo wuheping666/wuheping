@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>复利引擎 · 系列第5篇 | 投资理财-复利与财务自由</title>
+<style>
+  :root{
+    --green:#3B6D11; --green-l:#EAF3DE; --green-m:#97C459;
+    --amber:#854F0B; --amber-l:#FAEEDA;
+    --blue:#185FA5; --blue-l:#E6F1FB;
+    --red:#A32D2D; --red-l:#FCEBEB;
+    --ink:#1a2b3c; --muted:#5f6b78; --line:#e3e8ee;
+    --bg:#f7f9fb; --card:#ffffff;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.65}
+  .wrap{max-width:1080px;margin:0 auto;padding:32px 20px 64px}
+  header.hero{background:linear-gradient(135deg,#2f5a12,#5a8f24);color:#fff;border-radius:18px;padding:34px 32px;margin-bottom:26px}
+  header.hero h1{font-size:28px;font-weight:700;letter-spacing:.5px}
+  header.hero p{margin-top:10px;font-size:15px;opacity:.92;max-width:720px}
+  .pill{display:inline-block;background:rgba(255,255,255,.18);border-radius:999px;padding:4px 12px;font-size:12px;margin-bottom:14px}
+  /* series nav */
+  .series{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 4px}
+  .series a{font-size:12.5px;color:var(--blue);text-decoration:none;background:var(--blue-l);border:1px solid #cfe0f5;padding:5px 11px;border-radius:8px;transition:.15s}
+  .series a:hover{background:#d4e6fa}
+  .series a.cur{background:var(--blue);color:#fff;border-color:var(--blue)}
+  section{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:26px 28px;margin-bottom:22px}
+  h2{font-size:20px;margin-bottom:6px;display:flex;align-items:center;gap:10px}
+  h2 .num{background:var(--green);color:#fff;font-size:13px;width:26px;height:26px;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;flex:none}
+  .lead{color:var(--muted);font-size:14px;margin-bottom:18px}
+  .formula{background:var(--green-l);border:1px dashed var(--green-m);border-radius:12px;padding:16px 20px;font-size:17px;text-align:center;margin:14px 0;font-family:"SFMono-Regular",Consolas,monospace}
+  .formula b{color:var(--green)}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .calc{background:#fbfcfe;border:1px solid var(--line);border-radius:12px;padding:18px}
+  .calc h3{font-size:15px;margin-bottom:12px;color:var(--ink)}
+  label{display:block;font-size:13px;color:var(--muted);margin:10px 0 4px}
+  input[type=number]{width:100%;padding:9px 11px;border:1px solid #cfd8e3;border-radius:8px;font-size:15px;font-family:inherit}
+  input[type=number]:focus{outline:none;border-color:var(--green);box-shadow:0 0 0 3px rgba(59,109,17,.12)}
+  .btn{margin-top:14px;background:var(--green);color:#fff;border:none;padding:9px 16px;border-radius:8px;font-size:14px;cursor:pointer}
+  .btn:hover{background:#2f5a12}
+  .res{margin-top:14px;background:var(--blue-l);border-radius:10px;padding:12px 14px;font-size:15px;color:var(--blue);font-weight:600}
+  table{width:100%;border-collapse:collapse;margin-top:10px;font-size:14px}
+  th,td{padding:10px 12px;text-align:center;border-bottom:1px solid var(--line)}
+  th{background:#f1f5f9;font-weight:600;color:var(--muted);font-size:13px}
+  tr:hover td{background:#fafcff}
+  .tag{display:inline-block;padding:2px 9px;border-radius:6px;font-size:12.5px;font-weight:600}
+  .t-red{background:var(--red-l);color:var(--red)}
+  .t-green{background:var(--green-l);color:var(--green)}
+  .t-amber{background:var(--amber-l);color:var(--amber)}
+  .t-blue{background:var(--blue-l);color:var(--blue)}
+  .note{background:var(--amber-l);border-left:4px solid var(--amber);border-radius:8px;padding:12px 16px;font-size:13.5px;color:#633806;margin-top:14px}
+  .link-box{background:var(--blue-l);border:1px solid #cfe0f5;border-radius:12px;padding:18px 20px}
+  .link-box ul{margin:8px 0 0 18px;font-size:14px}
+  .link-box li{margin:6px 0}
+  .link-box a{color:var(--blue);font-weight:600;text-decoration:none}
+  .link-box a:hover{text-decoration:underline}
+  .key{background:#f0f7ea;border:1px solid var(--green-m);border-radius:12px;padding:18px 20px}
+  .key li{margin:8px 0 8px 20px;font-size:14.5px}
+  .disclaim{font-size:12.5px;color:var(--muted);border-top:1px dashed var(--line);padding-top:16px;margin-top:8px}
+  .foot{text-align:center;color:var(--muted);font-size:12.5px;margin-top:10px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <span class="pill">系列第 5 篇 · 认知引擎层</span>
+    <h1>复利引擎：从 72 法则到负复利杀伤力</h1>
+    <p>这是整个「复利与财务自由」项目的同名根基。前 4 篇的收益率要成立，靠的全是它——本篇用互动计算器把数学拆开给你看：钱怎么指数级长大，又怎么被亏损和通胀悄悄吃掉。</p>
+    <div class="series">
+      <a href="红利股指南.html">① 红利股指南</a>
+      <a href="泡沫破裂征兆.html">② 泡沫破裂征兆</a>
+      <a href="美联储周期与资产走势.html">③ 美联储周期↔资产</a>
+      <a href="美联储决策依据与周期机会.html">④ 美联储决策与机会</a>
+      <a href="复利引擎.html" class="cur">⑤ 复利引擎（本篇）</a>
+    </div>
+  </header>
+
+  <!-- 1 -->
+  <section>
+    <h2><span class="num">1</span>复利的本质：一条指数曲线</h2>
+    <p class="lead">复利 = 利滚利。每一期的利息都加入本金，下一期连本带利一起生息。区别只在「利息是否再投入」。</p>
+    <div class="formula">终值 <b>A</b> = 本金 <b>P</b> × ( 1 + 年化收益率 <b>r</b> )<sup><b>n</b> 期</sup></div>
+    <p>关键变量就三个：<b>P（本金）</b>、<b>r（收益率）</b>、<b>n（时间）</b>。普通人最容易忽略的是 <b>n</b>——时间不是线性累加，而是指数放大的杠杆。下面四块，分别吃透 r、n、亏损、通胀这四个旋钮。</p>
+  </section>
+
+  <!-- 2 -->
+  <section>
+    <h2><span class="num">2</span>72 法则：心算复利的捷径</h2>
+    <p class="lead">不用开计算器，记住一句话：<b>资金翻倍所需年数 ≈ 72 ÷ 年化收益率(%)</b>。它同样适用于通胀——购买力腰斩年数 ≈ 72 ÷ 通胀率(%)。</p>
+    <div class="grid2">
+      <div class="calc">
+        <h3>① 已知收益率 → 算翻倍年数</h3>
+        <label>年化收益率（%）</label>
+        <input type="number" id="r72" value="8" step="0.1">
+        <button class="btn" onclick="calc72()">计算</button>
+        <div class="res" id="res72">—</div>
+      </div>
+      <div class="calc">
+        <h3>② 已知目标年限 → 算所需收益率</h3>
+        <label>目标翻倍年数（年）</label>
+        <input type="number" id="y72" value="9" step="1">
+        <button class="btn" onclick="calc72r()">计算</button>
+        <div class="res" id="res72r">—</div>
+      </div>
+    </div>
+    <div class="note"><b>串联前 4 篇：</b>《红利股》里「5% 股息率 ≈ 14–20 年回本」正是 72÷5≈14.4；《美联储》降息后美债确定性收益，本质也是用 r 推 n。72 法则是你随时能心算的「回本尺」。</div>
+  </section>
+
+  <!-- 3 -->
+  <section>
+    <h2><span class="num">3</span>复利 vs 单利：差距随时间爆炸</h2>
+    <p class="lead">同样本金、同样收益率，单利（利息取出不复投）是直线，复利是指数曲线。差距在后期才会「突然」拉开。</p>
+    <div class="grid2">
+      <div class="calc">
+        <h3>对比计算器</h3>
+        <label>本金（元）</label><input type="number" id="c_p" value="100000" step="1000">
+        <label>年化收益率（%）</label><input type="number" id="c_r" value="8" step="0.5">
+        <label>年限（年）</label><input type="number" id="c_n" value="30" step="1">
+        <button class="btn" onclick="calcCS()">计算</button>
+        <div class="res" id="resCS">—</div>
+      </div>
+      <div>
+        <table>
+          <tr><th>年限</th><th>单利终值</th><th>复利终值</th><th>差额</th></tr>
+          <tr><td>10年</td><td>¥18.0万</td><td>¥21.6万</td><td class="t-green">+¥3.6万</td></tr>
+          <tr><td>20年</td><td>¥26.0万</td><td>¥46.6万</td><td class="t-green">+¥20.6万</td></tr>
+          <tr><td>30年</td><td>¥34.0万</td><td>¥100.6万</td><td class="t-green">+¥66.6万</td></tr>
+          <tr><td>40年</td><td>¥42.0万</td><td>¥217.2万</td><td class="t-green">+¥175.2万</td></tr>
+        </table>
+        <p class="lead" style="margin-top:10px">表例：本金 10 万、年化 8%。30 年时复利已是单利的 3 倍，40 年拉到 5 倍——这就是「时间做朋友」的真相。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 -->
+  <section>
+    <h2><span class="num">4</span>负复利杀伤力：亏起来比赚起来狠</h2>
+    <p class="lead">这是普通人最容易低估的陷阱。<b>亏损 x% 之后，需要涨 x/(1−x) 才能回本</b>，而且回本需要的涨幅永远大于亏损幅度。跌得越深，爬出来越绝望。</p>
+    <div class="grid2">
+      <div class="calc">
+        <h3>回本计算器</h3>
+        <label>最大回撤 / 亏损幅度（%）</label>
+        <input type="number" id="loss" value="50" step="1" min="1" max="99">
+        <button class="btn" onclick="calcLoss()">计算</button>
+        <div class="res" id="resLoss">—</div>
+      </div>
+      <div>
+        <table>
+          <tr><th>亏损</th><th>回本需涨</th><th>杀伤评级</th></tr>
+          <tr><td>-10%</td><td>+11.1%</td><td class="t-green">轻</td></tr>
+          <tr><td>-20%</td><td>+25.0%</td><td class="t-green">轻</td></tr>
+          <tr><td>-30%</td><td>+42.9%</td><td class="t-amber">中</td></tr>
+          <tr><td>-40%</td><td>+66.7%</td><td class="t-amber">中</td></tr>
+          <tr><td>-50%</td><td>+100%</td><td class="t-red">重</td></tr>
+          <tr><td>-70%</td><td>+233%</td><td class="t-red">重</td></tr>
+          <tr><td>-90%</td><td>+900%</td><td class="t-red">极重</td></tr>
+        </table>
+      </div>
+    </div>
+    <div class="note"><b>串联《泡沫破裂征兆》：</b>第 2 篇讲「泡沫最伤普通家庭」，根因就在这里——熊市腰斩（-50%）需要翻倍（100%）才回本，而多数人熬不到。所以「不接最后一棒 + 绝不用杠杆」不是保守，是数学上的生存必需。</div>
+  </section>
+
+  <!-- 5 -->
+  <section>
+    <h2><span class="num">5</span>通胀侵蚀：看不见的负复利</h2>
+    <p class="lead">即使账户数字在涨，通胀也在用「负复利」悄悄稀释购买力。名义收益扣除通胀才是真实收益，而购买力腰斩只需 72÷通胀率 年。</p>
+    <div class="grid2">
+      <div class="calc">
+        <h3>购买力计算器</h3>
+        <label>今天的金额（元）</label><input type="number" id="i_p" value="1000000" step="10000">
+        <label>年化通胀率（%）</label><input type="number" id="i_r" value="3" step="0.1">
+        <label>经过年数（年）</label><input type="number" id="i_n" value="30" step="1">
+        <button class="btn" onclick="calcInfl()">计算</button>
+        <div class="res" id="resInfl">—</div>
+      </div>
+      <div>
+        <table>
+          <tr><th>通胀率</th><th>购买力腰斩年数</th><th>30年后¥100万剩</th></tr>
+          <tr><td>2%</td><td>36 年</td><td>¥55.2万</td></tr>
+          <tr><td>3%</td><td>24 年</td><td>¥41.2万</td></tr>
+          <tr><td>4%</td><td>18 年</td><td>¥30.8万</td></tr>
+          <tr><td>5%</td><td>14.4 年</td><td>¥23.1万</td></tr>
+        </table>
+        <p class="lead" style="margin-top:10px">表例：3% 通胀下，30 年后的「100 万」实际只值今天的 41 万。这也是为什么《红利股》强调「股息率要跑赢通胀」——光拿 2% 的利息，其实在变穷。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6 -->
+  <section>
+    <h2><span class="num">6</span>早投的威力：时间 &gt; 金额</h2>
+    <p class="lead">复利世界里，<b>开始得早比投得多更重要</b>。每月定投同样金额，早 10 年起步，最终差距可达 2 倍以上——而多投的本金只是零头。</p>
+    <div class="grid2">
+      <div class="calc">
+        <h3>早投 vs 晚投</h3>
+        <label>每月定投（元）</label><input type="number" id="e_m" value="2000" step="100">
+        <label>年化收益率（%）</label><input type="number" id="e_r" value="8" step="0.5">
+        <label>结束年龄（岁）</label><input type="number" id="e_end" value="60" step="1">
+        <label>早投起始年龄（岁）</label><input type="number" id="e_a1" value="22" step="1">
+        <label>晚投起始年龄（岁）</label><input type="number" id="e_a2" value="32" step="1">
+        <button class="btn" onclick="calcEarly()">计算</button>
+        <div class="res" id="resEarly">—</div>
+      </div>
+      <div>
+        <table>
+          <tr><th>方案</th><th>投入年限</th><th>60岁时终值</th></tr>
+          <tr><td>22岁起</td><td>38年</td><td class="t-green">≈ ¥591万</td></tr>
+          <tr><td>32岁起</td><td>28年</td><td class="t-amber">≈ ¥250万</td></tr>
+        </table>
+        <p class="lead" style="margin-top:10px">表例：每月 2000、年化 8%。晚 10 年起步，少投 24 万本金，结果却少了 <b>341 万</b>——时间杠杆的残酷与慷慨，一体两面。</p>
+      </div>
+    </div>
+    <div class="note"><b>给你的行动信号：</b>复利不等人。哪怕现在只能每月投 500 元，22 岁 vs 32 岁的差距，远大于「等攒够了再一次性投一笔」。定投 + 早开始 = 普通人最稳的财务自由路径。</div>
+  </section>
+
+  <!-- 串联 -->
+  <section>
+    <h2><span class="num">7</span>本篇如何串联前 4 篇</h2>
+    <div class="link-box">
+      <ul>
+        <li><a href="红利股指南.html">① 红利股指南</a>：股息率 = 这里的 r，回本年数 = 72÷r，且 r 必须 &gt; 通胀（第 5 节）才真赚。</li>
+        <li><a href="泡沫破裂征兆.html">② 泡沫破裂征兆</a>：负复利（第 4 节）解释为什么「不接最后一棒、绝不用杠杆」是数学生存线。</li>
+        <li><a href="美联储周期与资产走势.html">③ 美联储周期↔资产</a>：降息拉久期债、降息期成长占优，本质是 r 与 n 在不同资产上的重新定价。</li>
+        <li><a href="美联储决策依据与周期机会.html">④ 美联储决策与机会</a>：杠铃策略用短债锁 n、用红利/黄金吃 r，正是用复利引擎做跨周期配置。</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 关键结论 -->
+  <section>
+    <h2><span class="num">★</span>关键结论</h2>
+    <div class="key">
+      <ul>
+        <li><b>72 法则</b>：翻倍年数 ≈ 72÷收益率；购买力腰斩年数 ≈ 72÷通胀率。心算即可。</li>
+        <li><b>复利靠时间放大</b>：30 年维度上，复利终值可达单利的 3 倍。</li>
+        <li><b>负复利是头号杀手</b>：亏 50% 要涨 100% 回本，控回撤比追收益重要。</li>
+        <li><b>通胀是隐形小偷</b>：3% 通胀 30 年吃掉 59% 购买力，股息率须跑赢通胀。</li>
+        <li><b>早开始 &gt; 多投入</b>：早 10 年定投，终值可差 2 倍以上。</li>
+        <li><b>三旋钮 r / n / 回撤</b>：守住 r（收益率）、拉长 n（时间）、压住回撤，就是复利引擎的全部奥义。</li>
+      </ul>
+    </div>
+    <p class="disclaim">⚠️ 本文为复利数学原理与公开案例的科普梳理，所有计算器结果均为理论演示（假设固定年化、按月复利），不构成任何投资建议。真实市场收益波动、税费、通胀均不确定，请以实际情形与专业顾问意见为准。</p>
+  </section>
+
+  <p class="foot">系列：红利股指南 → 泡沫破裂征兆 → 美联储周期↔资产 → 美联储决策与机会 → <b>复利引擎（本篇）</b>　|　下一篇建议：⑥ 财务自由路径（FIRE / 4% 法则）</p>
+
+</div>
+
+<script>
+function fmt(x){return '¥'+Math.round(x).toLocaleString('zh-CN');}
+function calc72(){
+  const r=parseFloat(document.getElementById('r72').value);
+  if(!r||r<=0){document.getElementById('res72').textContent='请输入正数收益率';return;}
+  const y=72/r;
+  document.getElementById('res72').textContent='年化 '+r+'% → 约 '+y.toFixed(1)+' 年资金翻倍';
+}
+function calc72r(){
+  const y=parseFloat(document.getElementById('y72').value);
+  if(!y||y<=0){document.getElementById('res72r').textContent='请输入正数年限';return;}
+  const r=72/y;
+  document.getElementById('res72r').textContent=y+' 年翻倍 → 约需年化 '+r.toFixed(1)+'%';
+}
+function calcCS(){
+  const P=parseFloat(document.getElementById('c_p').value);
+  const r=parseFloat(document.getElementById('c_r').value)/100;
+  const n=parseFloat(document.getElementById('c_n').value);
+  if(!(P>0&&r>0&&n>0)){document.getElementById('resCS').textContent='请填写有效正数';return;}
+  const simple=P*(1+r*n);
+  const comp=P*Math.pow(1+r,n);
+  document.getElementById('resCS').innerHTML='单利 '+fmt(simple)+' ｜ 复利 '+fmt(comp)+'<br>差额 <b>'+( (comp-simple)>0?'+':'')+fmt(comp-simple)+'</b>';
+}
+function calcLoss(){
+  const L=parseFloat(document.getElementById('loss').value);
+  if(!(L>0&&L<100)){document.getElementById('resLoss').textContent='亏损请输入 1–99';return;}
+  const need=L/(1-L/100);
+  document.getElementById('resLoss').textContent='亏 '+L+'% 后，需涨 '+need.toFixed(1)+'% 才能回本';
+}
+function calcInfl(){
+  const P=parseFloat(document.getElementById('i_p').value);
+  const inf=parseFloat(document.getElementById('i_r').value)/100;
+  const n=parseFloat(document.getElementById('i_n').value);
+  if(!(P>0&&inf>0&&n>0)){document.getElementById('resInfl').textContent='请填写有效正数';return;}
+  const real=P/Math.pow(1+inf,n);
+  document.getElementById('resInfl').innerHTML=fmt(P)+' 在 '+inf*100+'% 通胀下 '+n+' 年后<br>实际购买力 ≈ '+fmt(real)+'（仅为今天 '+(real/P*100).toFixed(0)+'%）';
+}
+function calcEarly(){
+  const m=parseFloat(document.getElementById('e_m').value);
+  const r=parseFloat(document.getElementById('e_r').value)/100/12;
+  const end=parseFloat(document.getElementById('e_end').value);
+  const a1=parseFloat(document.getElementById('e_a1').value);
+  const a2=parseFloat(document.getElementById('e_a2').value);
+  if(!(m>0&&r>0&&end>a1&&end>a2)){document.getElementById('resEarly').textContent='请检查输入';return;}
+  const fv=(y0)=>{const n=(end-y0)*12;return m*((Math.pow(1+r,n)-1)/r);};
+  const v1=fv(a1),v2=fv(a2);
+  document.getElementById('resEarly').innerHTML=a1+'岁起 → '+fmt(v1)+'<br>'+a2+'岁起 → '+fmt(v2)+'<br>差额 <b>'+( (v1-v2)>0?'+':'')+fmt(v1-v2)+'</b>';
+}
+</script>
+<script src="assets/site.js"></script>
+</body>
+</html>

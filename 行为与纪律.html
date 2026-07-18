@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>行为与纪律 · 财务自由系列第 9 篇</title>
+<style>
+  :root{
+    --bg:#f7f8fa; --card:#ffffff; --ink:#1a2233; --sub:#5b6577;
+    --line:#e6e9ef; --blue:#1f5fd6; --blue-soft:#eaf1fd;
+    --gold:#b8860b; --gold-soft:#fbf3df; --green:#178a4c; --green-soft:#e7f6ee;
+    --red:#c0392b; --red-soft:#fdecea; --purple:#6b46c1; --purple-soft:#f1ebfb;
+    --shadow:0 2px 12px rgba(20,40,80,.06);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",Segoe UI,Roboto,sans-serif;
+    background:var(--bg);color:var(--ink);line-height:1.7;font-size:15px}
+  .wrap{max-width:920px;margin:0 auto;padding:24px 18px 80px}
+  .nav{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px;font-size:12.5px}
+  .nav a{color:var(--sub);text-decoration:none;background:var(--card);
+    border:1px solid var(--line);padding:4px 10px;border-radius:20px;transition:.2s}
+  .nav a:hover{color:var(--blue);border-color:var(--blue)}
+  .nav a.cur{color:#fff;background:var(--blue);border-color:var(--blue)}
+  header.hero{background:linear-gradient(135deg,#6b46c1,#8b5cd1);color:#fff;
+    border-radius:16px;padding:30px 28px;box-shadow:var(--shadow);margin-bottom:24px}
+  header.hero .tag{display:inline-block;background:rgba(255,255,255,.18);
+    padding:3px 12px;border-radius:20px;font-size:12px;margin-bottom:10px}
+  header.hero h1{font-size:27px;letter-spacing:.5px;margin-bottom:8px}
+  header.hero p{opacity:.92;font-size:14.5px;max-width:680px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:22px 22px;margin-bottom:20px;box-shadow:var(--shadow)}
+  .card h2{font-size:19px;margin-bottom:6px;display:flex;align-items:center;gap:9px}
+  .card h2 .n{background:var(--purple);color:#fff;width:26px;height:26px;border-radius:8px;
+    display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:none}
+  .card h3{font-size:15.5px;margin:16px 0 8px;color:var(--purple)}
+  .lead{color:var(--sub);font-size:14px;margin-bottom:6px}
+  table{width:100%;border-collapse:collapse;font-size:13.5px;margin:10px 0}
+  th,td{border:1px solid var(--line);padding:9px 11px;text-align:left;vertical-align:top}
+  th{background:var(--purple-soft);color:var(--purple);font-weight:600}
+  tr:nth-child(even) td{background:#fafbfd}
+  .hl{background:var(--gold-soft);border-left:4px solid var(--gold);
+    padding:13px 15px;border-radius:0 10px 10px 0;margin:14px 0;font-size:14px}
+  .hl.b{background:var(--blue-soft);border-left-color:var(--blue)}
+  .hl.g{background:var(--green-soft);border-left-color:var(--green)}
+  .hl.r{background:var(--red-soft);border-left-color:var(--red)}
+  .hl.p{background:var(--purple-soft);border-left-color:var(--purple)}
+  .calc{background:var(--purple-soft);border:1px solid #e3d6f7;border-radius:12px;
+    padding:16px 18px;margin:16px 0}
+  .calc h4{font-size:14.5px;color:var(--purple);margin-bottom:12px}
+  .row{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin:8px 0}
+  .row label{font-size:13px;color:var(--sub);min-width:118px}
+  .row input,.row select{font-size:14px;padding:7px 10px;border:1px solid var(--line);
+    border-radius:8px;width:170px;background:#fff;color:var(--ink)}
+  .row input:focus,.row select:focus{outline:none;border-color:var(--purple)}
+  .btn{background:var(--purple);color:#fff;border:none;padding:8px 18px;border-radius:8px;
+    font-size:14px;cursor:pointer;transition:.2s}
+  .btn:hover{background:#5536a8}
+  .res{margin-top:12px;padding:13px 15px;background:#fff;border:1px dashed var(--purple);
+    border-radius:10px;font-size:14px;display:none}
+  .res b{color:var(--purple)}
+  .pill{display:inline-block;font-size:12px;padding:2px 9px;border-radius:20px;margin:2px 3px}
+  .pill.g{background:var(--green-soft);color:var(--green)}
+  .pill.r{background:var(--red-soft);color:var(--red)}
+  .pill.b{background:var(--blue-soft);color:var(--blue)}
+  .pill.p{background:var(--purple-soft);color:var(--purple)}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:680px){.two{grid-template-columns:1fr}.row label{min-width:100%}}
+  .chain{background:var(--blue-soft);border:1px solid #d4e2fb;border-radius:12px;
+    padding:16px 18px;margin-top:8px}
+  .chain h4{color:var(--blue);font-size:14.5px;margin-bottom:8px}
+  .chain a{color:var(--blue);text-decoration:none;font-weight:600}
+  .chain a:hover{text-decoration:underline}
+  .fns{font-size:13.5px;color:var(--sub);margin-top:8px}
+  footer{text-align:center;color:var(--sub);font-size:12.5px;margin-top:30px;line-height:1.8}
+  .audit{font-size:14px}
+  .audit .q{display:flex;align-items:flex-start;gap:10px;padding:9px 4px;border-bottom:1px solid var(--line)}
+  .audit .q:last-child{border-bottom:none}
+  .audit input{margin-top:5px;width:16px;height:16px;flex:none;accent-color:var(--purple)}
+  .audit label{flex:1}
+  .score{font-size:22px;font-weight:700;color:var(--red)}
+  .tips{font-size:13.5px;color:var(--sub);margin-top:10px;line-height:1.6}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="nav">
+    <a href="红利股指南.html">① 红利股</a>
+    <a href="泡沫破裂征兆.html">② 泡沫征兆</a>
+    <a href="美联储周期与资产走势.html">③ 美联储周期</a>
+    <a href="美联储决策依据与周期机会.html">④ 决策与机会</a>
+    <a href="复利引擎.html">⑤ 复利引擎</a>
+    <a href="估值安全边际.html">⑥ 估值边际</a>
+    <a href="资产配置再平衡.html">⑦ 资产配置</a>
+    <a href="税务与渠道.html">⑧ 税务与渠道</a>
+    <a href="行为与纪律.html" class="cur">⑨ 行为与纪律</a>
+  </div>
+
+  <header class="hero">
+    <span class="tag">财务自由系列 · 第 9 篇</span>
+    <h1>行为与纪律</h1>
+    <p>前面 8 篇都是「认知」——买什么、何时避、宏观怎么动、估值怎么看、怎么配、怎么交税。
+    但研究反复证明：<b>长期收益的差距，80% 来自心态与纪律，而非认知高低</b>。本篇教你识别自己的大脑陷阱，并用纪律把它锁住。</p>
+  </header>
+
+  <!-- 1 -->
+  <div class="card">
+    <h2><span class="n">1</span>为什么「行为」比「认知」更致命</h2>
+    <p class="lead">诺贝尔经济学奖得主塞勒（行为经济学）、以及 DALBAR 长期研究都指向同一结论：</p>
+    <div class="hl p">散户的「择时」操作，长期大幅跑输「什么都不做」。DALBAR 统计美股散户 20 年平均年化仅约 <b>3.9%</b>，而标普 500 指数约 <b>9%</b>——差距不是知识不够，是<b>追涨杀跌 + 恐慌踏空</b>把收益「交」给了市场。</div>
+    <div class="hl b">好消息：行为偏差是<b>可被识别和约束</b>的。你不用变成冷血机器，只要在关键时刻有「纪律护栏」——这正是本篇的价值。</div>
+  </div>
+
+  <!-- 2 偏差 -->
+  <div class="card">
+    <h2><span class="n">2</span>八个最常见的投资行为偏差</h2>
+    <table>
+      <tr><th>偏差</th><th>表现</th><th>对你的伤害</th></tr>
+      <tr><td><b>损失厌恶</b></td><td>亏 100 的痛苦 ≈ 赚 200 的快乐</td><td>死扛亏损、过早止盈，截断利润</td></tr>
+      <tr><td><b>锚定效应</b></td><td>死盯着买入价 / 历史高点</td><td>「回本才卖」错过调仓、越套越深</td></tr>
+      <tr><td><b>处置效应</b></td><td>卖赢的、留亏的</td><td>组合里全是「僵尸股」，利润被税吃掉</td></tr>
+      <tr><td><b>从众 / 羊群</b></td><td>大家买我买、大家逃我逃</td><td>接最后一棒（见第 2 篇泡沫征兆）</td></tr>
+      <tr><td><b>过度自信</b></td><td>觉得自己能择时逃顶抄底</td><td>频繁交易、加杠杆（致命）</td></tr>
+      <tr><td><b>确认偏误</b></td><td>只看支持自己的信息</td><td>忽视风险信号，重仓踩雷</td></tr>
+      <tr><td><b>近因偏差</b></td><td>最近涨的还会涨、跌的还会跌</td><td>追热点、在高位接盘</td></tr>
+      <tr><td><b>禀赋效应</b></td><td>自己买的更舍不得卖</td><td>该止损时心软，错过再平衡</td></tr>
+    </table>
+    <div class="hl r">最危险的组合：<b>过度自信 + 杠杆</b>。第 2 篇说「绝不用杠杆」，本篇补一句——杠杆放大的不仅是收益，更是你最弱的行为偏差。</div>
+  </div>
+
+  <!-- 3 纪律 -->
+  <div class="card">
+    <h2><span class="n">3</span>四条纪律护栏（把偏差锁住）</h2>
+
+    <h3>① 定投纪律——用规则代替判断</h3>
+    <p class="lead">固定时间、固定金额买入，<b>不择时</b>。它把「近因偏差 / 恐惧」排除在决策外。第 5 篇算过：月投 2000、年化 8%，22 岁起到 60 岁 ≈ 591 万——靠的不是聪明，是「不中断」。</p>
+
+    <h3>② 再平衡纪律——自动低买高卖</h3>
+    <p class="lead">第 7 篇讲过：年度一次或单类资产偏离目标 ±5% 触发。它强制你在「涨多的卖、跌多的补」，天然对抗「锚定」和「从众」。</p>
+
+    <h3>③ 止损 / 止盈纪律——给决策装开关</h3>
+    <table>
+      <tr><th>动作</th><th>纪律示例</th><th>对抗的偏差</th></tr>
+      <tr><td>止损</td><td>单笔亏损 -15% 强制减半</td><td>损失厌恶、锚定</td></tr>
+      <tr><td>止盈</td><td>达到目标估值分位(>80%)分批卖</td><td>过度自信、近因</td></tr>
+      <tr><td>暂停</td><td>单日波动大时「24 小时冷静期」</td><td>从众、恐慌</td></tr>
+    </table>
+
+    <h3>④ 投资清单 / 情绪记账</h3>
+    <p class="lead">每笔交易前打勾：① 我买的是什么（看得懂吗）② 估值便宜吗（第 6 篇）③ 是计划内还是被情绪驱动 ④ 如果跌 30% 我还能睡得着吗。另建「情绪账本」：记录买卖时的心情，三个月后回看，偏差一目了然。</p>
+    <div class="hl g">巴菲特式心法：<b>「别人贪婪我恐惧，别人恐惧我贪婪」</b>——这句话 99% 的人做不到，因为反人性。所以才需要「纪律」当外部骨架，而不是靠意志力。</div>
+  </div>
+
+  <!-- 4 计算器 -->
+  <div class="card">
+    <h2><span class="n">⚙</span>四个互动演示 / 自检</h2>
+
+    <div class="calc">
+      <h4>① 损失厌恶演示（亏 10% 要多赚多少才「回本平衡」）</h4>
+      <div class="row">
+        <label>亏损幅度（%）</label>
+        <input id="la_loss" type="number" value="10" min="0" max="90">
+      </div>
+      <button class="btn" onclick="calcLA()">计算心理落差</button>
+      <div class="res" id="la_res"></div>
+    </div>
+
+    <div class="calc">
+      <h4>② 处置效应模拟（卖盈持亏的长期后果）</h4>
+      <div class="row">
+        <label>盈利股涨幅（%）</label>
+        <input id="de_win" type="number" value="20" min="0">
+      </div>
+      <div class="row">
+        <label>亏损股跌幅（%）</label>
+        <input id="de_loss" type="number" value="20" min="0">
+      </div>
+      <button class="btn" onclick="calcDE()">模拟结果</button>
+      <div class="res" id="de_res"></div>
+    </div>
+
+    <div class="calc">
+      <h4>③ 错过最佳交易日（择时的代价）</h4>
+      <div class="row">
+        <label>初始本金（元）</label>
+        <input id="md_p" type="number" value="100000" min="0">
+      </div>
+      <div class="row">
+        <label>年化收益（%）</label>
+        <input id="md_r" type="number" value="9" step="0.5">
+      </div>
+      <div class="row">
+        <label>持有年数</label>
+        <input id="md_y" type="number" value="20" min="1">
+      </div>
+      <div class="row">
+        <label>错过的天数</label>
+        <select id="md_miss">
+          <option value="0">全程在场</option>
+          <option value="10">错过最佳 10 天</option>
+          <option value="20">错过最佳 20 天</option>
+          <option value="30">错过最佳 30 天</option>
+        </select>
+      </div>
+      <button class="btn" onclick="calcMD()">计算</button>
+      <div class="res" id="md_res"></div>
+    </div>
+
+    <div class="calc">
+      <h4>④ 行为偏差自检表（勾选你常犯的）</h4>
+      <div class="audit" id="audit">
+        <div class="q"><input type="checkbox" data-w="1"><label>大跌时我第一反应是卖，而不是看是不是机会</label></div>
+        <div class="q"><input type="checkbox" data-w="1"><label>我常盯着买入价，不回本就不肯卖</label></div>
+        <div class="q"><input type="checkbox" data-w="1"><label>我习惯卖掉涨的、留着跌的</label></div>
+        <div class="q"><input type="checkbox" data-w="1"><label>热门/朋友推荐我容易冲动买</label></div>
+        <div class="q"><input type="checkbox" data-w="1"><label>我觉得自己能择时逃顶抄底</label></div>
+        <div class="q"><input type="checkbox" data-w="1"><label>我只看支持自己观点的分析</label></div>
+        <div class="q"><input type="checkbox" data-w="1"><label>最近涨的我就觉得还会涨</label></div>
+        <div class="q"><input type="checkbox" data-w="1"><label>自己买的标的更难割肉</label></div>
+        <div class="q"><input type="checkbox" data-w="1"><label>我常用杠杆或满仓博收益</label></div>
+      </div>
+      <button class="btn" onclick="calcAudit()">查看我的风险分</button>
+      <div class="res" id="audit_res"></div>
+      <div class="tips">提示：每勾 1 项代表一个「会吃掉收益的行为漏洞」，分数越高越需要纪律护栏。这不是诊断，是自检起点。</div>
+    </div>
+  </div>
+
+  <!-- 串联 -->
+  <div class="chain">
+    <h4>🧩 本篇如何串联整个系列</h4>
+    <p>
+      <a href="泡沫破裂征兆.html">② 泡沫征兆</a>：从众、接最后一棒——行为偏差是泡沫的「燃料」。<br>
+      <a href="复利引擎.html">⑤ 复利引擎</a>：不中断的定投 + 不恐慌，才让复利跑满 30 年。<br>
+      <a href="资产配置再平衡.html">⑦ 资产配置</a>：再平衡纪律把「低买高卖」自动化，对抗锚定与恐惧。<br>
+      <a href="税务与渠道.html">⑧ 税务与渠道</a>：处置效应（卖盈持亏）会让你缴更多税、留僵尸股——纪律直接省钱。
+    </p>
+    <p class="fns">系列仅剩最后一块拼图：<b>⑥ 财务自由路径（FIRE / 4% 安全提取率 / 被动收入怎么长出来）</b>。补完它，整个知识树闭环。</p>
+  </div>
+
+  <footer>
+    本手册为行为金融学常识与机构研究整理，含互动演示，<b>不构成投资建议</b>。<br>
+    行为偏差人人都有，识别它是第一步；具体纪律阈值须匹配你的风险承受力，必要时咨询持牌顾问。
+  </footer>
+
+</div>
+
+<script>
+function fmt(n){return n.toLocaleString('zh-CN',{maximumFractionDigits:0});}
+function calcLA(){
+  var loss=+document.getElementById('la_loss').value||0;
+  var pain=loss;                       // 痛苦单位
+  var joyNeed=loss*2;                  // 损失厌恶系数≈2：需2倍收益才平衡
+  var el=document.getElementById('la_res');
+  el.style.display='block';
+  el.innerHTML='亏损 <b>'+loss+'%</b> 带来的痛苦 ≈ '+pain+' 单位<br>'+
+    '损失厌恶系数≈2，需赚 <b style="color:#6b46c1">'+joyNeed+'%</b> 才心理平衡<br>'+
+    '→ 这就是为什么人宁愿死扛亏损、也不敢「认亏」转去更好的标的。';
+}
+function calcDE(){
+  var w=+document.getElementById('de_win').value||0;
+  var l=+document.getElementById('de_loss').value||0;
+  var el=document.getElementById('de_res');
+  el.style.display='block';
+  el.innerHTML='你卖了 <b>+'+w+'%</b> 的赢家，留下 <b>-'+l+'%</b> 的输家<br>'+
+    '结果：组合里<b style="color:#c0392b">只会剩下亏损股</b>（赢家被你剪掉了）<br>'+
+    '长期 = 持有一篮子最差的标的 + 过早兑现好标的的税<br>'+
+    '→ 正确做法：让利润奔跑、果断止损弱者（对抗处置效应）。';
+}
+function calcMD(){
+  var p=+document.getElementById('md_p').value||0;
+  var r=(+document.getElementById('md_r').value||0)/100;
+  var y=+document.getElementById('md_y').value||0;
+  var miss=+document.getElementById('md_miss').value;
+  // 简化模型：错过最佳N天，将年化收益按错过比例惩罚（每日平均收益替换最佳日为平均日）
+  var daily=Math.pow(1+r,1/252)-1;
+  var missR=[];
+  [0,10,20,30].forEach(function(m){
+    var total=1;
+    for(var i=0;i<y*252;i++){
+      if(i<m) total*=1+daily*0.3; // 错过的日子按平均日收益的30%计（近似）
+      else total*=1+daily;
+    }
+    missR.push(total*p);
+  });
+  var full=missR[0], got=missR[[0,10,20,30].indexOf(miss)];
+  var el=document.getElementById('md_res');
+  el.style.display='block';
+  el.innerHTML='全程在场 '+y+' 年终值：<b>'+fmt(full)+' 元</b><br>'+
+    '错过最佳 '+miss+' 天：<b style="color:#c0392b">'+fmt(got)+' 元</b><br>'+
+    '少赚：<b style="color:#c0392b">'+fmt(full-got)+' 元</b>（占 '+((full-got)/full*100).toFixed(1)+'%）'+
+    (miss>0?'<br>→ 想精准躲过下跌，往往也躲过了上涨。':'');
+}
+function calcAudit(){
+  var boxes=document.querySelectorAll('#audit input');
+  var n=0; boxes.forEach(function(b){if(b.checked)n++;});
+  var el=document.getElementById('audit_res');
+  el.style.display='block';
+  var msg;
+  if(n===0) msg='<span class="pill g">很自律</span> 自检全空——继续保持纪律即可。';
+  else if(n<=2) msg='<span class="pill b">轻度</span> 有 '+n+' 个漏洞，用定投+再平衡护栏基本可控。';
+  else if(n<=5) msg='<span class="pill p">中度</span> '+n+' 个漏洞，强烈建议建立投资清单+冷静期。';
+  else msg='<span class="pill r">高度</span> '+n+' 个漏洞，行为偏差可能在持续吞噬你的收益，优先补齐纪律护栏。';
+  el.innerHTML='你勾选了 <span class="score">'+n+'</span> / 9 项<br>'+msg;
+}
+</script>
+<script src="assets/site.js"></script>
+</body>
+</html>

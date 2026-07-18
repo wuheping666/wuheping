@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>红利股指南 · 年化利率与成本损耗</title>
+<style>
+  :root{
+    --bg:#ffffff; --ink:#1f2329; --muted:#6b7280; --line:#e6e8eb;
+    --gold:#b8860b; --gold-soft:#f7f0dc; --red:#c0392b; --green:#2e7d32;
+    --blue:#2563eb; --soft:#f6f7f9;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",Segoe UI,Helvetica,Arial,sans-serif;
+       background:var(--bg);color:var(--ink);line-height:1.7;font-size:15px;padding:32px 16px}
+  .wrap{max-width:920px;margin:0 auto}
+  h1{font-size:26px;letter-spacing:.5px;margin-bottom:6px}
+  h2{font-size:19px;margin:34px 0 12px;padding-left:10px;border-left:4px solid var(--gold)}
+  h3{font-size:15px;margin:18px 0 8px;color:var(--gold)}
+  .lead{background:var(--gold-soft);border:1px solid #ecd9a0;border-radius:10px;
+        padding:16px 18px;color:#5b4a12;font-size:14px}
+  .lead b{color:#7a5c00}
+  p{margin:10px 0}
+  .muted{color:var(--muted);font-size:13px}
+  table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14px}
+  th,td{border:1px solid var(--line);padding:9px 11px;text-align:left;vertical-align:top}
+  th{background:var(--soft);font-weight:600}
+  td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+  .tag{display:inline-block;font-size:12px;padding:1px 7px;border-radius:9px;background:#eef2f7;color:#41566e;margin:1px 2px}
+  .up{color:var(--red);font-weight:600}
+  .down{color:var(--green);font-weight:600}
+  .card{border:1px solid var(--line);border-radius:10px;padding:16px 18px;margin:14px 0;background:#fff}
+  .bar-row{display:flex;align-items:center;margin:7px 0}
+  .bar-label{width:120px;font-size:13px;color:var(--ink);flex:none}
+  .bar-track{flex:1;background:#f0f1f3;border-radius:5px;height:18px;position:relative;overflow:hidden}
+  .bar-fill{height:100%;background:linear-gradient(90deg,#d4a017,#b8860b);border-radius:5px}
+  .bar-val{width:64px;text-align:right;font-size:13px;color:var(--ink);font-variant-numeric:tabular-nums;flex:none}
+  .formula{background:var(--soft);border-radius:8px;padding:12px 14px;font-family:"SF Mono",Consolas,Menlo,monospace;font-size:13.5px;color:#1f2329;margin:10px 0}
+  .note{border-left:3px solid var(--gold);background:#fcfaf2;padding:10px 14px;margin:12px 0;font-size:13.5px;color:#4a4030}
+  .src{font-size:12px;color:var(--muted);border-top:1px dashed var(--line);margin-top:28px;padding-top:12px}
+  .src li{margin:3px 0}
+  .two{display:flex;gap:14px;flex-wrap:wrap}
+  .two>div{flex:1;min-width:260px}
+  .kpi{text-align:center;padding:14px;border:1px solid var(--line);border-radius:10px}
+  .kpi .v{font-size:24px;font-weight:700;color:var(--gold)}
+  .kpi .l{font-size:12px;color:var(--muted);margin-top:3px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>红利股指南：有哪些、年化利率多少、成本损耗多大</h1>
+  <p class="muted">整理时间：2026-07-15 ｜ 数据时点见各表 ｜ 结合「复利与财务自由」项目视角</p>
+
+  <div class="lead">
+    <b>一句话结论：</b>红利股集中在<b>银行、煤炭、石油石化、电力、高速公路、运营商</b>等成熟行业，当前（2026-07）板块股息率约 <b>4%–10%</b>，远高于定存（≈2%）与国债（10Y≈1.7%）。但真正决定你"年化利率"的，不是股息率本身，而是<b>成本损耗</b>——其中<b>分红个税（持股超1年免）</b>与<b>ETF综合费率（0.2% vs 0.6% 30年差12.7万）</b>是普通人最容易被吃掉收益的两处。攒股收息的核心纪律：<b>长期持有 + 低频 + 选低费率工具</b>。
+  </div>
+
+  <h2>一、红利股有哪些（按行业 + 当前股息率）</h2>
+  <p>红利资产 = 现金流稳定、分红意愿强、估值低的成熟行业龙头，以央企国企为主。下表股息率为公开数据快照，会随股价波动变化，<b>买入前务必以实时行情复核</b>。</p>
+
+  <table>
+    <tr><th>行业</th><th class="num">板块股息率</th><th>代表标的（示例）</th><th>特征 / 风险</th></tr>
+    <tr>
+      <td><b>银行</b></td>
+      <td class="num up">4.7%–5.2%</td>
+      <td>兴业银行、华夏银行、交通银行、工商银行、农业银行、招商银行、江苏银行</td>
+      <td>全部破净（PB≈0.6），类固收属性强；招行因溢价股息率偏低（≈2.7%），四大行≈3.9%–4.2%，股份行/城商行更高。风险：股价波动会侵蚀分红体验。</td>
+    </tr>
+    <tr>
+      <td><b>煤炭</b></td>
+      <td class="num up">4.4%–10%</td>
+      <td>广汇能源、中国神华、陕西煤业、兖矿能源、中煤能源、君正集团</td>
+      <td>龙头股息率可达 8%–10%（广汇能源 11.21% @7/15），现金流充裕；但强周期，煤价下行时分红可持续性承压。</td>
+    </tr>
+    <tr>
+      <td><b>石油石化</b></td>
+      <td class="num up">5%–7%</td>
+      <td>中国石化、中国石油、中国海油</td>
+      <td>央企、分红稳定，受油价与政策影响。</td>
+    </tr>
+    <tr>
+      <td><b>电力 / 公用事业</b></td>
+      <td class="num up">5%–7%</td>
+      <td>长江电力、华能水电、国电电力</td>
+      <td>现金流稳、防御性强，煤电联动理顺后盈利改善。</td>
+    </tr>
+    <tr>
+      <td><b>高速公路 / 交运</b></td>
+      <td class="num up">5%–8%</td>
+      <td>大秦铁路、宁沪高速、招商公路</td>
+      <td>典型的防御性现金牛，分红比例高。</td>
+    </tr>
+    <tr>
+      <td><b>运营商 / 通信</b></td>
+      <td class="num up">5%–7%</td>
+      <td>中国移动（港股）、中国联通、中国电信</td>
+      <td>港股股息率更高（扣税后约5%+），可分散。</td>
+    </tr>
+  </table>
+
+  <div class="note">📌 <b>行业股息率对比（板块口径，2026-07）</b>：银行 4.9%–5.2% &gt; 煤炭 4.4% &gt; 食品饮料 4.1%（申万一级）。银行是当前 A 股股息率最高的板块，且全部破净——「用6折买最赚钱的一批公司」是红利策略的核心叙事。</div>
+
+  <h3>不想选个股？用红利 ETF（一篮子高股息）</h3>
+  <p>对大多数人，<b>红利 ETF 比单买个股更省心</b>：自动调仓、分散个股风险、费率透明。关键是选<b>低综合费率</b>的产品：</p>
+  <table>
+    <tr><th>产品</th><th>代码</th><th>跟踪指数</th><th class="num">综合费率/年</th><th>档位</th></tr>
+    <tr><td>易方达红利ETF</td><td>515180</td><td>中证红利</td><td class="num up">0.20%</td><td>最低（0.15+0.05）</td></tr>
+    <tr><td>富国红利低波ETF</td><td>159525</td><td>中证红利低波</td><td class="num up">0.20%</td><td>最低</td></tr>
+    <tr><td>华夏港股通红利低波ETF</td><td>159118</td><td>港股通高股息</td><td class="num up">0.20%</td><td>最低</td></tr>
+    <tr><td>招商中证红利ETF</td><td>515080</td><td>中证红利</td><td class="num up">0.30%</td><td>中</td></tr>
+    <tr><td>华泰柏瑞央企红利ETF</td><td>561580</td><td>中证央企红利</td><td class="num up">0.30%</td><td>中</td></tr>
+    <tr><td>华泰柏瑞红利ETF（老牌）</td><td>510880</td><td>上证红利</td><td class="num up">0.60%</td><td>偏高（0.5+0.1）</td></tr>
+    <tr><td>华泰柏瑞红利低波ETF</td><td>512890</td><td>中证红利低波</td><td class="num up">0.60%</td><td>偏高</td></tr>
+  </table>
+  <p class="muted">港股通红利类 ETF 股息率名义 6.5%–7%，但内地个人通过港股通收息需缴 20% 红利税，扣税后约 5%+。</p>
+
+  <h2>二、年化利率：到底怎么算</h2>
+  <p>红利股谈的"年化利率"有两层，别混为一谈：</p>
+
+  <h3>① 股息率（当前票息，最常被说成"年化利率"）</h3>
+  <div class="formula">股息率(TTM) = 最近12个月每股分红 ÷ 当前股价 × 100%</div>
+  <p>例：股价 10 元、年分红 0.5 元 → 股息率 5%。<b>股价越跌、股息率越高</b>，所以破净银行股息率才这么高。高股息率也可能是"价值陷阱"（公司要走下坡路、分红不可持续）。</p>
+
+  <h3>② 真实年化回报（含分红再投入 DRIP，才是复利视角）</h3>
+  <p>把每年分红<b>再买入</b>同一资产，长期年化 = 股息率 + 价格增长 + 复利效应。规划假设：中证红利全收益指数长期年化约 <b>8%</b>（用于费率测算的基准，实际逐年波动）。这正是你项目「复利」的用武之地——</p>
+
+  <div class="card">
+    <h3 style="margin-top:0">"成本为0"的回收期（价格不变、免税、分红再投入假设）</h3>
+    <div class="formula">回收年数 ≈ 1 ÷ 股息率</div>
+    <div class="bar-row"><div class="bar-label">股息率 5%</div><div class="bar-track"><div class="bar-fill" style="width:71%"></div></div><div class="bar-val">≈ 20 年</div></div>
+    <div class="bar-row"><div class="bar-label">股息率 6%</div><div class="bar-track"><div class="bar-fill" style="width:85%"></div></div><div class="bar-val">≈ 16.7 年</div></div>
+    <div class="bar-row"><div class="bar-label">股息率 7%</div><div class="bar-track"><div class="bar-fill" style="width:100%"></div></div><div class="bar-val">≈ 14.3 年</div></div>
+    <p class="muted">即：长期持有、只收息不卖出，约十几年到二十年就能靠分红把本金"赚回来"，之后持有市值近乎纯利。这也是"靠股息提前退休"策略的数学基础。</p>
+  </div>
+
+  <div class="two">
+    <div class="kpi"><div class="v">4%–10%</div><div class="l">当前高股息标的股息率区间</div></div>
+    <div class="kpi"><div class="v">≈ 8%</div><div class="l">红利全收益长期年化（规划假设）</div></div>
+    <div class="kpi"><div class="v">0%</div><div class="l">持股超1年的分红个税</div></div>
+  </div>
+
+  <h2>三、成本损耗：被吃掉的真实收益</h2>
+  <p>红利策略赚的是"慢钱"，<b>任何损耗都会被复利放大</b>。成本分五类：</p>
+
+  <table>
+    <tr><th>损耗项</th><th class="num">费率/比例</th><th>说明与对策</th></tr>
+    <tr>
+      <td><b>① 交易佣金</b></td>
+      <td class="num">≈0.025%<br>(万2.5)</td>
+      <td>单笔最低 5 元。小额频繁买卖极亏——比如 1000 元交易，最低 5 元 ≈ 0.5% 一次性损耗。<b>对策：低频、大额定投，别碎步交易。</b></td>
+    </tr>
+    <tr>
+      <td><b>② 印花税</b></td>
+      <td class="num">0.05%</td>
+      <td>仅<b>卖出</b>时收（2023年8月起由0.1%减半）。买入不收。</td>
+    </tr>
+    <tr>
+      <td><b>③ 分红个税</b></td>
+      <td class="num">0% / 10% / 20%</td>
+      <td>持股 ≤1月 收 20%；1月–1年 收 10%；<b>持股 &gt;1年 免收</b>。这是攒股收息最关键的免税杠杆——<b>持有超1年，分红税归零。</b></td>
+    </tr>
+    <tr>
+      <td><b>④ ETF 综合费率</b></td>
+      <td class="num">0.2%–0.6%</td>
+      <td>管理费+托管费，<b>每日从净值扣除</b>，直接吃掉分红。0.2% 档（如 515180） vs 0.6% 档（如 510880），长期差距巨大（见下）。</td>
+    </tr>
+    <tr>
+      <td><b>⑤ 买卖价差 / 冲击成本</b></td>
+      <td class="num">不定</td>
+      <td>流动性差的小票、规模小的 ETF，买卖价差和滑点更明显。<b>对策：选大流动性标的（规模 &gt;50亿）。</b></td>
+    </tr>
+  </table>
+
+  <div class="card">
+    <h3 style="margin-top:0">🔴 量化实例 1：费率直接吃掉分红</h3>
+    <p>一只年股息率 5% 的红利 ETF：</p>
+    <div class="bar-row"><div class="bar-label">费率 0.7%</div><div class="bar-track"><div class="bar-fill" style="width:100%"></div></div><div class="bar-val">吃掉 14%</div></div>
+    <div class="bar-row"><div class="bar-label">费率 0.2%</div><div class="bar-track"><div class="bar-fill" style="width:29%"></div></div><div class="bar-val">只吃 4%</div></div>
+    <p class="muted">红利 ETF 赚的是分红的钱，费率是<b>直接从分红包里扣</b>。费率高 0.5 个百分点，每年实打实少拿约 10% 的股息。</p>
+  </div>
+
+  <div class="card">
+    <h3 style="margin-top:0">🔴 量化实例 2：30 年定投，费率差 12.7 万</h3>
+    <p>每月定投 2000 元、坚持 30 年（本金合计 72 万），综合费率 0.2% vs 0.6%：</p>
+    <table style="margin-top:8px">
+      <tr><th>方案</th><th class="num">30年终值</th><th class="num">差额</th></tr>
+      <tr><td>综合费率 0.2%（如 515180）</td><td class="num up">289.9 万</td><td rowspan="2" class="num up" style="vertical-align:middle">+12.7 万</td></tr>
+      <tr><td>综合费率 0.6%（如 510880）</td><td class="num">277.2 万</td></tr>
+    </table>
+    <p class="muted">来源：财识局《月定投2000红利ETF：0.2%与0.6%费率30年竟差12.7万》（2026-06-10）。同样的产品逻辑，低费率在复利下就是确定性超额收益。</p>
+  </div>
+
+  <h2>四、给「攒股收息 + 财务自由」的实操建议</h2>
+  <div class="note">
+    <b>① 用时间换免税：</b>持股超 1 年，分红个税归零。红利策略天然适合"买了就忘记"的长钱。<br>
+    <b>② 选低费率工具：</b>优先 0.2% 综合费率 ETF（515180 / 159525 / 159118），避开 0.6% 老产品。<br>
+    <b>③ 低频 + 大额定投：</b>避免碎步交易被 5 元最低佣金和印花税反复收割。<br>
+    <b>④ 看"分红持续性"而非"最高股息率"：</b>警惕周期顶部的高股息（如煤价高位时的煤炭）和高股息陷阱（分红不可持续）。银行、公用事业、运营商更稳。<br>
+    <b>⑤ 把分红再投入（DRIP）：</b>这才是复利的开关，也是"成本为0"数学成立的前提。<br>
+    <b>⑥ 分散 + 控制单一行业：</b>银行占比过高时，加电力/高速/运营商/港股通红利做再平衡。
+  </div>
+
+  <ul class="src">
+    <li>银行业股息率：腾讯财经/光大证券（2026-07-14）、21世纪经济报道/Wind（2026-07-15）、雪球（2026-07-10）。</li>
+    <li>煤炭/高股息行业：证券市场周刊（2026-01-03）、A股概念板块行情（2026-07-15）。</li>
+    <li>红利 ETF 费率与优选：东方财富财富号（2026-03-09）、中金/每日经济新闻降费报道（2026-04-15）、阿尔法工场（2026-06-01）。</li>
+    <li>费率侵蚀量化：今日头条/财识局（2026-06-10）。</li>
+    <li>分红个税规则：A股 2015年9月起，持股超1年免征股息红利个人所得税（财政部/税务总局/证监会）。</li>
+    <li>印花税：2023年8月起证券交易印花税减半，卖出按 0.05% 征收。</li>
+    <li>⚠️ 以上为公开数据快照，股息率/价格随市场实时变动，<b>实际操作前请以券商实时行情与基金最新招募说明书为准</b>。本文不构成投资建议。</li>
+  </ul>
+
+</div>
+<script src="assets/site.js"></script>
+</body>
+</html>

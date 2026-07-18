@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>税务与渠道 · 财务自由系列第 8 篇</title>
+<style>
+  :root{
+    --bg:#f7f8fa; --card:#ffffff; --ink:#1a2233; --sub:#5b6577;
+    --line:#e6e9ef; --blue:#1f5fd6; --blue-soft:#eaf1fd;
+    --gold:#b8860b; --gold-soft:#fbf3df; --green:#178a4c; --green-soft:#e7f6ee;
+    --red:#c0392b; --red-soft:#fdecea; --purple:#6b46c1; --purple-soft:#f1ebfb;
+    --shadow:0 2px 12px rgba(20,40,80,.06);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",Segoe UI,Roboto,sans-serif;
+    background:var(--bg);color:var(--ink);line-height:1.7;font-size:15px}
+  .wrap{max-width:920px;margin:0 auto;padding:24px 18px 80px}
+  .nav{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px;font-size:12.5px}
+  .nav a{color:var(--sub);text-decoration:none;background:var(--card);
+    border:1px solid var(--line);padding:4px 10px;border-radius:20px;transition:.2s}
+  .nav a:hover{color:var(--blue);border-color:var(--blue)}
+  .nav a.cur{color:#fff;background:var(--blue);border-color:var(--blue)}
+  header.hero{background:linear-gradient(135deg,#1f5fd6,#2e7dce);color:#fff;
+    border-radius:16px;padding:30px 28px;box-shadow:var(--shadow);margin-bottom:24px}
+  header.hero .tag{display:inline-block;background:rgba(255,255,255,.18);
+    padding:3px 12px;border-radius:20px;font-size:12px;margin-bottom:10px}
+  header.hero h1{font-size:27px;letter-spacing:.5px;margin-bottom:8px}
+  header.hero p{opacity:.92;font-size:14.5px;max-width:680px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:22px 22px;margin-bottom:20px;box-shadow:var(--shadow)}
+  .card h2{font-size:19px;margin-bottom:6px;display:flex;align-items:center;gap:9px}
+  .card h2 .n{background:var(--blue);color:#fff;width:26px;height:26px;border-radius:8px;
+    display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:none}
+  .card h3{font-size:15.5px;margin:16px 0 8px;color:var(--blue)}
+  .lead{color:var(--sub);font-size:14px;margin-bottom:6px}
+  table{width:100%;border-collapse:collapse;font-size:13.5px;margin:10px 0}
+  th,td{border:1px solid var(--line);padding:9px 11px;text-align:left;vertical-align:top}
+  th{background:var(--blue-soft);color:var(--blue);font-weight:600}
+  tr:nth-child(even) td{background:#fafbfd}
+  .hl{background:var(--gold-soft);border-left:4px solid var(--gold);
+    padding:13px 15px;border-radius:0 10px 10px 0;margin:14px 0;font-size:14px}
+  .hl.b{background:var(--blue-soft);border-left-color:var(--blue)}
+  .hl.g{background:var(--green-soft);border-left-color:var(--green)}
+  .hl.r{background:var(--red-soft);border-left-color:var(--red)}
+  .calc{background:var(--blue-soft);border:1px solid #d4e2fb;border-radius:12px;
+    padding:16px 18px;margin:16px 0}
+  .calc h4{font-size:14.5px;color:var(--blue);margin-bottom:12px}
+  .row{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin:8px 0}
+  .row label{font-size:13px;color:var(--sub);min-width:118px}
+  .row input,.row select{font-size:14px;padding:7px 10px;border:1px solid var(--line);
+    border-radius:8px;width:170px;background:#fff;color:var(--ink)}
+  .row input:focus,.row select:focus{outline:none;border-color:var(--blue)}
+  .btn{background:var(--blue);color:#fff;border:none;padding:8px 18px;border-radius:8px;
+    font-size:14px;cursor:pointer;transition:.2s}
+  .btn:hover{background:#174bb0}
+  .res{margin-top:12px;padding:13px 15px;background:#fff;border:1px dashed var(--blue);
+    border-radius:10px;font-size:14px;display:none}
+  .res b{color:var(--blue)}
+  .pill{display:inline-block;font-size:12px;padding:2px 9px;border-radius:20px;margin:2px 3px}
+  .pill.g{background:var(--green-soft);color:var(--green)}
+  .pill.r{background:var(--red-soft);color:var(--red)}
+  .pill.b{background:var(--blue-soft);color:var(--blue)}
+  .pill.p{background:var(--purple-soft);color:var(--purple)}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:680px){.two{grid-template-columns:1fr}.row label{min-width:100%}}
+  .chain{background:var(--purple-soft);border:1px solid #e3d6f7;border-radius:12px;
+    padding:16px 18px;margin-top:8px}
+  .chain h4{color:var(--purple);font-size:14.5px;margin-bottom:8px}
+  .chain a{color:var(--purple);text-decoration:none;font-weight:600}
+  .chain a:hover{text-decoration:underline}
+  .fns{font-size:13.5px;color:var(--sub);margin-top:8px}
+  footer{text-align:center;color:var(--sub);font-size:12.5px;margin-top:30px;line-height:1.8}
+  .kf{font-size:13px;color:var(--gold);font-weight:600}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="nav">
+    <a href="红利股指南.html">① 红利股</a>
+    <a href="泡沫破裂征兆.html">② 泡沫征兆</a>
+    <a href="美联储周期与资产走势.html">③ 美联储周期</a>
+    <a href="美联储决策依据与周期机会.html">④ 决策与机会</a>
+    <a href="复利引擎.html">⑤ 复利引擎</a>
+    <a href="估值安全边际.html">⑥ 估值边际</a>
+    <a href="资产配置再平衡.html">⑦ 资产配置</a>
+    <a href="税务与渠道.html" class="cur">⑧ 税务与渠道</a>
+  </div>
+
+  <header class="hero">
+    <span class="tag">财务自由系列 · 第 8 篇</span>
+    <h1>税务与渠道</h1>
+    <p>第 1 篇讲了「成本损耗」吞掉收益，本篇是它的<b>落地版</b>：A股/港股/美股具体怎么收税、从哪开户、免税额是多少。
+    税后收益率（r）才是真正滚进复利引擎的数字——本篇把「成本损耗」从概念变成可计算的账单。</p>
+  </header>
+
+  <!-- 1 -->
+  <div class="card">
+    <h2><span class="n">1</span>为什么本篇是「成本损耗」的落地版</h2>
+    <p class="lead">第 1 篇《红利股》列出五大成本损耗：佣金、印花税、分红个税、ETF费率、价差冲击。其中三类是<b>税务与渠道</b>直接决定的：</p>
+    <table>
+      <tr><th>损耗项</th><th>谁决定</th><th>本篇给什么</th></tr>
+      <tr><td>印花税</td><td>国家税法</td><td>各市场税率与单边/双边规则</td></tr>
+      <tr><td>分红个税 / 预扣税</td><td>国家税法 + 税收协定</td><td>持股期限免税杠杆、跨境协定降到 10%</td></tr>
+      <tr><td>价差冲击 / 能否买到</td><td>开户渠道</td><td>A股 / 港股通 / 美股账户门槛与路径</td></tr>
+    </table>
+    <div class="hl b">一句话：<b>券商佣金你还能谈，税是逃不掉的硬成本</b>。同样 5% 股息率，持股 >1 年交 0%、持股 <1 月交 20%——到手从 5% 变成 4%，20 年复利下来差距惊人（见第 5 篇计算器）。</div>
+  </div>
+
+  <!-- 2 A股 -->
+  <div class="card">
+    <h2><span class="n">2</span>A股：税务与渠道</h2>
+    <h3>① 交易成本</h3>
+    <table>
+      <tr><th>项目</th><th>规则</th><th>备注</th></tr>
+      <tr><td>印花税</td><td><b>卖出 0.05%</b>（单边）</td><td>2023-08 由 0.1% 减半，买入不收</td></tr>
+      <tr><td>佣金</td><td>约 万 2.5，<b>最低 5 元</b></td><td>可谈，网上开户普遍更低</td></tr>
+      <tr><td>过户费</td><td>成交金额 0.001%</td><td>沪深均收，极小</td></tr>
+      <tr><td>资本利得税</td><td><b>免</b></td><td>A股买卖差价不征个税</td></tr>
+    </table>
+    <h3>② 股息红利税（个税，关键！）</h3>
+    <table>
+      <tr><th>持股期限</th><th>税率</th><th>含义</th></tr>
+      <tr><td>≤ 1 个月</td><td><span class="pill r">20%</span></td><td>短线炒息最吃亏</td></tr>
+      <tr><td>1 个月 ~ 1 年</td><td><span class="pill r">10%</span></td><td>中期持有减半</td></tr>
+      <tr><td>&gt; 1 年</td><td><span class="pill g">0%</span></td><td><b>免税！攒股收息的核心杠杆</b></td></tr>
+    </table>
+    <div class="hl g">免税杠杆：一份 5% 股息率的银行股，持股超 1 年实际到手 5%；若月内进出，到手只剩 4%。<b>长期持有不是耐心问题，是真金白银的收益率问题。</b></div>
+    <h3>③ 渠道</h3>
+    <p class="lead">A股开户最简单：选一家券商（头部如中信/华泰/国君，或互联网券商如东方财富），线上 10 分钟完成，<b>无资金门槛</b>，次日即可交易。</p>
+  </div>
+
+  <!-- 3 港股 -->
+  <div class="card">
+    <h2><span class="n">3</span>港股：税务与渠道</h2>
+    <h3>① 交易成本</h3>
+    <table>
+      <tr><th>项目</th><th>规则</th><th>备注</th></tr>
+      <tr><td>印花税</td><td><b>0.1% 双边</b></td><td>2023 由 0.13% 下调，买卖都收</td></tr>
+      <tr><td>佣金</td><td>约 0.03%~0.25%</td><td>券商自定，多无最低消费</td></tr>
+      <tr><td>其他征费</td><td>交易费+证监会费≈0.0056%</td><td>极小</td></tr>
+      <tr><td>资本利得税</td><td><b>免</b></td><td>香港不征</td></tr>
+    </table>
+    <h3>② 股息税（看渠道！差异巨大）</h3>
+    <table>
+      <tr><th>持股方式</th><th>股息税</th><th>说明</th></tr>
+      <tr><td>港股通（H股）</td><td><span class="pill r">20%</span></td><td>按内地个税代扣</td></tr>
+      <tr><td>港股通（红筹股）</td><td><span class="pill r">≈10%</span></td><td>部分已含境外税，综合约 10%</td></tr>
+      <tr><td>直接香港券商账户</td><td><span class="pill g">0%</span></td><td>香港本地不征股息税</td></tr>
+    </table>
+    <div class="hl b">渠道决定税率：同样一只中移动，<b>港股通交 20%、香港账户交 0%</b>。高股息策略若重仓港股，开户路径直接影响到手收益。</div>
+    <h3>③ 渠道对比</h3>
+    <table>
+      <tr><th>渠道</th><th>门槛</th><th>优点</th><th>缺点</th></tr>
+      <tr><td>港股通</td><td><b>50 万资产</b></td><td>用 A股账户直连，人民币结算</td><td>股息税高、不能打新、标的范围有限</td></tr>
+      <tr><td>香港券商（富途/辉立等）</td><td>无硬门槛（几千港币起）</td><td>股息税 0%、标的全、可打新</td><td>需换汇、境外账户管理</td></tr>
+    </table>
+  </div>
+
+  <!-- 4 美股 -->
+  <div class="card">
+    <h2><span class="n">4</span>美股：税务与渠道</h2>
+    <h3>① 交易与资本利得</h3>
+    <table>
+      <tr><th>项目</th><th>规则（非居民外国人 NRA）</th></tr>
+      <tr><td>佣金</td><td>多数券商 $0（零佣金时代）</td></tr>
+      <tr><td>资本利得税</td><td><b>免</b>（NRA 不征美国资本利得税）</td></tr>
+      <tr><td>股息预扣税 WHT</td><td>默认 <b>30%</b>，填 W-8BEN 后 <b>10%</b></td></tr>
+    </table>
+    <div class="hl">关键动作：开美股账户后务必提交 <b>W-8BEN</b> 表格（证明非美国人），中美税收协定把股息预扣税从 30% 降到 10%。不填就白白多交 20%。</div>
+    <h3>② 渠道</h3>
+    <table>
+      <tr><th>渠道</th><th>优点</th><th>注意</th></tr>
+      <tr><td>盈透 IBKR</td><td>费率低、品种全、合规强</td><td>界面偏专业</td></tr>
+      <tr><td>富途 / 老虎</td><td>中文好用、开户便捷</td><td>老虎部分用户需境外见证</td></tr>
+      <tr><td>港股通买美股 ADR</td><td>无</td><td>⚠️ 不可行，ADR 不在港股通范围</td></tr>
+    </table>
+    <h3>③ 中国税务居民视角</h3>
+    <p class="lead">中国税务居民理论上需就全球所得申报，但境外已缴预扣税可抵免。实操中美股资本利得（NRA 免）与已扣 10% 股息在多数个人场景下申报负担低。<b>本篇不做税务筹划建议，大额境外持仓请咨询跨境税务师。</b></p>
+  </div>
+
+  <!-- 5 个人养老金 -->
+  <div class="card">
+    <h2><span class="n">5</span>个人养老金：被低估的税务优惠</h2>
+    <table>
+      <tr><th>环节</th><th>税务处理</th></tr>
+      <tr><td>缴费</td><td>每年上限 <b>12000 元</b>，可税前扣除（节个税）</td></tr>
+      <tr><td>投资</td><td>账户内收益 <b>暂不征税</b></td></tr>
+      <tr><td>领取</td><td>仅按 <b>3% 低税率</b> 缴纳</td></tr>
+    </table>
+    <div class="hl g">适合谁：个税边际税率 ≥ 10% 的人，缴费当年即省税（10%→3% 差 7%，12000 元省 840 元）；税率越高越划算。它本身是个「税延+低税领取」的容器，里面可配养老目标基金/指数基金，正好接第 5 篇定投与第 7 篇配置。</div>
+  </div>
+
+  <!-- 计算器 -->
+  <div class="card">
+    <h2><span class="n">⚙</span>四个互动计算器</h2>
+
+    <div class="calc">
+      <h4>① 股息税计算器（A股持股期限免税杠杆）</h4>
+      <div class="row">
+        <label>年度分红金额（元）</label>
+        <input id="d_amt" type="number" value="10000" min="0">
+      </div>
+      <div class="row">
+        <label>持股期限</label>
+        <select id="d_hold">
+          <option value="0.2">≤ 1 个月</option>
+          <option value="0.1">1 个月 ~ 1 年</option>
+          <option value="0" selected>&gt; 1 年（免税）</option>
+        </select>
+      </div>
+      <button class="btn" onclick="calcDiv()">计算</button>
+      <div class="res" id="d_res"></div>
+    </div>
+
+    <div class="calc">
+      <h4>② 美股预扣税对比（填 W-8BEN 省 20%）</h4>
+      <div class="row">
+        <label>年度美股股息（美元）</label>
+        <input id="us_amt" type="number" value="1000" min="0">
+      </div>
+      <button class="btn" onclick="calcUS()">计算</button>
+      <div class="res" id="us_res"></div>
+    </div>
+
+    <div class="calc">
+      <h4>③ 一次买卖综合成本（真实到手收益率）</h4>
+      <div class="row">
+        <label>买入金额（元）</label>
+        <input id="t_buy" type="number" value="100000" min="0">
+      </div>
+      <div class="row">
+        <label>卖出金额（元）</label>
+        <input id="t_sell" type="number" value="110000" min="0">
+      </div>
+      <div class="row">
+        <label>佣金率（万分之）</label>
+        <input id="t_rate" type="number" value="2.5" step="0.1">
+      </div>
+      <div class="row">
+        <label>印花税（卖出 %）</label>
+        <input id="t_stamp" type="number" value="0.05" step="0.01">
+      </div>
+      <button class="btn" onclick="calcTrade()">计算</button>
+      <div class="res" id="t_res"></div>
+    </div>
+
+    <div class="calc">
+      <h4>④ 渠道选择决策器</h4>
+      <div class="row">
+        <label>可投资资金（万）</label>
+        <input id="c_money" type="number" value="30" min="0">
+      </div>
+      <div class="row">
+        <label>目标市场</label>
+        <select id="c_mkt">
+          <option value="a">A股</option>
+          <option value="hk">港股</option>
+          <option value="us">美股</option>
+        </select>
+      </div>
+      <button class="btn" onclick="calcChannel()">推荐渠道</button>
+      <div class="res" id="c_res"></div>
+    </div>
+  </div>
+
+  <!-- 串联 -->
+  <div class="chain">
+    <h4>🧩 本篇如何串联整个系列</h4>
+    <p>
+      <a href="红利股指南.html">① 红利股</a>：本篇是「成本损耗」的落地——把五大损耗里三类硬税算成账单。<br>
+      <a href="复利引擎.html">⑤ 复利引擎</a>：税后 r 才是滚进复利的真数字，持股 >1 年免税直接抬高 r。<br>
+      <a href="估值安全边际.html">⑥ 估值边际</a>：低买抬高 r，本篇低税也抬高 r——双管齐下。<br>
+      <a href="资产配置再平衡.html">⑦ 资产配置</a>：渠道决定你能买什么（A股/港股/美股/黄金），是配置的入口。
+    </p>
+    <p class="fns">只剩最后一块拼图：<b>⑥ 财务自由路径（FIRE / 4% 安全提取率 / 被动收入怎么长出来）</b>。补完它，系列彻底闭环。</p>
+  </div>
+
+  <footer>
+    本手册为公开资料与税务常识整理，含互动计算器演示，<b>不构成税务或投资建议</b>。<br>
+    税法随政策调整（如印花税率、个人养老金规则），实操前请以税务机关最新规定与开户券商确认。<br>
+    大额跨境持仓请咨询持牌跨境税务/理财顾问。
+  </footer>
+
+</div>
+
+<script>
+function fmt(n){return n.toLocaleString('zh-CN',{maximumFractionDigits:2});}
+function calcDiv(){
+  var amt=+document.getElementById('d_amt').value||0;
+  var r=+document.getElementById('d_hold').value;
+  var tax=amt*r, net=amt-tax;
+  var el=document.getElementById('d_res');
+  el.style.display='block';
+  el.innerHTML='年度分红 <b>'+fmt(amt)+' 元</b> · 税率 <b>'+(r*100)+'%</b><br>'+
+    '应缴税额：<b style="color:#c0392b">'+fmt(tax)+' 元</b><br>'+
+    '税后到手：<b style="color:#178a4c">'+fmt(net)+' 元</b>（实际股息率相当于原率的 '+(r===0?'100':(100-r*100))+'%）';
+}
+function calcUS(){
+  var amt=+document.getElementById('us_amt').value||0;
+  var t30=amt*0.3, t10=amt*0.1;
+  var el=document.getElementById('us_res');
+  el.style.display='block';
+  el.innerHTML='年度美股股息 <b>$'+fmt(amt)+'</b><br>'+
+    '不填 W-8BEN（30%）：到手 <b style="color:#c0392b">$'+fmt(amt-t30)+'</b><br>'+
+    '填 W-8BEN（10%）：到手 <b style="color:#178a4c">$'+fmt(amt-t10)+'</b><br>'+
+    '少交：<b>$'+fmt(t30-t10)+'</b>（差额即白省的部分）';
+}
+function calcTrade(){
+  var buy=+document.getElementById('t_buy').value||0;
+  var sell=+document.getElementById('t_sell').value||0;
+  var rate=(+document.getElementById('t_rate').value||0)/10000;
+  var stamp=(+document.getElementById('t_stamp').value||0)/100;
+  var cb=Math.max(buy*rate,5), cs=Math.max(sell*rate,5), st=sell*stamp;
+  var cost=cb+cs+st, net=sell-cb-cs-st;
+  var grossRet=(sell-buy)/buy*100;
+  var netRet=net/buy*100;
+  var el=document.getElementById('t_res');
+  el.style.display='block';
+  el.innerHTML='买入佣金 <b>'+fmt(cb)+'</b> + 卖出佣金 <b>'+fmt(cs)+'</b> + 印花税 <b>'+fmt(st)+'</b><br>'+
+    '总交易成本：<b style="color:#c0392b">'+fmt(cost)+' 元</b><br>'+
+    '毛收益率：<b>'+fmt(grossRet)+'%</b> → 税后/费净收益率：<b style="color:#178a4c">'+fmt(netRet)+'%</b><br>'+
+    '税费吃掉收益：<b>'+(grossRet-netRet).toFixed(2)+' 个百分点</b>';
+}
+function calcChannel(){
+  var m=+document.getElementById('c_money').value||0;
+  var k=document.getElementById('c_mkt').value;
+  var el=document.getElementById('c_res');
+  el.style.display='block';
+  var html='';
+  if(k==='a'){
+    html='资金 '+m+' 万，目标 <b>A股</b>：<br>直接选券商线上开户（无门槛）。'+
+      '建议优先低佣金（万 2.5）+ 持股 >1 年享股息免税。';
+  }else if(k==='hk'){
+    if(m>=50){
+      html='资金 '+m+' 万 ≥ 50 万：<br>可用 <b>港股通</b>（A股账户直连、人民币结算），但股息税 20%。'+
+        '若重仓高股息港股，建议另开 <b>香港券商账户</b>（股息税 0%）更划算。';
+    }else{
+      html='资金 '+m+' 万 &lt; 50 万：<br>不满足港股通门槛，开 <b>香港券商账户</b>（富途等，无硬门槛）直接买，股息税 0%。';
+    }
+  }else{
+    html='资金 '+m+' 万，目标 <b>美股</b>：<br>开 IBKR / 富途 / 老虎，<b>务必提交 W-8BEN</b> 把股息预扣税从 30% 降到 10%。'+
+      '资本利得（NRA）本就免税。';
+  }
+  el.innerHTML=html;
+}
+</script>
+<script src="assets/site.js"></script>
+</body>
+</html>

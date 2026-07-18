@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>财务自由路径 · 财务自由系列第 10 篇（终）</title>
+<style>
+  :root{
+    --bg:#f7f8fa; --card:#ffffff; --ink:#1a2233; --sub:#5b6577;
+    --line:#e6e9ef; --gold:#b8860b; --gold-soft:#fbf3df; --gold-deep:#8a6508;
+    --green:#178a4c; --green-soft:#e7f6ee; --red:#c0392b; --red-soft:#fdecea;
+    --blue:#1f5fd6; --blue-soft:#eaf1fd; --purple:#6b46c1; --purple-soft:#f1ebfb;
+    --shadow:0 2px 12px rgba(20,40,80,.06);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",Segoe UI,Roboto,sans-serif;
+    background:var(--bg);color:var(--ink);line-height:1.7;font-size:15px}
+  .wrap{max-width:920px;margin:0 auto;padding:24px 18px 80px}
+  .nav{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px;font-size:12.5px}
+  .nav a{color:var(--sub);text-decoration:none;background:var(--card);
+    border:1px solid var(--line);padding:4px 10px;border-radius:20px;transition:.2s}
+  .nav a:hover{color:var(--gold-deep);border-color:var(--gold)}
+  .nav a.cur{color:#fff;background:var(--gold);border-color:var(--gold)}
+  header.hero{background:linear-gradient(135deg,#b8860b,#d4a017);color:#fff;
+    border-radius:16px;padding:30px 28px;box-shadow:var(--shadow);margin-bottom:24px}
+  header.hero .tag{display:inline-block;background:rgba(255,255,255,.2);
+    padding:3px 12px;border-radius:20px;font-size:12px;margin-bottom:10px}
+  header.hero h1{font-size:27px;letter-spacing:.5px;margin-bottom:8px}
+  header.hero p{opacity:.94;font-size:14.5px;max-width:700px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:22px 22px;margin-bottom:20px;box-shadow:var(--shadow)}
+  .card h2{font-size:19px;margin-bottom:6px;display:flex;align-items:center;gap:9px}
+  .card h2 .n{background:var(--gold);color:#fff;width:26px;height:26px;border-radius:8px;
+    display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:none}
+  .card h3{font-size:15.5px;margin:16px 0 8px;color:var(--gold-deep)}
+  .lead{color:var(--sub);font-size:14px;margin-bottom:6px}
+  table{width:100%;border-collapse:collapse;font-size:13.5px;margin:10px 0}
+  th,td{border:1px solid var(--line);padding:9px 11px;text-align:left;vertical-align:top}
+  th{background:var(--gold-soft);color:var(--gold-deep);font-weight:600}
+  tr:nth-child(even) td{background:#fafbfd}
+  .hl{background:var(--gold-soft);border-left:4px solid var(--gold);
+    padding:13px 15px;border-radius:0 10px 10px 0;margin:14px 0;font-size:14px}
+  .hl.b{background:var(--blue-soft);border-left-color:var(--blue)}
+  .hl.g{background:var(--green-soft);border-left-color:var(--green)}
+  .hl.r{background:var(--red-soft);border-left-color:var(--red)}
+  .hl.p{background:var(--purple-soft);border-left-color:var(--purple)}
+  .calc{background:var(--gold-soft);border:1px solid #ecdca8;border-radius:12px;
+    padding:16px 18px;margin:16px 0}
+  .calc h4{font-size:14.5px;color:var(--gold-deep);margin-bottom:12px}
+  .row{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin:8px 0}
+  .row label{font-size:13px;color:var(--sub);min-width:128px}
+  .row input,.row select{font-size:14px;padding:7px 10px;border:1px solid var(--line);
+    border-radius:8px;width:170px;background:#fff;color:var(--ink)}
+  .row input:focus,.row select:focus{outline:none;border-color:var(--gold)}
+  .btn{background:var(--gold);color:#fff;border:none;padding:8px 18px;border-radius:8px;
+    font-size:14px;cursor:pointer;transition:.2s}
+  .btn:hover{background:#8a6508}
+  .res{margin-top:12px;padding:13px 15px;background:#fff;border:1px dashed var(--gold);
+    border-radius:10px;font-size:14px;display:none}
+  .res b{color:var(--gold-deep)}
+  .pill{display:inline-block;font-size:12px;padding:2px 9px;border-radius:20px;margin:2px 3px}
+  .pill.g{background:var(--green-soft);color:var(--green)}
+  .pill.r{background:var(--red-soft);color:var(--red)}
+  .pill.b{background:var(--blue-soft);color:var(--blue)}
+  .pill.p{background:var(--purple-soft);color:var(--purple)}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:680px){.two{grid-template-columns:1fr}.row label{min-width:100%}}
+  .chain{background:var(--green-soft);border:1px solid #bfe6cd;border-radius:12px;
+    padding:16px 18px;margin-top:8px}
+  .chain h4{color:var(--green);font-size:14.5px;margin-bottom:8px}
+  .chain a{color:var(--green);text-decoration:none;font-weight:600}
+  .chain a:hover{text-decoration:underline}
+  footer{text-align:center;color:var(--sub);font-size:12.5px;margin-top:30px;line-height:1.8}
+  .finale{background:linear-gradient(135deg,#1a2233,#2e3a52);color:#fff;border-radius:14px;
+    padding:24px 26px;margin:20px 0;box-shadow:var(--shadow)}
+  .finale h3{color:#f0c560;margin-bottom:10px}
+  .finale ul{margin:8px 0 0 18px;font-size:14px;opacity:.95}
+  .finale li{margin:5px 0}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="nav">
+    <a href="红利股指南.html">① 红利股</a>
+    <a href="泡沫破裂征兆.html">② 泡沫征兆</a>
+    <a href="美联储周期与资产走势.html">③ 美联储周期</a>
+    <a href="美联储决策依据与周期机会.html">④ 决策与机会</a>
+    <a href="复利引擎.html">⑤ 复利引擎</a>
+    <a href="估值安全边际.html">⑥ 估值边际</a>
+    <a href="资产配置再平衡.html">⑦ 资产配置</a>
+    <a href="税务与渠道.html">⑧ 税务与渠道</a>
+    <a href="行为与纪律.html">⑨ 行为与纪律</a>
+    <a href="财务自由路径.html" class="cur">⑩ 财务自由路径</a>
+  </div>
+
+  <header class="hero">
+    <span class="tag">财务自由系列 · 第 10 篇（终篇）</span>
+    <h1>财务自由路径</h1>
+    <p>前面 9 篇回答了「买什么、何时避、宏观怎么动、估值怎么看、怎么配、怎么交税、怎么管心态」。本篇是<b>终点站</b>：把这一切汇成一个数字——<b>你到底要攒多少、多久能自由</b>。答案惊人地简单：<b>年支出 × 25</b>。</p>
+  </header>
+
+  <!-- 1 -->
+  <div class="card">
+    <h2><span class="n">1</span>什么是财务自由</h2>
+    <p class="lead">一句话：<b>被动收入 ≥ 生活支出</b>，不再为钱出卖时间。不必躺平，而是「可以不做不想做的事」。</p>
+    <div class="hl">被动收入的来源：① 股息 / 分红（攒股收息，见第 1 篇）② 债券 / 货基利息 ③ 房租 ④ 组合 4% 安全提取（见下文）。<b>本系列主推的「高股息底仓 + 多元配置」，本质就是在种一棵被动收入树。</b></div>
+  </div>
+
+  <!-- 2 4%法则 -->
+  <div class="card">
+    <h2><span class="n">2</span>4% 安全提取率（FIR 的核心数字）</h2>
+    <p class="lead">1998 年 Trinity Study（三一研究）回溯 1925–1995 美股+债券组合：退休后<b>首年提取 4%，之后按通胀逐年调整</b>，<b>30 年内不破产成功率 &gt; 95%</b>。由此倒推出——</p>
+    <div class="hl b"><b>FI 数字 = 年支出 × 25</b>（因为 1 ÷ 4% = 25）。<br>例：年支出 12 万 → 需本金 <b>300 万</b>；年支出 24 万 → 需 <b>600 万</b>。这就是你的「自由价签」。</div>
+    <table>
+      <tr><th>年支出</th><th>FI 数字（×25）</th><th>若只靠 5% 股息</th></tr>
+      <tr><td>8 万</td><td>200 万</td><td>需 160 万本金</td></tr>
+      <tr><td>12 万</td><td>300 万</td><td>需 240 万本金</td></tr>
+      <tr><td>20 万</td><td>500 万</td><td>需 400 万本金</td></tr>
+      <tr><td>30 万</td><td>750 万</td><td>需 600 万本金</td></tr>
+    </table>
+    <div class="hl r">注意：4% 法则基于美股历史，含<b>回撤风险</b>（见第 2 篇泡沫征兆）。保守者可降到 3.5%（×28.6）或保留现金弹药穿越下跌。它是指南针，不是铁律。</div>
+  </div>
+
+  <!-- 3 路径 -->
+  <div class="card">
+    <h2><span class="n">3</span>从「工资」到「自由」的三段路径</h2>
+    <table>
+      <tr><th>阶段</th><th>目标</th><th>靠什么</th></tr>
+      <tr><td>① 积累期</td><td>本金从 0 涨到 FI 数字</td><td>高储蓄率 + 定投 + 复利（第 5 篇）</td></tr>
+      <tr><td>② 股息覆盖期</td><td>股息逐步覆盖部分支出</td><td>攒股收息 + 低费率 ETF（第 1、8 篇）</td></tr>
+      <tr><td>③ 自由期</td><td>被动收入 ≥ 支出</td><td>组合 4% 提取 + 多币种分散（第 7 篇）</td></tr>
+    </table>
+    <div class="hl g">关键洞察：<b>储蓄率比收益率更决定速度</b>。月薪 2 万、存 1 万（50%）比存 2 千（10%）早 34 年自由——哪怕后者投资收益更高。见下方计算器③。</div>
+  </div>
+
+  <!-- 4 计算器 -->
+  <div class="card">
+    <h2><span class="n">⚙</span>四个互动计算器（算清你的自由）</h2>
+
+    <div class="calc">
+      <h4>① FI 数字 + 达成年数</h4>
+      <div class="row"><label>当前本金（元）</label><input id="f_now" type="number" value="200000"></div>
+      <div class="row"><label>年收入（元）</label><input id="f_inc" type="number" value="240000"></div>
+      <div class="row"><label>储蓄率（%）</label><input id="f_sr" type="number" value="40" step="1"></div>
+      <div class="row"><label>年化收益（%）</label><input id="f_r" type="number" value="8" step="0.5"></div>
+      <button class="btn" onclick="calcFI()">计算</button>
+      <div class="res" id="f_res"></div>
+    </div>
+
+    <div class="calc">
+      <h4>② 4% 提取演示（本金能撑多久）</h4>
+      <div class="row"><label>退休本金（元）</label><input id="w_p" type="number" value="3000000"></div>
+      <div class="row"><label>通胀率（%）</label><input id="w_inf" type="number" value="3" step="0.5"></div>
+      <div class="row"><label>组合年回报（%）</label><input id="w_r" type="number" value="7" step="0.5"></div>
+      <button class="btn" onclick="calcWithdraw()">演示 30 年</button>
+      <div class="res" id="w_res"></div>
+    </div>
+
+    <div class="calc">
+      <h4>③ 储蓄率的力量（多久能自由）</h4>
+      <div class="row"><label>你的储蓄率（%）</label>
+        <select id="s_rate">
+          <option value="10">10%</option><option value="25">25%</option>
+          <option value="40" selected>40%</option><option value="50">50%</option>
+          <option value="65">65%</option><option value="75">75%</option>
+        </select>
+      </div>
+      <button class="btn" onclick="calcSave()">查看年数</button>
+      <div class="res" id="s_res"></div>
+    </div>
+
+    <div class="calc">
+      <h4>④ 攒股收息：股息何时覆盖支出</h4>
+      <div class="row"><label>投资本金（元）</label><input id="d_p" type="number" value="1000000"></div>
+      <div class="row"><label>组合股息率（%）</label><input id="d_y" type="number" value="4.5" step="0.1"></div>
+      <div class="row"><label>年支出（元）</label><input id="d_e" type="number" value="120000"></div>
+      <button class="btn" onclick="calcDivCov()">计算覆盖</button>
+      <div class="res" id="d_res"></div>
+    </div>
+  </div>
+
+  <!-- 收官 -->
+  <div class="card">
+    <h2><span class="n">★</span>全系列地图（知识树闭环）</h2>
+    <div class="chain">
+      <h4>🧩 10 篇如何汇成一条路径</h4>
+      <p>
+        <a href="红利股指南.html">① 红利股</a>：攒什么——高股息做底仓<br>
+        <a href="泡沫破裂征兆.html">② 泡沫征兆</a>：避什么——不接最后一棒<br>
+        <a href="美联储周期与资产走势.html">③ 美联储周期</a>：宏观怎么动——利率定方向<br>
+        <a href="美联储决策依据与周期机会.html">④ 决策与机会</a>：央行怎么想——杠铃策略<br>
+        <a href="复利引擎.html">⑤ 复利引擎</a>：数学内核——r / n / 早投<br>
+        <a href="估值安全边际.html">⑥ 估值边际</a>：买贵还是便宜——低买抬 r<br>
+        <a href="资产配置再平衡.html">⑦ 资产配置</a>：怎么组合——分散降波动<br>
+        <a href="税务与渠道.html">⑧ 税务与渠道</a>：税后 r 与开户路径<br>
+        <a href="行为与纪律.html">⑨ 行为与纪律</a>：能不能拿住——纪律护栏<br>
+        <b>⑩ 财务自由路径（本篇）</b>：终点——年支出 × 25 = 自由价签
+      </p>
+    </div>
+    <div class="finale">
+      <h3>🔑 一句话收官</h3>
+      <ul>
+        <li><b>买什么</b>：高股息 + 多元配置（①②③⑦）</li>
+        <li><b>怎么便宜买</b>：估值安全边际 + 税后口径（⑥⑧）</li>
+        <li><b>怎么不被清零</b>：避泡沫 + 守纪律 + 不杠杆（②⑨）</li>
+        <li><b>数学内核</b>：复利引擎 + 早投 + 高储蓄率（⑤③）</li>
+        <li><b>终点</b>：被动收入 ≥ 支出 = 年支出 × 25（⑩）</li>
+      </ul>
+      <p style="margin-top:12px;opacity:.9;font-size:13.5px">从「红利股」到「财务自由」，你已经有了一张完整的地图。剩下的，是时间 + 纪律 + 不中断。</p>
+    </div>
+  </div>
+
+  <footer>
+    本手册为 FIRE / 4% 法则常识与机构研究整理，含互动计算器演示，<b>不构成投资建议</b>。<br>
+    4% 法则基于美股历史回溯，含回撤风险；储蓄率/收益率均为假设。请结合自身年龄、收入、风险承受力规划，必要时咨询持牌理财顾问。
+  </footer>
+
+</div>
+
+<script>
+function fmt(n){return n.toLocaleString('zh-CN',{maximumFractionDigits:0});}
+function calcFI(){
+  var now=+document.getElementById('f_now').value||0;
+  var inc=+document.getElementById('f_inc').value||0;
+  var sr=(+document.getElementById('f_sr').value||0)/100;
+  var r=(+document.getElementById('f_r').value||0)/100;
+  var spend=inc*(1-sr);
+  var FI=spend*25;
+  var port=now, years=0;
+  while(port<FI && years<100){
+    port=port*(1+r)+inc*sr;
+    years++;
+  }
+  var el=document.getElementById('f_res');
+  el.style.display='block';
+  el.innerHTML='年支出 <b>'+fmt(spend)+' 元</b> → FI 数字 <b style="color:#8a6508">'+fmt(FI)+' 元</b><br>'+
+    '当前本金 '+fmt(now)+' + 年存 '+fmt(inc*sr)+' @'+ (r*100)+'%<br>'+
+    '预计达成：<b style="color:#8a6508">'+years+' 年</b>'+(years>=100?'（提高储蓄率或收益）':'');
+}
+function calcWithdraw(){
+  var p=+document.getElementById('w_p').value||0;
+  var inf=(+document.getElementById('w_inf').value||0)/100;
+  var r=(+document.getElementById('w_r').value||0)/100;
+  var port=p, take=p*0.04, year=1;
+  var broke=false, brokeYear=0;
+  while(year<=30){
+    port-=take;
+    if(port<=0 && !broke){broke=true;brokeYear=year;}
+    port=port*(1+r);
+    take=take*(1+inf);
+    year++;
+  }
+  var el=document.getElementById('w_res');
+  el.style.display='block';
+  el.innerHTML='本金 <b>'+fmt(p)+'</b>，首年取 <b>'+fmt(p*0.04)+'</b>（4%）<br>'+
+    '30 年后组合：<b style="color:#8a6508">'+fmt(Math.max(port,0))+' 元</b><br>'+
+    (broke? '<span class="pill r">第 '+brokeYear+' 年曾击穿本金</span> 说明需更低提取率或更高回报'
+          : '<span class="pill g">30 年未击穿</span> 4% 提款在该假设下可持续');
+}
+function calcSave(){
+  var sr=+document.getElementById('s_rate').value/100;
+  var r=0.05; // MMM 假设5%实际回报
+  var port=0, inc=1, years=0, target=25*(inc*(1-sr));
+  while(port<target && years<120){
+    port=port*(1+r)+inc*sr;
+    years++;
+  }
+  var el=document.getElementById('s_res');
+  el.style.display='block';
+  var ref={10:51,25:32,40:21,50:17,65:11,75:7};
+  el.innerHTML='储蓄率 <b>'+(sr*100)+'%</b> → 约 <b style="color:#8a6508">'+years+' 年</b> 达成 FI<br>'+
+    '（参考：10%→51年、25%→32年、50%→17年、75%→7年）<br>'+
+    '→ <b>储蓄率每升一档，自由提前好几年</b>，比追求高收益更确定。';
+}
+function calcDivCov(){
+  var p=+document.getElementById('d_p').value||0;
+  var y=(+document.getElementById('d_y').value||0)/100;
+  var e=+document.getElementById('d_e').value||0;
+  var div=p*y;
+  var cov=div/e*100;
+  var el=document.getElementById('d_res');
+  el.style.display='block';
+  var status=cov>=100?'<span class="pill g">已股息自由</span>':('<span class="pill b">覆盖 '+cov.toFixed(1)+'%</span> 还差 '+fmt(e-div)+' 元/年');
+  el.innerHTML='本金 '+fmt(p)+' × 股息率 '+(y*100)+'% = 年股息 <b>'+fmt(div)+' 元</b><br>'+
+    '覆盖年支出 '+fmt(e)+' 的 <b style="color:#8a6508">'+cov.toFixed(1)+'%</b><br>'+status+
+    (cov<100?'<br>→ 继续攒股/增配，覆盖到 100% 即「股息自由」':'');
+}
+</script>
+<script src="assets/site.js"></script>
+</body>
+</html>

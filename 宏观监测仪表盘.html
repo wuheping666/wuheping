@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>宏观监测仪表盘 · 财务自由系列第 11 篇</title>
+<style>
+  :root{
+    --bg:#f7f8fa; --card:#ffffff; --ink:#1a2233; --sub:#5b6577;
+    --line:#e6e9ef; --teal:#0d8a8a; --teal-soft:#e0f3f3; --teal-deep:#0a6b6b;
+    --gold:#b8860b; --gold-soft:#fbf3df; --green:#178a4c; --green-soft:#e7f6ee;
+    --red:#c0392b; --red-soft:#fdecea; --blue:#1f5fd6; --blue-soft:#eaf1fd;
+    --purple:#6b46c1; --purple-soft:#f1ebfb;
+    --shadow:0 2px 12px rgba(20,40,80,.06);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",Segoe UI,Roboto,sans-serif;
+    background:var(--bg);color:var(--ink);line-height:1.7;font-size:15px}
+  .wrap{max-width:940px;margin:0 auto;padding:24px 18px 80px}
+  .nav{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px;font-size:12px}
+  .nav a{color:var(--sub);text-decoration:none;background:var(--card);
+    border:1px solid var(--line);padding:4px 9px;border-radius:20px;transition:.2s}
+  .nav a:hover{color:var(--teal-deep);border-color:var(--teal)}
+  .nav a.cur{color:#fff;background:var(--teal);border-color:var(--teal)}
+  header.hero{background:linear-gradient(135deg,#0d8a8a,#13a89a);color:#fff;
+    border-radius:16px;padding:30px 28px;box-shadow:var(--shadow);margin-bottom:24px}
+  header.hero .tag{display:inline-block;background:rgba(255,255,255,.2);
+    padding:3px 12px;border-radius:20px;font-size:12px;margin-bottom:10px}
+  header.hero h1{font-size:27px;letter-spacing:.5px;margin-bottom:8px}
+  header.hero p{opacity:.94;font-size:14.5px;max-width:700px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:22px 22px;margin-bottom:20px;box-shadow:var(--shadow)}
+  .card h2{font-size:19px;margin-bottom:6px;display:flex;align-items:center;gap:9px}
+  .card h2 .n{background:var(--teal);color:#fff;width:26px;height:26px;border-radius:8px;
+    display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:none}
+  .card h3{font-size:15.5px;margin:16px 0 8px;color:var(--teal-deep)}
+  .lead{color:var(--sub);font-size:14px;margin-bottom:6px}
+  table{width:100%;border-collapse:collapse;font-size:13.5px;margin:10px 0}
+  th,td{border:1px solid var(--line);padding:9px 11px;text-align:left;vertical-align:top}
+  th{background:var(--teal-soft);color:var(--teal-deep);font-weight:600}
+  tr:nth-child(even) td{background:#fafbfd}
+  .hl{background:var(--teal-soft);border-left:4px solid var(--teal);
+    padding:13px 15px;border-radius:0 10px 10px 0;margin:14px 0;font-size:14px}
+  .hl.b{background:var(--blue-soft);border-left-color:var(--blue)}
+  .hl.g{background:var(--green-soft);border-left-color:var(--green)}
+  .hl.r{background:var(--red-soft);border-left-color:var(--red)}
+  .hl.p{background:var(--purple-soft);border-left-color:var(--purple)}
+  .calc{background:var(--teal-soft);border:1px solid #bfe3e3;border-radius:12px;
+    padding:16px 18px;margin:16px 0}
+  .calc h4{font-size:14.5px;color:var(--teal-deep);margin-bottom:12px}
+  .row{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin:8px 0}
+  .row label{font-size:13px;color:var(--sub);min-width:128px}
+  .row input,.row select{font-size:14px;padding:7px 10px;border:1px solid var(--line);
+    border-radius:8px;width:175px;background:#fff;color:var(--ink)}
+  .row input:focus,.row select:focus{outline:none;border-color:var(--teal)}
+  .btn{background:var(--teal);color:#fff;border:none;padding:8px 18px;border-radius:8px;
+    font-size:14px;cursor:pointer;transition:.2s}
+  .btn:hover{background:#0a6b6b}
+  .res{margin-top:12px;padding:13px 15px;background:#fff;border:1px dashed var(--teal);
+    border-radius:10px;font-size:14px;display:none}
+  .res b{color:var(--teal-deep)}
+  .pill{display:inline-block;font-size:12px;padding:2px 9px;border-radius:20px;margin:2px 3px}
+  .pill.g{background:var(--green-soft);color:var(--green)}
+  .pill.r{background:var(--red-soft);color:var(--red)}
+  .pill.b{background:var(--blue-soft);color:var(--blue)}
+  .pill.p{background:var(--purple-soft);color:var(--purple)}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:680px){.two{grid-template-columns:1fr}.row label{min-width:100%}}
+  .chain{background:var(--blue-soft);border:1px solid #d4e2fb;border-radius:12px;
+    padding:16px 18px;margin-top:8px}
+  .chain h4{color:var(--blue);font-size:14.5px;margin-bottom:8px}
+  .chain a{color:var(--blue);text-decoration:none;font-weight:600}
+  .chain a:hover{text-decoration:underline}
+  .gauge{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0}
+  .gitem{flex:1;min-width:120px;border:1px solid var(--line);border-radius:10px;padding:12px 14px;text-align:center}
+  .gitem .lab{font-size:12px;color:var(--sub)}
+  .gitem .val{font-size:18px;font-weight:700;margin:4px 0}
+  .gl{color:var(--green)} .yr{color:var(--gold)} .rd{color:var(--red)}
+  .audit{font-size:14px}
+  .audit .q{display:flex;align-items:flex-start;gap:10px;padding:9px 4px;border-bottom:1px solid var(--line)}
+  .audit .q:last-child{border-bottom:none}
+  .audit input{margin-top:5px;width:16px;height:16px;flex:none;accent-color:var(--teal)}
+  .audit label{flex:1}
+  .score{font-size:22px;font-weight:700;color:var(--teal-deep)}
+  .tips{font-size:13.5px;color:var(--sub);margin-top:10px;line-height:1.6}
+  footer{text-align:center;color:var(--sub);font-size:12.5px;margin-top:30px;line-height:1.8}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="nav">
+    <a href="红利股指南.html">① 红利股</a>
+    <a href="泡沫破裂征兆.html">② 泡沫征兆</a>
+    <a href="美联储周期与资产走势.html">③ 美联储周期</a>
+    <a href="美联储决策依据与周期机会.html">④ 决策与机会</a>
+    <a href="复利引擎.html">⑤ 复利引擎</a>
+    <a href="估值安全边际.html">⑥ 估值边际</a>
+    <a href="资产配置再平衡.html">⑦ 资产配置</a>
+    <a href="税务与渠道.html">⑧ 税务与渠道</a>
+    <a href="行为与纪律.html">⑨ 行为与纪律</a>
+    <a href="财务自由路径.html">⑩ 财务自由路径</a>
+    <a href="宏观监测仪表盘.html" class="cur">⑪ 仪表盘</a>
+  </div>
+
+  <header class="hero">
+    <span class="tag">财务自由系列 · 第 11 篇</span>
+    <h1>宏观监测仪表盘</h1>
+    <p>前面 10 篇给你的都是「静态知识」，但市场是流动的。本篇把分散的宏观点——<b>中国央行、PMI、社融、汇率、美联储</b>——串成一个<b>每周 5 分钟可自检的红绿灯仪表盘</b>。它的作用不是预测，而是让你在极端时知道「该警惕了」。</p>
+  </header>
+
+  <!-- 1 -->
+  <div class="card">
+    <h2><span class="n">1</span>为什么需要一个仪表盘</h2>
+    <p class="lead">第 2 篇泡沫征兆是「事后识别」，本篇是「前瞻监测」；第 3、4 篇讲了美联储怎么动，本篇补上<b>中国这一半</b>。两者合起来，才是完整的宏观视角。</p>
+    <div class="hl">原则：<b>仪表盘不预测点位，只提示「温度」</b>。绿灯多 = 风险资产友好，可维持/加配；红灯多 = 收缩防御，留现金弹药（见第 7 篇）。它把你的「纪律护栏」建立在数据上，而不是情绪上。</div>
+  </div>
+
+  <!-- 2 中国四大仪表 -->
+  <div class="card">
+    <h2><span class="n">2</span>中国宏观：四大仪表</h2>
+
+    <h3>① 央行风向（最该盯）</h3>
+    <table>
+      <tr><th>动作</th><th>含义</th><th>对资产影响</th></tr>
+      <tr><td>降准（降准备金率）</td><td>释放银行可贷资金</td><td>利好股市/债市，流动性宽松</td></tr>
+      <tr><td>降息（降 MLF/LPR）</td><td>降低融资成本</td><td>利好成长/地产/债市，人民币承压</td></tr>
+      <tr><td>净投放（逆回购/MLF）</td><td>短期流动性补充</td><td>平稳跨季/月末资金面</td></tr>
+    </table>
+
+    <h3>② PMI 采购经理指数（月度，每月最后一天/1号公布）</h3>
+    <p class="lead"><b>50 是荣枯线</b>：&gt;50 扩张、&lt;50 收缩。它是<b>环比景气先行指标</b>，比 GDP 快一个月。制造业 PMI + 非制造业 PMI 一起看。</p>
+
+    <h3>③ 社融（社会融资规模，信贷脉冲）</h3>
+    <p class="lead">实体从金融体系拿到的钱。<b>社融同比多增 = 信用扩张 = 经济回暖先行信号</b>；持续少增 = 信用收缩，股市承压。它是「水流」指标，比利率更接地气。</p>
+
+    <h3>④ 汇率（USD/CNY 与美元指数）</h3>
+    <p class="lead">人民币贬值（破 7.2、7.3）→ 北向资金外流、外资减持 A股；升值 → 外资回流。<b>美元指数走强 = 全球美元荒 = 新兴市场承压</b>（见第 3 篇）。</p>
+
+    <div class="hl b">中国节奏口诀：<b>降准降息 + PMI 站上 50 + 社融多增 + 人民币稳</b> = 四灯全绿，权益最友好；任一转红就要警惕。</div>
+  </div>
+
+  <!-- 3 美国 -->
+  <div class="card">
+    <h2><span class="n">3</span>美国宏观：三灯（呼应第 3、4 篇）</h2>
+    <table>
+      <tr><th>指标</th><th>绿灯（友好）</th><th>红灯（警惕）</th></tr>
+      <tr><td>美联储利率</td><td>降息周期 / 维持低位</td><td>加息 / 转鹰</td></tr>
+      <tr><td>通胀（CPI/PCE）</td><td>回落至 2%~3%</td><td>反弹 &gt;4%</td></tr>
+      <tr><td>就业（失业率）</td><td>4%~5% 平稳</td><td>骤升 / 非农锐减</td></tr>
+    </table>
+    <div class="hl">当前（2026 中）定位回顾：美联储维持 3.50%–3.75%、降息极慢（通胀 2.9% + 就业缓升打架，见第 4 篇）。所以美股估值已高但流动性仍松——<b>绿灯偏黄，别追高</b>。</div>
+  </div>
+
+  <!-- 4 红绿灯系统 -->
+  <div class="card">
+    <h2><span class="n">4</span>七灯红绿灯系统（每周自检）</h2>
+    <div class="gauge">
+      <div class="gitem"><div class="lab">中国央行</div><div class="val gl">🟢</div>宽松</div>
+      <div class="gitem"><div class="lab">制造业PMI</div><div class="val yr">🟡</div>≈50</div>
+      <div class="gitem"><div class="lab">社融</div><div class="val gl">🟢</div>多增</div>
+      <div class="gitem"><div class="lab">人民币</div><div class="val yr">🟡</div>7.1-7.3</div>
+      <div class="gitem"><div class="lab">美联储</div><div class="val yr">🟡</div>慢降</div>
+      <div class="gitem"><div class="lab">美股估值</div><div class="val rd">🔴</div>偏高</div>
+      <div class="gitem"><div class="lab">通胀</div><div class="val yr">🟡</div>2.9%</div>
+    </div>
+    <p class="lead">把上图当成你的「仪表盘壁纸」。每周花 5 分钟更新一次，绿灯 ≥5 维持进攻、红灯 ≥3 转防御。</p>
+  </div>
+
+  <!-- 5 计算器 -->
+  <div class="card">
+    <h2><span class="n">⚙</span>四个互动工具</h2>
+
+    <div class="calc">
+      <h4>① PMI 解读器</h4>
+      <div class="row"><label>制造业 PMI 数值</label><input id="pmi_v" type="number" value="50.5" step="0.1"></div>
+      <button class="btn" onclick="calcPMI()">解读</button>
+      <div class="res" id="pmi_res"></div>
+    </div>
+
+    <div class="calc">
+      <h4>② 央行动作影响速查</h4>
+      <div class="row"><label>央行动作</label>
+        <select id="cb_a">
+          <option value="cut">降准 / 降息</option>
+          <option value="hold">按兵不动</option>
+          <option value="tight">加息 / 收紧</option>
+        </select>
+      </div>
+      <button class="btn" onclick="calcCB()">查看影响</button>
+      <div class="res" id="cb_res"></div>
+    </div>
+
+    <div class="calc">
+      <h4>③ 宏观红绿灯自检（勾选当前的「绿灯」）</h4>
+      <div class="audit" id="macro">
+        <div class="q"><input type="checkbox" data-w="1"><label>中国央行处于降准/降息宽松通道</label></div>
+        <div class="q"><input type="checkbox" data-w="1"><label>制造业 PMI &gt; 50（景气扩张）</label></div>
+        <div class="q"><input type="checkbox" data-w="1"><label>社融同比多增（信用扩张）</label></div>
+        <div class="q"><input type="checkbox" data-w="1"><label>人民币稳定在 7.0–7.2</label></div>
+        <div class="q"><input type="checkbox" data-w="1"><label>美联储降息或维持低位</label></div>
+        <div class="q"><input type="checkbox" data-w="1"><label>美股估值分位 &lt; 70%（未极端）</label></div>
+        <div class="q"><input type="checkbox" data-w="1"><label>通胀在 2%~3% 目标附近</label></div>
+      </div>
+      <button class="btn" onclick="calcMacro()">测我的市场温度</button>
+      <div class="res" id="macro_res"></div>
+      <div class="tips">绿灯越多，风险资产（股/成长/新兴）环境越友好；红灯越多，转防御、留现金（见第 7 篇再平衡）。这是温度提示，不是买卖指令。</div>
+    </div>
+
+    <div class="calc">
+      <h4>④ 生成你的每周监测清单</h4>
+      <div class="row"><label>关注市场</label>
+        <select id="mk">
+          <option value="a">A股 + 红利</option>
+          <option value="us">美股 + 科技</option>
+          <option value="all">全球组合</option>
+        </select>
+      </div>
+      <button class="btn" onclick="genList()">生成清单</button>
+      <div class="res" id="list_res"></div>
+    </div>
+  </div>
+
+  <!-- 串联 -->
+  <div class="chain">
+    <h4>🧩 本篇如何串联整个系列</h4>
+    <p>
+      <a href="泡沫破裂征兆.html">② 泡沫征兆</a>：仪表盘是「前瞻版」，征兆是「事后版」，互补。<br>
+      <a href="美联储周期与资产走势.html">③ 美联储周期</a> + <a href="美联储决策依据与周期机会.html">④ 决策与机会</a>：本篇把美国三灯纳入同一盘面。<br>
+      <a href="资产配置再平衡.html">⑦ 资产配置</a>：红灯多 → 转防御、留现金弹药，再平衡有依据。<br>
+      <a href="行为与纪律.html">⑨ 行为与纪律</a>：用数据温度代替情绪恐慌，纪律才守得住。
+    </p>
+    <p class="fns">还剩最后一块拼图：<b>⑧ 风险管理（回撤控制 / 仓位 / 黑天鹅对冲）</b>。补完它，整个「认知→监测→纪律→路径」闭环才真正完整。</p>
+  </div>
+
+  <footer>
+    本手册为宏观指标常识与监测框架整理，含互动工具，<b>不构成投资建议或点位预测</b>。<br>
+    指标数值随时间变化，请以国家统计局、央行、美联储官方发布为准；监测用于风险提示，非择时指令。
+  </footer>
+
+</div>
+
+<script>
+function calcPMI(){
+  var v=+document.getElementById('pmi_v').value||0;
+  var el=document.getElementById('pmi_res');
+  el.style.display='block';
+  var msg;
+  if(v>=52) msg='<span class="pill g">强扩张</span> 经济景气度上行，权益友好';
+  else if(v>=50) msg='<span class="pill g">温和扩张</span> 站上荣枯线，景气改善';
+  else if(v>=48) msg='<span class="pill b">收缩区</span> 跌破 50，需求偏弱需警惕';
+  else msg='<span class="pill r">深度收缩</span> 景气承压，防御为主';
+  el.innerHTML='制造业 PMI = <b>'+v+'</b><br>'+msg+'<br>→ PMI 是环比先行指标，连续 2-3 月同向更可信。';
+}
+function calcCB(){
+  var a=document.getElementById('cb_a').value;
+  var el=document.getElementById('cb_res');
+  el.style.display='block';
+  if(a==='cut') el.innerHTML='<b>降准/降息</b>：<span class="pill g">利好</span> 股市（尤其成长/小盘）、债市（利率下行）、黄金；<span class="pill r">人民币承压</span>。→ 可适度加配权益（第 7 篇）。';
+  else if(a==='hold') el.innerHTML='<b>按兵不动</b>：<span class="pill b">中性</span> 维持当前配置，等下一个信号。';
+  else el.innerHTML='<b>加息/收紧</b>：<span class="pill r">利空</span> 股市估值、债市、黄金、新兴市场；红利/银行相对抗跌（第 1、3 篇）。→ 转防御、留现金。';
+}
+function calcMacro(){
+  var boxes=document.querySelectorAll('#macro input');
+  var n=0; boxes.forEach(function(b){if(b.checked)n++;});
+  var el=document.getElementById('macro_res');
+  el.style.display='block';
+  var temp, action;
+  if(n>=6){temp='🟢 高温友好';action='维持/适度加配风险资产';}
+  else if(n>=4){temp='🟡 温和';action='保持配置，密切跟踪';}
+  else if(n>=2){temp='🟠 偏冷';action='转防御、提高现金比例';}
+  else {temp='🔴 寒冷';action='防御为主、留足弹药（第7篇）';}
+  el.innerHTML='绿灯 <span class="score">'+n+'</span> / 7 → 市场温度：<b>'+temp+'</b><br>建议：'+action;
+}
+function genList(){
+  var mk=document.getElementById('mk').value;
+  var base=[
+    '🔸 中国央行：有无降准/降息/净投放公告？',
+    '🔸 制造业PMI：>50 还是 <50？',
+    '🔸 社融：同比多增还是少增？',
+    '🔸 人民币USD/CNY：在 7.0–7.3 哪个区间？',
+    '🔸 美联储：利率/点阵图有无变化？',
+    '🔸 通胀CPI/PCE：目标附近还是反弹？',
+    '🔸 持仓估值分位：是否 >80%（泡沫征兆①）？'
+  ];
+  if(mk==='a') base.push('🔸 红利股股息率是否仍 >4%？银行PB是否仍破净？');
+  if(mk==='us') base.push('🔸 纳指/标普估值分位、英伟达等权重股动向');
+  if(mk==='all') base.push('🔸 黄金/新兴市场是否受美元走弱提振？港股弹性？');
+  var el=document.getElementById('list_res');
+  el.style.display='block';
+  el.innerHTML='<b>你的每周监测清单（约 5 分钟）</b><br>'+base.join('<br>');
+}
+</script>
+<script src="assets/site.js"></script>
+</body>
+</html>
