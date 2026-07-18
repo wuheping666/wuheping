@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>巩固阅读书单 · 财务自由系列 · 阅读指南</title>
+<style>
+  :root{
+    --bg:#f7f8fa; --card:#ffffff; --ink:#1a2233; --sub:#5b6577;
+    --line:#e6e9ef; --br:#8a5a00; --br-soft:#f6ecd9; --br-deep:#6b4500;
+    --gold:#b8860b; --green:#178a4c; --green-soft:#e7f6ee; --red:#c0392b; --red-soft:#fdecea;
+    --blue:#1f5fd6; --blue-soft:#eaf1fd; --purple:#6b46c1; --purple-soft:#f1ebfb;
+    --shadow:0 2px 12px rgba(20,40,80,.06);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",Segoe UI,Roboto,sans-serif;
+    background:var(--bg);color:var(--ink);line-height:1.7;font-size:15px}
+  .wrap{max-width:940px;margin:0 auto;padding:24px 18px 80px}
+  .nav{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px;font-size:11.5px}
+  .nav a{color:var(--sub);text-decoration:none;background:var(--card);
+    border:1px solid var(--line);padding:4px 9px;border-radius:20px;transition:.2s}
+  .nav a:hover{color:var(--br-deep);border-color:var(--br)}
+  .nav a.cur{color:#fff;background:var(--br);border-color:var(--br)}
+  header.hero{background:linear-gradient(135deg,#6b4500,#9a6a10);color:#fff;
+    border-radius:16px;padding:30px 28px;box-shadow:var(--shadow);margin-bottom:24px}
+  header.hero .tag{display:inline-block;background:rgba(255,255,255,.2);
+    padding:3px 12px;border-radius:20px;font-size:12px;margin-bottom:10px}
+  header.hero h1{font-size:27px;letter-spacing:.5px;margin-bottom:8px}
+  header.hero p{opacity:.94;font-size:14.5px;max-width:700px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:22px 22px;margin-bottom:20px;box-shadow:var(--shadow)}
+  .card h2{font-size:19px;margin-bottom:6px;display:flex;align-items:center;gap:9px}
+  .card h2 .n{background:var(--br);color:#fff;width:26px;height:26px;border-radius:8px;
+    display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:none}
+  .card h3{font-size:15.5px;margin:16px 0 8px;color:var(--br-deep)}
+  .lead{color:var(--sub);font-size:14px;margin-bottom:6px}
+  table{width:100%;border-collapse:collapse;font-size:13.5px;margin:10px 0}
+  th,td{border:1px solid var(--line);padding:9px 11px;text-align:left;vertical-align:top}
+  th{background:var(--br-soft);color:var(--br-deep);font-weight:600}
+  tr:nth-child(even) td{background:#fafbfd}
+  .hl{background:var(--br-soft);border-left:4px solid var(--br);
+    padding:13px 15px;border-radius:0 10px 10px 0;margin:14px 0;font-size:14px}
+  .hl.g{background:var(--green-soft);border-left-color:var(--green)}
+  .hl.r{background:var(--red-soft);border-left-color:var(--red)}
+  .hl.b{background:var(--blue-soft);border-left-color:var(--blue)}
+  .pill{display:inline-block;font-size:11.5px;padding:2px 9px;border-radius:20px;margin:2px 3px}
+  .pill.a{background:var(--br-soft);color:var(--br-deep)}
+  .pill.b{background:var(--blue-soft);color:var(--blue)}
+  .pill.p{background:var(--purple-soft);color:var(--purple)}
+  .pill.g{background:var(--green-soft);color:var(--green)}
+  .pill.r{background:var(--red-soft);color:var(--red)}
+  .core{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:14px 0}
+  @media(max-width:680px){.core{grid-template-columns:1fr}}
+  .core .c{border:1px solid var(--br);border-radius:12px;padding:14px 16px;background:var(--br-soft)}
+  .core .c .t{font-weight:700;color:var(--br-deep);font-size:15px;margin-bottom:4px}
+  .core .c .d{font-size:13px;color:var(--sub)}
+  .chain{background:var(--blue-soft);border:1px solid #d4e2fb;border-radius:12px;
+    padding:16px 18px;margin-top:8px}
+  .chain h4{color:var(--blue);font-size:14.5px;margin-bottom:8px}
+  .chain a{color:var(--blue);text-decoration:none;font-weight:600}
+  .chain a:hover{text-decoration:underline}
+  footer{text-align:center;color:var(--sub);font-size:12.5px;margin-top:30px;line-height:1.8}
+  .ord{font-size:14px;counter-reset:o;padding-left:0}
+  .ord li{list-style:none;padding:8px 0;border-bottom:1px solid var(--line)}
+  .ord li:before{content:counter(o);counter-increment:o;display:inline-block;
+    width:22px;height:22px;background:var(--br);color:#fff;border-radius:50%;
+    text-align:center;line-height:22px;font-size:12px;margin-right:9px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="nav">
+    <a href="红利股指南.html">① 红利股</a>
+    <a href="泡沫破裂征兆.html">② 泡沫征兆</a>
+    <a href="美联储周期与资产走势.html">③ 美联储周期</a>
+    <a href="美联储决策依据与周期机会.html">④ 决策与机会</a>
+    <a href="复利引擎.html">⑤ 复利引擎</a>
+    <a href="估值安全边际.html">⑥ 估值边际</a>
+    <a href="资产配置再平衡.html">⑦ 资产配置</a>
+    <a href="税务与渠道.html">⑧ 税务与渠道</a>
+    <a href="行为与纪律.html">⑨ 行为与纪律</a>
+    <a href="财务自由路径.html">⑩ 财务自由路径</a>
+    <a href="宏观监测仪表盘.html">⑪ 仪表盘</a>
+    <a href="风险管理.html">⑫ 风险管理</a>
+    <a href="巩固书单.html" class="cur">📚 书单</a>
+  </div>
+
+  <header class="hero">
+    <span class="tag">财务自由系列 · 阅读指南</span>
+    <h1>巩固阅读书单</h1>
+    <p>12 篇是「骨架」，书是「血肉」。这份书单按你已学的 8 大模块分类，每本都标注它对应哪一篇——<b>边读边和系列互证</b>，比孤立啃书效率高得多。英文原版均有中译本。</p>
+  </header>
+
+  <!-- 核心 -->
+  <div class="card">
+    <h2><span class="n">★</span>如果只读这 5 本（核心必读）</h2>
+    <div class="core">
+      <div class="c"><div class="t">《聪明的投资者》</div><div class="d">格雷厄姆 · 价值投资圣经，「安全边际」一词出处，贯穿 ①⑥⑫</div></div>
+      <div class="c"><div class="t">《投资最重要的事》</div><div class="d">霍华德·马克斯 · 风险与第二层思维，强化 ②⑨⑫</div></div>
+      <div class="c"><div class="t">《漫步华尔街》</div><div class="d">马尔基尔 · 指数化+长期+成本，呼应 ⑤⑦⑧</div></div>
+      <div class="c"><div class="t">《思考，快与慢》</div><div class="d">卡尼曼 · 行为经济学根基，对应 ⑨</div></div>
+      <div class="c"><div class="t">《财务自由之路》</div><div class="d">博多·舍费尔 · FIRE 与储蓄率启蒙，对应 ⑩</div></div>
+    </div>
+    <div class="hl g">读法建议：先读这 5 本建立「价值观」，再按薄弱模块挑专项书深入。书是辅助你「想清楚」，不是替代你「动手做」。</div>
+  </div>
+
+  <!-- 按模块 -->
+  <div class="card">
+    <h2><span class="n">1</span>按模块分书（对应你学过的篇目）</h2>
+
+    <h3>📌 价值投资根基 / 红利（① 红利股 · ⑥ 估值边际）</h3>
+    <table>
+      <tr><th>书名 / 作者</th><th>为什么读</th><th>对应</th></tr>
+      <tr><td>《聪明的投资者》格雷厄姆</td><td>安全边际、市场先生、防御型投资者</td><td><span class="pill a">① ⑥ ⑫</span></td></tr>
+      <tr><td>《股市真规则》帕特·多尔西</td><td>护城河 + 具体估值方法</td><td><span class="pill a">⑥</span></td></tr>
+      <tr><td>《股票长线法宝》西格尔</td><td>长期持股、红利对复利的贡献</td><td><span class="pill a">① ⑤</span></td></tr>
+    </table>
+
+    <h3>📌 泡沫与市场史（② 泡沫征兆）</h3>
+    <table>
+      <tr><th>书名 / 作者</th><th>为什么读</th><th>对应</th></tr>
+      <tr><td>《非理性繁荣》罗伯特·希勒</td><td>泡沫的心理与估值机制（诺奖）</td><td><span class="pill r">②</span></td></tr>
+      <tr><td>《金融狂热简史》加尔布雷思</td><td>历次泡沫的共同人性指纹</td><td><span class="pill r">②</span></td></tr>
+      <tr><td>《疯狂、惊恐和崩溃》金德尔伯格</td><td>危机的传染与演化（学术经典）</td><td><span class="pill r">② ⑫</span></td></tr>
+    </table>
+
+    <h3>📌 宏观 / 美联储 / 中国（③ ④ ⑪）</h3>
+    <table>
+      <tr><th>书名 / 作者</th><th>为什么读</th><th>对应</th></tr>
+      <tr><td>《行动的勇气》伯南克</td><td>2008 救市亲历，理解美联储逻辑</td><td><span class="pill b">③ ④</span></td></tr>
+      <tr><td>《置身事内》兰小欢</td><td><b>理解中国财政/地方/货币</b>，本土必读</td><td><span class="pill b">⑪</span></td></tr>
+      <tr><td>《钱从哪里来》香帅</td><td>中国居民财富与资产配置视角</td><td><span class="pill b">⑪</span></td></tr>
+      <tr><td>《斯坦福极简经济学》泰勒</td><td>宏观指标的通俗入门</td><td><span class="pill b">⑪</span></td></tr>
+    </table>
+
+    <h3>📌 复利 / 数学（⑤ 复利引擎）</h3>
+    <table>
+      <tr><th>书名 / 作者</th><th>为什么读</th><th>对应</th></tr>
+      <tr><td>《漫步华尔街》马尔基尔</td><td>长期 + 随机漫步 + 成本低廉</td><td><span class="pill g">⑤ ⑦ ⑧</span></td></tr>
+      <tr><td>《邻家的百万富翁》斯坦利</td><td>真富豪靠储蓄与复利，而非炫富</td><td><span class="pill g">⑤ ⑩</span></td></tr>
+    </table>
+
+    <h3>📌 资产配置（⑦ 资产配置）</h3>
+    <table>
+      <tr><th>书名 / 作者</th><th>为什么读</th><th>对应</th></tr>
+      <tr><td>《不落俗套的成功》斯文森</td><td>耶鲁模式、个人资产配置框架</td><td><span class="pill b">⑦</span></td></tr>
+      <tr><td>《原则》达利欧</td><td>全天候策略、风险平价思想来源</td><td><span class="pill b">⑦ ⑫</span></td></tr>
+      <tr><td>《聪明地配置资产》伯恩斯坦</td><td>资产配置的数学与历史证据</td><td><span class="pill b">⑦</span></td></tr>
+    </table>
+
+    <h3>📌 税务 / 成本（⑧ 税务与渠道）</h3>
+    <table>
+      <tr><th>书名 / 作者</th><th>为什么读</th><th>对应</th></tr>
+      <tr><td>《共同基金常识》博格</td><td>指数基金之父讲「成本吞噬收益」</td><td><span class="pill a">⑧</span></td></tr>
+      <tr><td>《手把手教你投资港股》/ 雪球系实操</td><td>开户、渠道、税务落地（选读）</td><td><span class="pill a">⑧</span></td></tr>
+    </table>
+
+    <h3>📌 行为 / 纪律（⑨ 行为与纪律）</h3>
+    <table>
+      <tr><th>书名 / 作者</th><th>为什么读</th><th>对应</th></tr>
+      <tr><td>《思考，快与慢》卡尼曼</td><td>系统1/系统2，偏差的心理根源</td><td><span class="pill p">⑨</span></td></tr>
+      <tr><td>《错误的行为》塞勒</td><td>行为经济学创立者的趣味案例</td><td><span class="pill p">⑨</span></td></tr>
+      <tr><td>《穷查理宝典》芒格</td><td>多元思维模型 + 逆向思考</td><td><span class="pill p">⑨ ⑫</span></td></tr>
+    </table>
+
+    <h3>📌 财务自由路径（⑩ 财务自由路径）</h3>
+    <table>
+      <tr><th>书名 / 作者</th><th>为什么读</th><th>对应</th></tr>
+      <tr><td>《财务自由之路》舍费尔</td><td>储蓄率、负债、财富阶段</td><td><span class="pill g">⑩</span></td></tr>
+      <tr><td>《你的钱还是你的生命》Robin</td><td>FIRE 源头，重新定义「够用」</td><td><span class="pill g">⑩</span></td></tr>
+    </table>
+
+    <h3>📌 风险管理 / 尾部（⑫ 风险管理）</h3>
+    <table>
+      <tr><th>书名 / 作者</th><th>为什么读</th><th>对应</th></tr>
+      <tr><td>《投资最重要的事》马克斯</td><td>风险、周期、第二层思维</td><td><span class="pill r">⑫ ② ⑨</span></td></tr>
+      <tr><td>《黑天鹅》塔勒布</td><td>极端事件的不可预测与应对</td><td><span class="pill r">⑫</span></td></tr>
+      <tr><td>《反脆弱》塔勒布</td><td>如何在波动中受益（不只防守）</td><td><span class="pill r">⑫</span></td></tr>
+    </table>
+  </div>
+
+  <!-- 阅读顺序 -->
+  <div class="card">
+    <h2><span class="n">2</span>建议阅读顺序</h2>
+    <ul class="ord">
+      <li><b>先打地基</b>：《聪明的投资者》→ 建立安全边际与长期视角</li>
+      <li><b>再学风控</b>：《投资最重要的事》→ 把风险刻进直觉</li>
+      <li><b>理解自己</b>：《思考，快与慢》→ 知道大脑怎么骗你</li>
+      <li><b>懂宏观</b>：《置身事内》+《行动的勇气》→ 中美两套宏观逻辑</li>
+      <li><b>学方法</b>：《漫步华尔街》《不落俗套的成功》→ 指数化 + 配置</li>
+      <li><b>看历史</b>：《非理性繁荣》《金融狂热简史》→ 泡沫的人性不变</li>
+      <li><b>定目标</b>：《财务自由之路》《你的钱还是你的生命》→ 回到「为什么」</li>
+      <li><b>补极端</b>：《黑天鹅》《反脆弱》→ 尾部风险与反脆弱</li>
+    </ul>
+    <div class="hl">⚠️ 别陷入「只读不练」。每读完一本，回到对应那篇 HTML，用里面的计算器跑一遍自己的数字——书才有用。</div>
+  </div>
+
+  <!-- 串联 -->
+  <div class="chain">
+    <h4>🧩 书单如何衔接你的 12 篇</h4>
+    <p>本页是系列第 13 份资料（阅读指南）。每本书都「指向」你已学的篇目：
+    <a href="红利股指南.html">① 红利股</a>·<a href="泡沫破裂征兆.html">② 泡沫征兆</a>·<a href="美联储周期与资产走势.html">③ 美联储周期</a>·<a href="美联储决策依据与周期机会.html">④ 决策与机会</a>·<a href="复利引擎.html">⑤ 复利引擎</a>·<a href="估值安全边际.html">⑥ 估值边际</a>·<a href="资产配置再平衡.html">⑦ 资产配置</a>·<a href="税务与渠道.html">⑧ 税务与渠道</a>·<a href="行为与纪律.html">⑨ 行为与纪律</a>·<a href="财务自由路径.html">⑩ 财务自由路径</a>·<a href="宏观监测仪表盘.html">⑪ 仪表盘</a>·<a href="风险管理.html">⑫ 风险管理</a>。
+    书 = 血肉，系列 = 骨架，计算器 = 你的练习场。</p>
+  </div>
+
+  <footer>
+    书单为经典投资/经济/行为著作的整理推荐，<b>不构成任何购买或投资指令</b>。<br>
+    书籍内容仅供学习参考，具体投资决策仍须结合实时数据与个人情况，必要时咨询持牌顾问。
+  </footer>
+
+</div>
+<script src="assets/site.js"></script>
+</body>
+</html>

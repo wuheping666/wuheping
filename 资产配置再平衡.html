@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>资产配置再平衡 · 系列第7篇 | 投资理财-复利与财务自由</title>
+<style>
+  :root{
+    --green:#3B6D11; --green-l:#EAF3DE; --green-m:#97C459;
+    --amber:#854F0B; --amber-l:#FAEEDA;
+    --blue:#185FA5; --blue-l:#E6F1FB;
+    --red:#A32D2D; --red-l:#FCEBEB;
+    --ink:#1a2b3c; --muted:#5f6b78; --line:#e3e8ee;
+    --bg:#f7f9fb; --card:#ffffff;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.65}
+  .wrap{max-width:1080px;margin:0 auto;padding:32px 20px 64px}
+  header.hero{background:linear-gradient(135deg,#2f5a12,#5a8f24);color:#fff;border-radius:18px;padding:34px 32px;margin-bottom:26px}
+  header.hero h1{font-size:27px;font-weight:700;letter-spacing:.5px}
+  header.hero p{margin-top:10px;font-size:15px;opacity:.92;max-width:740px}
+  .pill{display:inline-block;background:rgba(255,255,255,.18);border-radius:999px;padding:4px 12px;font-size:12px;margin-bottom:14px}
+  .series{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 4px}
+  .series a{font-size:12.5px;color:var(--blue);text-decoration:none;background:var(--blue-l);border:1px solid #cfe0f5;padding:5px 11px;border-radius:8px;transition:.15s}
+  .series a:hover{background:#d4e6fa}
+  .series a.cur{background:var(--blue);color:#fff;border-color:var(--blue)}
+  section{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:26px 28px;margin-bottom:22px}
+  h2{font-size:20px;margin-bottom:6px;display:flex;align-items:center;gap:10px}
+  h2 .num{background:var(--green);color:#fff;font-size:13px;width:26px;height:26px;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;flex:none}
+  .lead{color:var(--muted);font-size:14px;margin-bottom:18px}
+  .formula{background:var(--green-l);border:1px dashed var(--green-m);border-radius:12px;padding:14px 18px;font-size:16px;text-align:center;margin:14px 0;font-family:"SFMono-Regular",Consolas,monospace}
+  .formula b{color:var(--green)}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .calc{background:#fbfcfe;border:1px solid var(--line);border-radius:12px;padding:18px}
+  .calc h3{font-size:15px;margin-bottom:12px;color:var(--ink)}
+  label{display:block;font-size:13px;color:var(--muted);margin:10px 0 4px}
+  input[type=number]{width:100%;padding:9px 11px;border:1px solid #cfd8e3;border-radius:8px;font-size:15px;font-family:inherit}
+  input[type=number]:focus{outline:none;border-color:var(--green);box-shadow:0 0 0 3px rgba(59,109,17,.12)}
+  .btn{margin-top:14px;background:var(--green);color:#fff;border:none;padding:9px 16px;border-radius:8px;font-size:14px;cursor:pointer}
+  .btn:hover{background:#2f5a12}
+  .res{margin-top:14px;background:var(--blue-l);border-radius:10px;padding:12px 14px;font-size:15px;color:var(--blue);font-weight:600}
+  table{width:100%;border-collapse:collapse;margin-top:10px;font-size:14px}
+  th,td{padding:10px 12px;text-align:center;border-bottom:1px solid var(--line)}
+  th{background:#f1f5f9;font-weight:600;color:var(--muted);font-size:13px}
+  tr:hover td{background:#fafcff}
+  .tag{display:inline-block;padding:2px 9px;border-radius:6px;font-size:12.5px;font-weight:600}
+  .t-red{background:var(--red-l);color:var(--red)}
+  .t-green{background:var(--green-l);color:var(--green)}
+  .t-amber{background:var(--amber-l);color:var(--amber)}
+  .t-blue{background:var(--blue-l);color:var(--blue)}
+  .note{background:var(--amber-l);border-left:4px solid var(--amber);border-radius:8px;padding:12px 16px;font-size:13.5px;color:#633806;margin-top:14px}
+  .link-box{background:var(--blue-l);border:1px solid #cfe0f5;border-radius:12px;padding:18px 20px}
+  .link-box ul{margin:8px 0 0 18px;font-size:14px}
+  .link-box li{margin:6px 0}
+  .link-box a{color:var(--blue);font-weight:600;text-decoration:none}
+  .link-box a:hover{text-decoration:underline}
+  .key{background:#f0f7ea;border:1px solid var(--green-m);border-radius:12px;padding:18px 20px}
+  .key li{margin:8px 0 8px 20px;font-size:14.5px}
+  .clock{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:14px}
+  .phase{border:1px solid var(--line);border-radius:12px;padding:14px 16px;cursor:pointer;transition:.15s;background:#fff}
+  .phase:hover{border-color:var(--green-m)}
+  .phase.on{border-color:var(--green);background:var(--green-l);box-shadow:0 0 0 3px rgba(59,109,17,.12)}
+  .phase b{font-size:15px}
+  .phase .rank{font-size:13px;color:var(--muted);margin-top:6px;line-height:1.6}
+  .cards3{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:12px}
+  .cc{border:1px solid var(--line);border-radius:10px;padding:14px;background:#fff}
+  .cc b{color:var(--green);font-size:14px}
+  .disclaim{font-size:12.5px;color:var(--muted);border-top:1px dashed var(--line);padding-top:16px;margin-top:8px}
+  .foot{text-align:center;color:var(--muted);font-size:12.5px;margin-top:10px}
+  .quote{font-style:italic;color:var(--green);border-left:3px solid var(--green-m);padding-left:12px;margin:10px 0;font-size:14.5px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <span class="pill">系列第 7 篇 · 工具落地层</span>
+    <h1>资产配置再平衡：把认知装进一个组合</h1>
+    <p>前面 6 篇教你看标的、看估值、看周期。本篇回答最后一个动作问题：怎么把这些拼成不慌的组合，并靠「再平衡」自动低买高卖。附组合收益、再平衡演示、美林时钟三大互动模块。</p>
+    <div class="series">
+      <a href="红利股指南.html">① 红利股指南</a>
+      <a href="泡沫破裂征兆.html">② 泡沫破裂征兆</a>
+      <a href="美联储周期与资产走势.html">③ 美联储周期↔资产</a>
+      <a href="美联储决策依据与周期机会.html">④ 美联储决策与机会</a>
+      <a href="复利引擎.html">⑤ 复利引擎</a>
+      <a href="估值安全边际.html">⑥ 估值安全边际</a>
+      <a href="资产配置再平衡.html" class="cur">⑦ 资产配置再平衡（本篇）</a>
+    </div>
+  </header>
+
+  <!-- 1 -->
+  <section>
+    <h2><span class="num">1</span>为什么需要资产配置</h2>
+    <p class="lead">核心不是「多买几样」，而是把<b>低相关</b>的资产拼在一起，让组合波动小于各部分之和。鸡蛋分篮，是为了某个篮子打翻时整体不乱。</p>
+    <div class="quote">「多元化是对无知的保护。每个投资者都该知道，自己不可能精准预测哪类资产明年最好。」—— 巴菲特</div>
+    <p>它解决两个痛点：① <b>波动太大睡不着</b>（全仓股票熊市腰斩，见<a href="复利引擎.html">负复利</a>）；② <b>追涨杀跌</b>（没配置框架，涨了才追、跌了才割）。配置 + 再平衡，等于给自己装了一套「自动纪律」。</p>
+  </section>
+
+  <!-- 2 -->
+  <section>
+    <h2><span class="num">2</span>三大经典框架</h2>
+    <p class="lead">从简单到进阶：恒定比例（60/40）→ 全天候（达里奥）→ 风险平价。核心都是「不赌单一方向」。</p>
+    <div class="cards3">
+      <div class="cc"><b>60/40 股债</b><br>股票60% + 债券40%。最经典，长期股提供增长、债提供缓冲。</div>
+      <div class="cc"><b>全天候（All-Weather）</b><br>达里奥：股票30%·长债40%·中债15%·黄金7.5%·商品7.5%。为四种经济环境都留后手。</div>
+      <div class="cc"><b>风险平价</b><br>按「风险贡献」而非金额分配，让每类资产波动贡献相等，更抗极端。</div>
+    </div>
+    <div class="note">串联《美联储决策》：你第 4 篇的「杠铃策略」本质就是简化版全天候——短债/货基当防御端，红利/黄金/科技当机遇端，同样是不赌方向。</div>
+  </section>
+
+  <!-- 3 -->
+  <section>
+    <h2><span class="num">3</span>组合收益与分散增益（计算器）</h2>
+    <p class="lead">输入三类资产的占比、预期年化、波动率，看分散如何「降波动不降太多收益」。（波动按零相关假设取下限，真实介于下限与加权均值之间）</p>
+    <div class="grid2">
+      <div class="calc">
+        <h3>组合测算</h3>
+        <label>股票：占比% / 年化% / 波动%</label>
+        <input type="number" id="a_s_w" value="50" step="1"><input type="number" id="a_s_r" value="9" step="0.5"><input type="number" id="a_s_v" value="20" step="1">
+        <label>债券：占比% / 年化% / 波动%</label>
+        <input type="number" id="a_b_w" value="40" step="1"><input type="number" id="a_b_r" value="3" step="0.5"><input type="number" id="a_b_v" value="5" step="1">
+        <label>黄金：占比% / 年化% / 波动%</label>
+        <input type="number" id="a_g_w" value="10" step="1"><input type="number" id="a_g_r" value="5" step="0.5"><input type="number" id="a_g_v" value="15" step="1">
+        <button class="btn" onclick="calcPort()">计算</button>
+        <div class="res" id="resPort">—</div>
+      </div>
+      <div>
+        <table>
+          <tr><th>组合</th><th>预期年化</th><th>波动(下限)</th></tr>
+          <tr><td>全仓股票</td><td>+9%</td><td class="t-red">20%</td></tr>
+          <tr><td>全仓债券</td><td>+3%</td><td class="t-green">5%</td></tr>
+          <tr><td>50/40/10 组合</td><td class="t-blue">≈7.1%</td><td class="t-green">≈9.6%</td></tr>
+        </table>
+        <p class="lead" style="margin-top:10px">表例：组合收益只比全仓股票低 1.9pp，波动却从 20% 砍到约 10%——这就是分散的「免费午餐」。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 -->
+  <section>
+    <h2><span class="num">4</span>再平衡：自动的低买高卖</h2>
+    <p class="lead">再平衡 = 涨多的卖一点、跌多的补一点，把比例拉回目标。它强制你「卖高买低」，且不需要预测市场。</p>
+    <div class="grid2">
+      <div class="calc">
+        <h3>再平衡演示</h3>
+        <label>初始股票占比（%，债券补其余）</label><input type="number" id="r_i" value="50" step="1">
+        <label>本金（元）</label><input type="number" id="r_p" value="2000000" step="10000">
+        <label>一年后股票涨（%）</label><input type="number" id="r_sg" value="20" step="1">
+        <label>一年后债券涨（%）</label><input type="number" id="r_bg" value="2" step="1">
+        <button class="btn" onclick="calcReb()">计算</button>
+        <div class="res" id="resReb">—</div>
+      </div>
+      <div>
+        <table>
+          <tr><th>时点</th><th>股票</th><th>债券</th><th>动作</th></tr>
+          <tr><td>初始</td><td>50%</td><td>50%</td><td>—</td></tr>
+          <tr><td>一年后</td><td class="t-red">≈54%</td><td class="t-green">≈46%</td><td>失衡</td></tr>
+          <tr><td>再平衡后</td><td>50%</td><td>50%</td><td class="t-blue">卖股买债</td></tr>
+        </table>
+        <p class="lead" style="margin-top:10px">表例：200 万 50/50，股票+20%、债券+2% → 股票占比升到 54%。再平衡即「在 54% 时减仓股票、加仓债券」——正好高位兑现、低位补货。</p>
+      </div>
+    </div>
+    <div class="note">串联《泡沫征兆》：牛市里股票占比飙升，再平衡等于「在估值偏高时自动减仓」，是克制贪婪、落实第②篇防守清单的硬机制。常用规则：年度再平衡，或单类资产偏离目标 ±5% 即触发。</div>
+  </section>
+
+  <!-- 5 -->
+  <section>
+    <h2><span class="num">5</span>美林投资时钟：经济四阶段轮动</h2>
+    <p class="lead">经济按「增长↑↓ × 通胀↑↓」分四阶段，每阶段优势资产不同。点击查看该阶段该配什么。</p>
+    <div class="clock">
+      <div class="phase" onclick="showClock('rec')"><b>复苏 · 增长↑ 通胀↓</b><div class="rank">最优：股票<br>次优：债券 · 现金<br>最弱：商品</div></div>
+      <div class="phase" onclick="showClock('over')"><b>过热 · 增长↑ 通胀↑</b><div class="rank">最优：商品<br>次优：股票<br>最弱：现金 · 债券</div></div>
+      <div class="phase" onclick="showClock('stag')"><b>滞胀 · 增长↓ 通胀↑</b><div class="rank">最优：现金<br>次优：商品<br>最弱：股票</div></div>
+      <div class="phase" onclick="showClock('recess')"><b>衰退 · 增长↓ 通胀↓</b><div class="rank">最优：债券<br>次优：现金<br>最弱：商品</div></div>
+    </div>
+    <div class="res" id="clockOut" style="margin-top:14px">点击上方阶段查看配置建议 →</div>
+  </section>
+
+  <!-- 6 -->
+  <section>
+    <h2><span class="num">6</span>实操要点：怎么做才不踩坑</h2>
+    <div class="key">
+      <ul>
+        <li><b>先定风险承受力</b>：能接受多大回撤，决定股债比例（年轻可 70/30，临近退休 40/60）。</li>
+        <li><b>选低相关资产</b>：股、债、黄金、商品相关性低，才真分散；同赛道多买几只不算分散。</li>
+        <li><b>再平衡纪律</b>：年度一次，或偏离 ±5% 触发；别频繁交易白白交税费（见<a href="红利股指南.html">成本损耗</a>）。</li>
+        <li><b>用估值止盈</b>：某类资产分位 &gt;80%（见<a href="估值安全边际.html">估值</a>）时，借再平衡顺势减仓。</li>
+        <li><b>留现金弹药</b>：5%–10% 现金，极端下跌时才有钱抄底，不破坏组合。</li>
+        <li><b>长期视角</b>：配置是十年维度的骨架，不因单季波动推翻（<a href="复利引擎.html">时间 &gt; 择时</a>）。</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 串联 -->
+  <section>
+    <h2><span class="num">7</span>本篇如何串联前 6 篇</h2>
+    <div class="link-box">
+      <ul>
+        <li><a href="红利股指南.html">① 红利股指南</a>：高股息是组合的「防御压舱石」，尤其加息期（<a href="美联储周期与资产走势.html">③</a>证明红利抗跌）。</li>
+        <li><a href="泡沫破裂征兆.html">② 泡沫破裂征兆</a>：再平衡在牛市自动减仓，是落实「不接最后一棒」的硬机制。</li>
+        <li><a href="美联储周期与资产走势.html">③ 美联储周期↔资产</a>：利率方向决定股债久期，是配置再调整的总开关。</li>
+        <li><a href="美联储决策依据与周期机会.html">④ 美联储决策与机会</a>：杠铃策略=简化全天候；降息初期美债确定性最高，可阶段性加配。</li>
+        <li><a href="复利引擎.html">⑤ 复利引擎</a>：再平衡不追高，保住长期 r；降波动让你拿得住，时间才发挥作用。</li>
+        <li><a href="估值安全边际.html">⑥ 估值安全边际</a>：估值分位是再平衡「卖高买低」的量化尺，避免情绪化操作。</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 关键结论 -->
+  <section>
+    <h2><span class="num">★</span>关键结论</h2>
+    <div class="key">
+      <ul>
+        <li><b>资产配置首位</b>：长期收益的差异，主要源于资产配置而非个股选择。</li>
+        <li><b>分散是免费午餐</b>：低相关组合降波动、几乎不牺牲收益。</li>
+        <li><b>再平衡 = 自动低买高卖</b>：卖涨多的、买跌多的，强制纪律、克制贪婪。</li>
+        <li><b>美林时钟</b>：复苏配股、过热配商品、滞胀持现金、衰退配债。</li>
+        <li><b>规则要简单可执行</b>：年度再平衡或 ±5% 触发，别频繁交易。</li>
+        <li><b>留现金弹药</b>：极端时刻有子弹，才是真风控。</li>
+        <li><b>串起全系列</b>：红利做底、估值定买卖、美联储定方向、再平衡管纪律——这就是你的财务自由骨架。</li>
+      </ul>
+    </div>
+    <p class="disclaim">⚠️ 本文为资产配置方法论与公开框架的科普梳理，所有计算器与比例均为理论演示，不构成任何投资建议。历史表现不代表未来，具体比例须匹配个人风险承受力、年龄与流动性需求，并咨询专业顾问。</p>
+  </section>
+
+  <p class="foot">系列：红利股 → 泡沫征兆 → 美联储周期↔资产 → 美联储决策与机会 → 复利引擎 → 估值安全边际 → <b>资产配置再平衡（本篇）</b>　|　最后一块拼图：⑥ 财务自由路径（FIRE / 4% 法则）</p>
+
+</div>
+
+<script>
+function calcPort(){
+  const w=[parseFloat(a_s_w.value),parseFloat(a_b_w.value),parseFloat(a_g_w.value)];
+  const r=[parseFloat(a_s_r.value),parseFloat(a_b_r.value),parseFloat(a_g_r.value)];
+  const v=[parseFloat(a_s_v.value),parseFloat(a_b_v.value),parseFloat(a_g_v.value)];
+  if(w.some(x=>!(x>=0))||r.some(x=>isNaN(x))||v.some(x=>isNaN(x))){resPort.textContent='请填写有效数值';return;}
+  let sum=w[0]+w[1]+w[2]; if(sum<=0){resPort.textContent='占比合计需>0';return;}
+  const f=w.map(x=>x/sum);
+  let pret=0,pvar=0,maxv=0;
+  for(let i=0;i<3;i++){pret+=f[i]*r[i]; pvar+=(f[i]*v[i]/100)**2; if(v[i]>maxv)maxv=v[i];}
+  const pvol=Math.sqrt(pvar)*100;
+  resPort.innerHTML='组合预期年化 <b>'+(sum===100?pret.toFixed(1):'≈'+pret.toFixed(1))+'%</b>（占比已按'+sum.toFixed(0)+'%归一）<br>分散后波动下限 <b>'+pvol.toFixed(1)+'%</b>　vs 全仓最高波动 '+maxv.toFixed(0)+'%';
+}
+function calcReb(){
+  const init=parseFloat(r_i.value)/100;
+  const P=parseFloat(r_p.value);
+  const sg=parseFloat(r_sg.value)/100;
+  const bg=parseFloat(r_bg.value)/100;
+  if(!(init>0&&init<1&&P>0)){resReb.textContent='请检查输入';return;}
+  const s0=P*init, b0=P*(1-init);
+  const s1=s0*(1+sg), b1=b0*(1+bg);
+  const tot=s1+b1;
+  const pct1=s1/tot*100;
+  const target=P*init;
+  const sSell=s1-target, bBuy=target-b1;
+  resReb.innerHTML='一年后：股票占比 <b>'+pct1.toFixed(1)+'%</b>（失衡）<br>'+
+    '再平衡：卖出股票 <b>'+Math.round(sSell).toLocaleString('zh-CN')+'</b>，买入债券 <b>'+Math.round(bBuy).toLocaleString('zh-CN')+'</b><br>'+
+    '→ 拉回 '+ (init*100).toFixed(0) +'/'+ ((1-init)*100).toFixed(0) +'，自动高抛低吸';
+}
+const clockData={
+  rec:'复苏（增长↑ 通胀↓）：最优 <b>股票</b>，次优债券/现金，最弱商品。对应降息后期、经济回暖，成长与权益弹性最大。',
+  over:'过热（增长↑ 通胀↑）：最优 <b>商品</b>，次优股票，最弱现金/债券。对应加息初期，实物资产抗通胀。',
+  stag:'滞胀（增长↓ 通胀↑）：最优 <b>现金</b>，次优商品，最弱股票。最难熬阶段，防御为主、少动。',
+  recess:'衰退（增长↓ 通胀↓）：最优 <b>债券</b>，次优现金，最弱商品。对应降息初期，长久期债确定性最高（见④）。'
+};
+function showClock(k){
+  document.querySelectorAll('.phase').forEach(e=>e.classList.remove('on'));
+  event.currentTarget.classList.add('on');
+  clockOut.innerHTML=clockData[k];
+}
+</script>
+<script src="assets/site.js"></script>
+</body>
+</html>

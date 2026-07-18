@@ -1,0 +1,4 @@
+# 不纳入仓库：项目记忆与本地配置
+.workbuddy/
+.DS_Store
+Thumbs.db

@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>估值安全边际 · 系列第6篇 | 投资理财-复利与财务自由</title>
+<style>
+  :root{
+    --green:#3B6D11; --green-l:#EAF3DE; --green-m:#97C459;
+    --amber:#854F0B; --amber-l:#FAEEDA;
+    --blue:#185FA5; --blue-l:#E6F1FB;
+    --red:#A32D2D; --red-l:#FCEBEB;
+    --ink:#1a2b3c; --muted:#5f6b78; --line:#e3e8ee;
+    --bg:#f7f9fb; --card:#ffffff;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.65}
+  .wrap{max-width:1080px;margin:0 auto;padding:32px 20px 64px}
+  header.hero{background:linear-gradient(135deg,#2f5a12,#5a8f24);color:#fff;border-radius:18px;padding:34px 32px;margin-bottom:26px}
+  header.hero h1{font-size:27px;font-weight:700;letter-spacing:.5px}
+  header.hero p{margin-top:10px;font-size:15px;opacity:.92;max-width:740px}
+  .pill{display:inline-block;background:rgba(255,255,255,.18);border-radius:999px;padding:4px 12px;font-size:12px;margin-bottom:14px}
+  .series{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 4px}
+  .series a{font-size:12.5px;color:var(--blue);text-decoration:none;background:var(--blue-l);border:1px solid #cfe0f5;padding:5px 11px;border-radius:8px;transition:.15s}
+  .series a:hover{background:#d4e6fa}
+  .series a.cur{background:var(--blue);color:#fff;border-color:var(--blue)}
+  section{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:26px 28px;margin-bottom:22px}
+  h2{font-size:20px;margin-bottom:6px;display:flex;align-items:center;gap:10px}
+  h2 .num{background:var(--green);color:#fff;font-size:13px;width:26px;height:26px;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;flex:none}
+  .lead{color:var(--muted);font-size:14px;margin-bottom:18px}
+  .formula{background:var(--green-l);border:1px dashed var(--green-m);border-radius:12px;padding:14px 18px;font-size:16px;text-align:center;margin:14px 0;font-family:"SFMono-Regular",Consolas,monospace}
+  .formula b{color:var(--green)}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .calc{background:#fbfcfe;border:1px solid var(--line);border-radius:12px;padding:18px}
+  .calc h3{font-size:15px;margin-bottom:12px;color:var(--ink)}
+  label{display:block;font-size:13px;color:var(--muted);margin:10px 0 4px}
+  input[type=number]{width:100%;padding:9px 11px;border:1px solid #cfd8e3;border-radius:8px;font-size:15px;font-family:inherit}
+  input[type=number]:focus{outline:none;border-color:var(--green);box-shadow:0 0 0 3px rgba(59,109,17,.12)}
+  .btn{margin-top:14px;background:var(--green);color:#fff;border:none;padding:9px 16px;border-radius:8px;font-size:14px;cursor:pointer}
+  .btn:hover{background:#2f5a12}
+  .res{margin-top:14px;background:var(--blue-l);border-radius:10px;padding:12px 14px;font-size:15px;color:var(--blue);font-weight:600}
+  table{width:100%;border-collapse:collapse;margin-top:10px;font-size:14px}
+  th,td{padding:10px 12px;text-align:center;border-bottom:1px solid var(--line)}
+  th{background:#f1f5f9;font-weight:600;color:var(--muted);font-size:13px}
+  tr:hover td{background:#fafcff}
+  .tag{display:inline-block;padding:2px 9px;border-radius:6px;font-size:12.5px;font-weight:600}
+  .t-red{background:var(--red-l);color:var(--red)}
+  .t-green{background:var(--green-l);color:var(--green)}
+  .t-amber{background:var(--amber-l);color:var(--amber)}
+  .t-blue{background:var(--blue-l);color:var(--blue)}
+  .note{background:var(--amber-l);border-left:4px solid var(--amber);border-radius:8px;padding:12px 16px;font-size:13.5px;color:#633806;margin-top:14px}
+  .link-box{background:var(--blue-l);border:1px solid #cfe0f5;border-radius:12px;padding:18px 20px}
+  .link-box ul{margin:8px 0 0 18px;font-size:14px}
+  .link-box li{margin:6px 0}
+  .link-box a{color:var(--blue);font-weight:600;text-decoration:none}
+  .link-box a:hover{text-decoration:underline}
+  .key{background:#f0f7ea;border:1px solid var(--green-m);border-radius:12px;padding:18px 20px}
+  .key li{margin:8px 0 8px 20px;font-size:14.5px}
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-top:12px}
+  .ic{background:#fbfcfe;border:1px solid var(--line);border-radius:10px;padding:14px}
+  .ic b{display:block;color:var(--green);font-size:15px;margin-bottom:4px}
+  .ic span{font-size:12.5px;color:var(--muted)}
+  .disclaim{font-size:12.5px;color:var(--muted);border-top:1px dashed var(--line);padding-top:16px;margin-top:8px}
+  .foot{text-align:center;color:var(--muted);font-size:12.5px;margin-top:10px}
+  .quote{font-style:italic;color:var(--green);border-left:3px solid var(--green-m);padding-left:12px;margin:10px 0;font-size:14.5px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <span class="pill">系列第 6 篇 · 认知引擎层</span>
+    <h1>估值安全边际：买便宜，比买好更重要</h1>
+    <p>格雷厄姆说「安全边际是投资世界的基石」。本篇拆解 PE/PB/ROE/股息率怎么联动看，并用计算器告诉你：什么价格才算「便宜」，又该留多少缓冲才睡得着。</p>
+    <div class="series">
+      <a href="红利股指南.html">① 红利股指南</a>
+      <a href="泡沫破裂征兆.html">② 泡沫破裂征兆</a>
+      <a href="美联储周期与资产走势.html">③ 美联储周期↔资产</a>
+      <a href="美联储决策依据与周期机会.html">④ 美联储决策与机会</a>
+      <a href="复利引擎.html">⑤ 复利引擎</a>
+      <a href="估值安全边际.html" class="cur">⑥ 估值安全边际（本篇）</a>
+    </div>
+  </header>
+
+  <!-- 1 -->
+  <section>
+    <h2><span class="num">1</span>什么是安全边际</h2>
+    <p class="lead">安全边际 = <b>内在价值 − 买入价格</b>。你付出的价格越低，留给「看错、黑天鹅、波动」的缓冲就越厚。</p>
+    <div class="quote">「用 4 毛钱买 1 块钱的东西，就是安全边际。」—— 巴菲特对格雷厄姆的继承</div>
+    <p>它的反义词是「追高」——买在估值高位，不仅回报薄，一旦业绩或情绪反转，<a href="复利引擎.html">负复利</a>会立刻把你吞掉。所以估值不是纸上谈兵，是<a href="泡沫破裂征兆.html">泡沫征兆第①条「估值极端」</a>的量化版。</p>
+  </section>
+
+  <!-- 2 -->
+  <section>
+    <h2><span class="num">2</span>估值指标速查：先认识工具</h2>
+    <p class="lead">不同行业该看不同指标。银行看 PB、成长股看 PEG、未盈利看 PS——选错尺子，便宜也会变贵。</p>
+    <div class="cards">
+      <div class="ic"><b>PE 市盈率</b><span>价格÷每股收益。越低越「便宜」，但周期顶/衰退前 PE 反而低（盈利高点），需警惕。</span></div>
+      <div class="ic"><b>PB 市净率</b><span>价格÷每股净资产。&lt;1 即「破净」，适合银行、钢铁等重资产。</span></div>
+      <div class="ic"><b>ROE 净资产收益率</b><span>盈利效率。高且稳（&gt;15%）才是好生意。≈ PB÷PE。</span></div>
+      <div class="ic"><b>股息率</b><span>分红÷价格。≈ 盈利收益率×分红率。红利策略核心尺。</span></div>
+      <div class="ic"><b>PEG</b><span>PE÷盈利增速%。&lt;1 低估，&gt;1 偏贵。成长股专用。</span></div>
+      <div class="ic"><b>PS 市销率</b><span>市值÷营收。适合尚未盈利的高成长公司。</span></div>
+      <div class="ic"><b>EV/EBITDA</b><span>企业价值÷经营现金流。剔除资本结构，跨公司可比。</span></div>
+      <div class="ic"><b>DCF 折现</b><span>未来自由现金流折现值=内在价值。绝对估值终极尺。</span></div>
+    </div>
+  </section>
+
+  <!-- 3 -->
+  <section>
+    <h2><span class="num">3</span>指标联动：别孤立看一个数字</h2>
+    <p class="lead">PE、PB、ROE 不是孤岛。掌握三个恒等式，你就能一眼拆穿「低 PE 陷阱」和「破净是不是真便宜」。</p>
+    <div class="formula"><b>ROE ≈ PB ÷ PE</b>　　　<b>盈利收益率 = 1 ÷ PE</b>　　　<b>股息率 ≈ 盈利收益率 × 分红率</b></div>
+    <div class="grid2">
+      <div class="calc">
+        <h3>估值联动计算器</h3>
+        <label>市盈率 PE</label><input type="number" id="v_pe" value="5" step="0.1">
+        <label>市净率 PB</label><input type="number" id="v_pb" value="0.6" step="0.1">
+        <label>分红率（%，如 30）</label><input type="number" id="v_pay" value="30" step="1">
+        <label>无风险利率（%，如 2.5 国债）</label><input type="number" id="v_rf" value="2.5" step="0.1">
+        <button class="btn" onclick="calcVal()">计算</button>
+        <div class="res" id="resVal">—</div>
+      </div>
+      <div>
+        <p class="lead">输出含义：</p>
+        <ul style="margin-left:18px;font-size:14px;line-height:1.9">
+          <li><b>ROE</b>：盈利能力，破净银行 PB 0.6 / PE 5 → ROE 12%，不算暴利但稳定。</li>
+          <li><b>盈利收益率</b>：1/PE，可和债券利率直接比，谁高谁划算。</li>
+          <li><b>股债利差</b>：盈利收益率 − 无风险利率。&gt;0 且大 → 股票相对便宜。</li>
+          <li><b>低 PE 陷阱</b>：若 PE 低是因盈利处周期顶点，ROE 将回落，便宜是假象。</li>
+        </ul>
+        <div class="note">串联《红利股》：破净银行「PE 5 / PB 0.6」并非便宜假象，而是 ROE 仍 12%、股息率&gt;4% 的真便宜——这正是你第 1 篇里该重仓的底仓逻辑。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 -->
+  <section>
+    <h2><span class="num">4</span>PEG：给成长股称重</h2>
+    <p class="lead">高 PE 不一定是贵。PEG 把「增速」拉进来：PE 30 但年增 40% → PEG 0.75 反而便宜；PE 20 但零增长 → PEG 无穷大。</p>
+    <div class="grid2">
+      <div class="calc">
+        <h3>PEG 计算器</h3>
+        <label>市盈率 PE</label><input type="number" id="g_pe" value="30" step="0.5">
+        <label>预期盈利年增速（%）</label><input type="number" id="g_g" value="40" step="1">
+        <button class="btn" onclick="calcPEG()">计算</button>
+        <div class="res" id="resPEG">—</div>
+      </div>
+      <div>
+        <table>
+          <tr><th>PEG</th><th>含义</th><th>操作倾向</th></tr>
+          <tr><td>&lt; 0.8</td><td>低估</td><td class="t-green">可关注</td></tr>
+          <tr><td>0.8 – 1.2</td><td>合理</td><td class="t-amber">中性</td></tr>
+          <tr><td>&gt; 1.5</td><td>偏贵</td><td class="t-red">谨慎</td></tr>
+          <tr><td>≫ 2</td><td>泡沫区</td><td class="t-red">回避</td></tr>
+        </table>
+        <p class="lead" style="margin-top:10px">注意：增速要可持续，靠一次性利好撑起的 PEG 会骗人。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 -->
+  <section>
+    <h2><span class="num">5</span>历史分位：当前到底是贵是便宜</h2>
+    <p class="lead">绝对 PE 高低会骗人（不同行业天然不同）。更靠谱的是「历史分位」：当前 PE 处于过去 10 年区间的什么位置。&lt;30% 偏低，&gt;70% 偏高。</p>
+    <div class="grid2">
+      <div class="calc">
+        <h3>估值分位计算器</h3>
+        <label>当前 PE</label><input type="number" id="q_cur" value="12" step="0.1">
+        <label>历史最低 PE</label><input type="number" id="q_lo" value="8" step="0.1">
+        <label>历史最高 PE</label><input type="number" id="q_hi" value="25" step="0.1">
+        <button class="btn" onclick="calcPct()">计算</button>
+        <div class="res" id="resPct">—</div>
+      </div>
+      <div>
+        <table>
+          <tr><th>分位区间</th><th>市场温度</th><th>动作</th></tr>
+          <tr><td>&lt; 20%</td><td class="t-green">极低估</td><td class="t-green">大胆买</td></tr>
+          <tr><td>20%–40%</td><td class="t-green">偏低</td><td class="t-green">定投加仓</td></tr>
+          <tr><td>40%–60%</td><td class="t-amber">中性</td><td class="t-amber">持有</td></tr>
+          <tr><td>60%–80%</td><td class="t-red">偏高</td><td class="t-red">减仓</td></tr>
+          <tr><td>&gt; 80%</td><td class="t-red">极高估</td><td class="t-red">警惕泡沫</td></tr>
+        </table>
+        <p class="lead" style="margin-top:10px">表例为示意区间，非实时数据。实操请用券商/指数官网的「近 10 年 PE 分位」复核。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6 -->
+  <section>
+    <h2><span class="num">6</span>安全边际买入价：留多少缓冲</h2>
+    <p class="lead">算出「合理价」后，别急着全仓买。按你想要的折扣（安全边际）反推买入价——这是把「可能看错」提前打折。</p>
+    <div class="grid2">
+      <div class="calc">
+        <h3>买入价计算器</h3>
+        <label>合理 PE（或合理价）</label><input type="number" id="s_pe" value="15" step="0.5">
+        <label>想要的安全边际（%，如 30）</label><input type="number" id="s_m" value="30" step="1">
+        <label>每股收益 EPS（仅算价格时用，元）</label><input type="number" id="s_eps" value="5" step="0.1">
+        <button class="btn" onclick="calcSafe()">计算</button>
+        <div class="res" id="resSafe">—</div>
+      </div>
+      <div>
+        <table>
+          <tr><th>安全边际</th><th>买入 PE（合理15）</th><th>性质</th></tr>
+          <tr><td>0%</td><td>15.0</td><td class="t-red">无缓冲</td></tr>
+          <tr><td>20%</td><td>12.0</td><td class="t-amber">一般</td></tr>
+          <tr><td>30%</td><td>10.5</td><td class="t-green">稳健</td></tr>
+          <tr><td>50%</td><td>7.5</td><td class="t-green">深度价值</td></tr>
+        </table>
+        <p class="lead" style="margin-top:10px">表例：合理 PE 15，要 30% 安全边际则买在 PE 10.5（EPS 5 元 → 股价 ≤ ¥52.5）。折扣越大，容错越高。</p>
+      </div>
+    </div>
+    <div class="note">串联《美联储决策》：当<a href="美联储决策依据与周期机会.html">降息</a>压低无风险利率，DCF 折现率 r 下降 → 内在价值上升，合理 PE 上移；但别在分位&gt;80% 时追，安全边际会被情绪吃掉。</div>
+  </section>
+
+  <!-- 串联 -->
+  <section>
+    <h2><span class="num">7</span>本篇如何串联前 5 篇</h2>
+    <div class="link-box">
+      <ul>
+        <li><a href="红利股指南.html">① 红利股指南</a>：破净银行「PE5/PB0.6/股息率&gt;4%」经本篇联动验证是真便宜，值得做底仓。</li>
+        <li><a href="泡沫破裂征兆.html">② 泡沫破裂征兆</a>：估值极端（PE 历史高位）是泡沫第①征兆，分位&gt;80% 即亮红灯。</li>
+        <li><a href="美联储周期与资产走势.html">③ 美联储周期↔资产</a>：利率是估值的分母，降息 → 合理 PE 抬升，成长股弹性更大。</li>
+        <li><a href="美联储决策依据与周期机会.html">④ 美联储决策与机会</a>：降息改变折现率 r，重塑所有资产内在价值，需重算安全边际。</li>
+        <li><a href="复利引擎.html">⑤ 复利引擎</a>：低买（高安全边际）直接抬高长期 r，而高 r 经 72 法则放大成巨大终值。</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 关键结论 -->
+  <section>
+    <h2><span class="num">★</span>关键结论</h2>
+    <div class="key">
+      <ul>
+        <li><b>安全边际 = 内在价值 − 买入价</b>，是投资世界抗错的缓冲垫。</li>
+        <li><b>三恒等式</b>：ROE≈PB÷PE、盈利收益率=1÷PE、股息率≈盈利收益率×分红率——别孤立看单数字。</li>
+        <li><b>破净≠陷阱</b>：银行 PB&lt;1 但 ROE 仍 12%、股息率&gt;4%，是真便宜。</li>
+        <li><b>PEG 给成长称重</b>：&lt;0.8 低估、&gt;1.5 偏贵，增速要可持续。</li>
+        <li><b>看历史分位</b>：&lt;30% 偏低可买，&gt;80% 警惕泡沫，比绝对 PE 更靠谱。</li>
+        <li><b>留折扣买入</b>：合理价打 7–8 折（30%–50% 边际）才出手，睡得着也扛得住错。</li>
+        <li><b>低买抬高 r</b>：安全边际最终汇入<a href="复利引擎.html">复利引擎</a>——便宜，是最高级的收益率。</li>
+      </ul>
+    </div>
+    <p class="disclaim">⚠️ 本文为估值方法论与公开公式的科普梳理，所有计算器结果均为理论演示，不构成任何投资建议。估值受行业特性、会计政策、宏观利率影响极大，历史分位与合理 PE 请以券商/指数官网实时数据复核，并咨询专业顾问。</p>
+  </section>
+
+  <p class="foot">系列：红利股 → 泡沫征兆 → 美联储周期↔资产 → 美联储决策与机会 → 复利引擎 → <b>估值安全边际（本篇）</b>　|　下一篇建议：③ 资产配置再平衡 或 ⑥ 财务自由路径</p>
+
+</div>
+
+<script>
+function fmt(x){return '¥'+Math.round(x).toLocaleString('zh-CN');}
+function calcVal(){
+  const pe=parseFloat(document.getElementById('v_pe').value);
+  const pb=parseFloat(document.getElementById('v_pb').value);
+  const pay=parseFloat(document.getElementById('v_pay').value)/100;
+  const rf=parseFloat(document.getElementById('v_rf').value)/100;
+  if(!(pe>0&&pb>0)){document.getElementById('resVal').textContent='请填写有效 PE/PB';return;}
+  const roe=pb/pe*100;
+  const ey=1/pe*100;
+  const div=ey*pay;
+  const spread=ey-rf*100;
+  document.getElementById('resVal').innerHTML=
+    'ROE ≈ <b>'+roe.toFixed(1)+'%</b>　盈利收益率 <b>'+ey.toFixed(1)+'%</b><br>'+
+    '股息率 ≈ <b>'+div.toFixed(1)+'%</b>　股债利差 <b>'+spread.toFixed(1)+'pp</b>'+
+    (spread>0?'（股票相对便宜）':'（债券更划算）');
+}
+function calcPEG(){
+  const pe=parseFloat(document.getElementById('g_pe').value);
+  const g=parseFloat(document.getElementById('g_g').value);
+  if(!(pe>0&&g>0)){document.getElementById('resPEG').textContent='请填写有效正数';return;}
+  const peg=pe/g;
+  let tag = peg<0.8?'低估，可关注':peg<=1.2?'合理，中性':peg<=1.5?'偏贵，谨慎':'泡沫区，回避';
+  document.getElementById('resPEG').textContent='PEG = '+peg.toFixed(2)+' → '+tag;
+}
+function calcPct(){
+  const cur=parseFloat(document.getElementById('q_cur').value);
+  const lo=parseFloat(document.getElementById('q_lo').value);
+  const hi=parseFloat(document.getElementById('q_hi').value);
+  if(!(cur>0&&lo>0&&hi>lo)){document.getElementById('resPct').textContent='请检查区间';return;}
+  let pct=(cur-lo)/(hi-lo)*100;
+  pct=Math.max(0,Math.min(100,pct));
+  let t = pct<20?'极低估，大胆买':pct<40?'偏低，定投加仓':pct<60?'中性，持有':pct<80?'偏高，减仓':'极高估，警惕泡沫';
+  document.getElementById('resPct').textContent='当前分位 ≈ '+pct.toFixed(0)+'% → '+t;
+}
+function calcSafe(){
+  const pe=parseFloat(document.getElementById('s_pe').value);
+  const m=parseFloat(document.getElementById('s_m').value)/100;
+  const eps=parseFloat(document.getElementById('s_eps').value);
+  if(!(pe>0&&m>=0&&m<1&&eps>0)){document.getElementById('resSafe').textContent='请检查输入（边际需0–99%）';return;}
+  const buyPE=pe*(1-m);
+  const price=buyPE*eps;
+  document.getElementById('resSafe').innerHTML=
+    '买入 PE ≤ <b>'+buyPE.toFixed(1)+'</b><br>对应股价 ≤ <b>'+fmt(price)+'</b>（EPS '+eps+'元）';
+}
+</script>
+<script src="assets/site.js"></script>
+</body>
+</html>

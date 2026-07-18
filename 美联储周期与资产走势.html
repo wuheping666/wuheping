@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>美联储周期与全球资产走势对照手册</title>
+<style>
+  :root{
+    --bg:#ffffff; --ink:#1f2329; --muted:#6b7280; --line:#e6e8eb;
+    --blue:#2563eb; --blue-soft:#eaf1fe; --red:#c0392b; --red-soft:#fdecea;
+    --green:#2e7d32; --green-soft:#eafaf0; --amber:#d68910; --soft:#f6f7f9;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",Segoe UI,Helvetica,Arial,sans-serif;
+       background:var(--bg);color:var(--ink);line-height:1.7;font-size:15px;padding:32px 16px}
+  .wrap{max-width:1000px;margin:0 auto}
+  h1{font-size:25px;letter-spacing:.5px;margin-bottom:6px}
+  h2{font-size:18px;margin:32px 0 12px;padding-left:10px;border-left:4px solid var(--blue)}
+  h3{font-size:15px;margin:16px 0 6px;color:var(--blue)}
+  .lead{background:var(--blue-soft);border:1px solid #bcd3fb;border-radius:10px;
+        padding:15px 18px;color:#16335f;font-size:14px}
+  .lead b{color:#0d2b63}
+  p{margin:9px 0}
+  .muted{color:var(--muted);font-size:13px}
+  table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13.3px}
+  th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+  th{background:var(--soft);font-weight:600}
+  .up{color:var(--red);font-weight:600}      /* 涨=红 (中式习惯) */
+  .down{color:var(--green);font-weight:600}  /* 跌=绿 */
+  .flat{color:var(--muted)}
+  .pill{display:inline-block;font-size:11px;font-weight:700;padding:1px 8px;border-radius:9px;color:#fff}
+  .p-up{background:var(--red)} .p-down{background:var(--green)} .p-flat{background:#8a94a6}
+  .p-up2{background:#e07b00} .p-green2{background:var(--green)}
+  .card{border:1px solid var(--line);border-radius:10px;padding:15px 18px;margin:14px 0;background:#fff}
+  .tl{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+  .ph{flex:1;min-width:140px;border:1px solid var(--line);border-radius:9px;padding:9px 11px;background:var(--soft)}
+  .ph .t{font-size:12px;color:var(--muted)}
+  .ph .v{font-size:14px;font-weight:700;margin-top:2px}
+  .hot{background:var(--red-soft);border:1px solid #f0b8b0;border-radius:10px;padding:14px 18px;color:#7a2118}
+  .hot b{color:#9a1f12}
+  .def{background:var(--soft);border-radius:8px;padding:11px 14px;font-size:13.5px;margin:10px 0}
+  .src{font-size:12px;color:var(--muted);border-top:1px dashed var(--line);margin-top:26px;padding-top:12px}
+  .src li{margin:3px 0}
+  .legend{font-size:12.5px;color:var(--muted);margin:6px 0 0}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>美联储周期与全球资产走势对照手册</h1>
+  <p class="muted">整理时间：2026-07-16 ｜ 结合「复利与财务自由」项目：看懂周期，才能在加息/降息切换时不被轮动洗出去</p>
+
+  <div class="lead">
+    <b>一句话结论：</b>美联储利率是全球资产的"估值锚"。当前（2026 年中）我们处于<b>降息周期中段</b>——利率已从 2023 年峰值 <b>5.25%–5.50%</b> 回落至约 <b>4%–4.5%</b> 附近，点阵图指向向 3% 附近长期中性利率回归。<b>规律高度可复制：加息期 = 美元强、美债收益率升、黄金与新兴市场承压、A股成长杀估值、但银行/高股息红利抗跌；降息期 = 美元弱、美债收益率降、黄金与新兴市场走强、A股港股成长占优、但红利相对滞后。</b>对你的红利/银行持仓而言，<b>加息是保护伞、降息是相对弱点</b>——这正是周期轮动时要动态调整的依据。
+  </div>
+
+  <h2>一、美联储周期全景（2020–2026）</h2>
+  <table>
+    <tr><th>阶段</th><th>时间</th><th>利率动作</th><th>联邦基金利率（上限）</th></tr>
+    <tr><td>疫情紧急降息</td><td>2020.03</td><td>紧急降至 0–0.25%</td><td class="down">0.25%</td></tr>
+    <tr><td><b>加息周期</b></td><td>2022.03–2023.07</td><td>11 次加息（25→50→连续 75bp→25bp）</td><td class="up">0.25% → 5.50%</td></tr>
+    <tr><td>高位维持</td><td>2023.07–2024.09</td><td>连续暂停（共 9 次暂停）</td><td class="flat">5.25%–5.50%</td></tr>
+    <tr><td><b>降息启动</b></td><td>2024.09–2024.12</td><td>3 次降息（50 / 25 / 25bp）</td><td class="down">5.50% → 4.50%</td></tr>
+    <tr><td>暂停</td><td>2025.01–2025.08</td><td>连续 4 次暂停</td><td class="flat">4.25%–4.50%</td></tr>
+    <tr><td><b>重启降息</b></td><td>2025.09 起</td><td>9 月降 25bp → 4.00%–4.25%；点阵图暗示年内累计约 75bp</td><td class="down">≈ 4.0%–4.25%</td></tr>
+    <tr><td>当前（2026 中）</td><td>2026</td><td>降息周期中段；点阵图路径 2026≈3.6%、2027≈3.4%、长期 3.0%</td><td class="down">约 4%–4.5%（以 FOMC 最新区间为准）</td></tr>
+  </table>
+  <p class="legend">注：2022–23 的激进加息是 40 年来最快紧缩；2024.09 起转向宽松。当前具体利率水平请以 FOMC 最新目标区间核实（本环境行情数据源未连接，无法拉取实时值）。</p>
+
+  <div class="def">
+    <b>点阵图（dot plot）</b>：美联储官员对未来政策利率的预测图谱，每年 3/6/9/12 月会议公布，是市场最重要的前瞻指引。本轮路径核心信号——<b>向约 3% 的长期中性利率缓慢回归，但节奏高度依赖通胀与就业数据</b>。
+  </div>
+
+  <h2>二、核心矩阵：加息期 vs 降息期，各大类资产怎么走</h2>
+  <p class="legend">红=涨/走强，绿=跌/走弱，灰=中性或分化。以下为历史规律汇总，非每轮必应，需结合当时基本面。</p>
+  <table>
+    <tr><th>资产</th><th>加息期表现</th><th>降息期表现</th><th>核心逻辑</th></tr>
+
+    <tr>
+      <td><b>黄金</b></td>
+      <td><span class="pill p-flat">分化</span> 强美元+实际利率↑ 压制，但 2022–23 因地缘+央行购金逆势走强</td>
+      <td><span class="pill p-up">走强</span> 历史六轮降息后 10 日胜率 <b>83%</b>；本轮+地缘+央行购金，屡破历史高点</td>
+      <td>零息资产，实际利率↓→持有成本↓；避险+去美元化</td>
+    </tr>
+
+    <tr>
+      <td><b>美股（大盘/标普）</b></td>
+      <td><span class="pill p-down">走弱</span> 2022 年重挫（标普 -19%），估值分母承压</td>
+      <td><span class="pill p-up">走强</span> 反弹创新高，2024–25 AI 驱动</td>
+      <td>无风险利率是估值锚，分母↓→估值↑</td>
+    </tr>
+
+    <tr>
+      <td><b>美股科技/成长（AI 七巨头）</b></td>
+      <td><span class="pill p-down">重灾区</span> 长久期资产，杀估值最惨</td>
+      <td><span class="pill p-up">弹性最大</span> 盈利+估值双击</td>
+      <td>远端现金流折现，对利率极敏感</td>
+    </tr>
+
+    <tr>
+      <td><b>美债（收益率）</b></td>
+      <td><span class="pill p-up">收益率飙升</span> 价格下跌</td>
+      <td><span class="pill p-down">收益率下行</span> 存量债涨价</td>
+      <td>票息跟随政策利率；降息→旧债相对更值钱</td>
+    </tr>
+
+    <tr>
+      <td><b>中债 + 中美利差</b></td>
+      <td><span class="pill p-down">利差倒挂加深</span> 美升中稳，人民币贬值压力、资本外流</td>
+      <td><span class="pill p-up">利差收窄</span> 外资增持人民币债，人民币有支撑</td>
+      <td>利差驱动汇率与外资流向</td>
+    </tr>
+
+    <tr>
+      <td><b>A股（整体）</b></td>
+      <td><span class="pill p-down">承压</span> 北向流出；国内货币宽松受束缚</td>
+      <td><span class="pill p-up">受提振</span> 海外流动性改善，成长/小盘占优；但更看自身基本面</td>
+      <td>三条传导：美元流动性、估值分母、国内政策空间</td>
+    </tr>
+
+    <tr>
+      <td><b>A股结构：成长 vs 红利/银行</b></td>
+      <td><span class="pill p-up2">红利/银行抗跌甚至受益</span> 净息差↑、防御性、美元强利好出口</td>
+      <td><span class="pill p-down">红利相对滞后</span> 成长/科技跑赢；银行净息差承压</td>
+      <td>利率敏感的此消彼长（⚠️ 与你的红利策略直接相关）</td>
+    </tr>
+
+    <tr>
+      <td><b>港股（恒生科技）</b></td>
+      <td><span class="pill p-down">承压</span> 与美股联动、外资定价、美元强</td>
+      <td><span class="pill p-up">弹性最大</span> 恒生科技领涨；小盘成长占优</td>
+      <td>离岸市场，对全球流动性极敏感</td>
+    </tr>
+
+    <tr>
+      <td><b>新兴市场（股/本币债）</b></td>
+      <td><span class="pill p-down">承压</span> 强美元+资本外流</td>
+      <td><span class="pill p-up">资金涌入</span> 估值仅发达市场 1/3，跑赢潜力大</td>
+      <td>套息交易反转，美元弱→资金回流</td>
+    </tr>
+
+    <tr>
+      <td><b>美元 / 人民币</b></td>
+      <td><span class="pill p-up">美元强、人民币贬值</span></td>
+      <td><span class="pill p-down">美元弱、人民币升值动能</span></td>
+      <td>利差驱动</td>
+    </tr>
+  </table>
+
+  <h2>三、专项：对你的"红利/银行"持仓意味着什么</h2>
+  <div class="hot">
+    <b>🔑 最关键的反直觉规律：</b>加息期是你的保护伞，降息期是你的相对弱点。
+    <ul style="margin:8px 0 0 18px">
+      <li><b>加息/高利率环境：</b>银行净息差扩大、高股息固收类资产防御性凸显、美元强利好出口链 → <b>银行/红利/公用事业/煤炭/电力相对抗跌甚至受益</b>；而北向重仓白马、科创成长、半导体、港股联动股是重灾区。</li>
+      <li><b>降息/低利率环境：</b>分母变小，高估值成长股（AI、半导体、创新药、恒生科技）估值抬升、弹性最大；<b>红利/银行相对滞后</b>，银行还面临净息差收窄。历史复盘显示，预防式降息后<b>成长跑赢价值、科技跑赢红利、小盘跑赢大盘</b>。</li>
+    </ul>
+    <p style="margin-top:8px">启示：你的"攒股收息"底仓在加息期是压舱石，但在降息期可能需要<b>适度增配成长/小盘做再平衡</b>，否则会阶段性跑输。这正是"复利"需要跨周期调仓的原因。</p>
+  </div>
+
+  <h2>四、当前（2026 年中）定位与组合启示</h2>
+  <div class="tl">
+    <div class="ph"><div class="t">周期位置</div><div class="v">降息周期中段</div></div>
+    <div class="ph"><div class="t">利率方向</div><div class="v down">↓ 向下</div></div>
+    <div class="ph"><div class="t">美元</div><div class="v down">↓ 偏弱</div></div>
+    <div class="ph"><div class="t">黄金</div><div class="v up">↑ 强</div></div>
+    <div class="ph"><div class="t">新兴市场</div><div class="v up">↑ 受益</div></div>
+  </div>
+  <div class="card">
+    <h3 style="margin-top:0">给你的跨周期配置清单</h3>
+    <p><b>① 红利/银行（你的底仓）：</b>仍是压舱石，但降息期相对收益走弱，<b>不必追高、可逢高再平衡</b>。</p>
+    <p><b>② 黄金：</b>降息+地缘+去美元化三驱动，作为对冲与分散长期持有；警惕降息落地后的获利回吐。</p>
+    <p><b>③ 美股/港股成长：</b>降息期弹性大，但当前估值已高（见《泡沫破裂征兆》一文，6/9 征兆亮灯），<b>定投不追高</b>。</p>
+    <p><b>④ 新兴市场/中概：</b>美元弱周期资金回流，估值洼地，可小比例配置。</p>
+    <p><b>⑤ 中美利差收窄：</b>人民币有支撑，外资增持中债，国内宽松空间打开——对 A 股估值底是正贡献。</p>
+    <p><b>⑥ 纪律：</b>周期切换时按"加息抗跌/降息弹性"的规律再平衡，别在一种风格上躺平一整个周期。</p>
+  </div>
+
+  <ul class="src">
+    <li>美联储周期时间线（11次加息至5.50%、2024.09启动降息、2025暂停后9月重启、点阵图路径）：广发宏观（2025-06 / 2025-09 议息解读，新浪财经/腾讯财经/汇博）。</li>
+    <li>全球政策利率 4.8%→4.4%、未来12个月降至 3.9%：美国银行策略师哈特内特团队（彭博，2026，见前序美股泡沫报道）。</li>
+    <li>黄金六轮降息后10日胜率 83%、新兴市场资金涌入、中美利差收窄外资增持中债、人民币支撑：证券时报《美联储降息交易抢跑》（2026）。</li>
+    <li>A股结构（成长跑赢价值、科技跑赢红利、小盘跑赢大盘、港股弹性更大、恒生科技领涨）：东方财富证券陈果、中航证券董忠云、方正证券、华鑫证券研报（证券时报，2026）。</li>
+    <li>加息期红利/银行抗跌受益、降息期红利滞后、A股三条传导路径（美元流动性/估值分母/国内政策空间）：新浪财经市场分析（2026）。</li>
+    <li>⚠️ 本手册为历史规律与机构观点汇总，<b>不构成投资建议</b>；具体利率水平与资产表现请以实时数据核实，且每轮周期的具体驱动（通胀/就业/地缘）不同，规律会有偏差。</li>
+  </ul>
+
+</div>
+<script src="assets/site.js"></script>
+</body>
+</html>

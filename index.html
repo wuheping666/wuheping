@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>复利与财务自由 · 投资理财知识库</title>
+<meta name="description" content="一套可反复查阅的投资理财知识库：红利股、泡沫征兆、美联储周期、复利引擎、估值安全边际、资产配置、税务渠道、行为纪律、财务自由路径、宏观仪表盘与风险管理。">
+<style>
+  :root{
+    --bg:#f6f7f9; --card:#ffffff; --ink:#1a2233; --sub:#5b6577; --line:#e6e9ef;
+    --gold:#b8860b; --gold-2:#9a6a10; --gold-soft:#fbf3df;
+    --red:#c0392b; --green:#178a4c; --blue:#1f5fd6; --purple:#6b46c1; --teal:#0d8a8a;
+    --shadow:0 2px 12px rgba(20,40,80,.06);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",Segoe UI,Roboto,sans-serif;
+    background:var(--bg);color:var(--ink);line-height:1.7;font-size:15px}
+  a{color:inherit}
+
+  /* 顶部导航 */
+  .topbar{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);
+    backdrop-filter:saturate(180%) blur(8px);border-bottom:1px solid var(--line)}
+  .topbar .in{max-width:1080px;margin:0 auto;padding:12px 18px;display:flex;
+    align-items:center;gap:14px;flex-wrap:wrap}
+  .brand{font-weight:800;font-size:16px;letter-spacing:.3px;color:var(--gold-2);white-space:nowrap}
+  .brand b{color:var(--ink)}
+  .topnav{display:flex;gap:6px;flex-wrap:wrap;margin-left:auto;font-size:13px}
+  .topnav a{color:var(--sub);text-decoration:none;padding:5px 11px;border-radius:20px;
+    border:1px solid transparent;transition:.2s}
+  .topnav a:hover{color:var(--gold-2);border-color:var(--line);background:#fff}
+
+  .wrap{max-width:1080px;margin:0 auto;padding:0 18px 80px}
+
+  /* Hero */
+  .hero{background:linear-gradient(135deg,#6b4500,#9a6a10 55%,#b8860b);
+    color:#fff;border-radius:0 0 22px 22px;padding:54px 28px 46px;text-align:center;
+    box-shadow:var(--shadow);margin-bottom:30px}
+  .hero .eyebrow{display:inline-block;background:rgba(255,255,255,.18);
+    padding:4px 14px;border-radius:20px;font-size:12.5px;margin-bottom:16px}
+  .hero h1{font-size:34px;letter-spacing:1px;margin-bottom:12px;font-weight:800}
+  .hero p{opacity:.95;font-size:15.5px;max-width:680px;margin:0 auto 22px}
+  .hero .cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+  .hero .cta a{text-decoration:none;padding:11px 22px;border-radius:24px;font-weight:700;font-size:14px;transition:.2s}
+  .btn-primary{background:#fff;color:var(--gold-2)}
+  .btn-primary:hover{transform:translateY(-2px)}
+  .btn-ghost{background:rgba(255,255,255,.14);color:#fff;border:1px solid rgba(255,255,255,.4)}
+  .btn-ghost:hover{background:rgba(255,255,255,.24)}
+
+  .stats{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:26px}
+  .stat{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);
+    border-radius:14px;padding:14px 20px;min-width:120px}
+  .stat b{display:block;font-size:24px;font-weight:800}
+  .stat span{font-size:12.5px;opacity:.9}
+
+  /* 区块标题 */
+  .section{margin:40px 0 8px}
+  .section-title{display:flex;align-items:center;gap:10px;font-size:21px;font-weight:800;margin-bottom:4px}
+  .section-title .dot{width:10px;height:24px;border-radius:5px;background:var(--gold)}
+  .section-sub{color:var(--sub);font-size:13.5px;margin-bottom:18px}
+
+  /* 层级标签 */
+  .layer{margin:22px 0}
+  .layer-h{display:flex;align-items:center;gap:10px;margin:18px 0 12px}
+  .layer-h .badge{font-size:13px;font-weight:700;color:#fff;padding:4px 12px;border-radius:20px}
+  .layer-h .desc{color:var(--sub);font-size:13px}
+  .l-cog{background:var(--blue)} .l-math{background:var(--purple)}
+  .l-act{background:var(--teal)} .l-goal{background:var(--gold-2)}
+
+  /* 卡片网格 */
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+  .acard{display:block;text-decoration:none;background:var(--card);border:1px solid var(--line);
+    border-radius:14px;padding:16px 17px;box-shadow:var(--shadow);transition:.18s;position:relative;overflow:hidden}
+  .acard:hover{transform:translateY(-3px);border-color:var(--gold);box-shadow:0 8px 22px rgba(120,90,0,.12)}
+  .acard .no{font-size:12px;font-weight:800;color:var(--gold-2);letter-spacing:1px}
+  .acard h3{font-size:16.5px;margin:4px 0 7px;color:var(--ink)}
+  .acard p{font-size:13px;color:var(--sub);line-height:1.6}
+  .acard .go{margin-top:10px;font-size:12.5px;color:var(--gold-2);font-weight:700}
+
+  /* 部署 */
+  .deploy{background:var(--card);border:1px solid var(--line);border-radius:16px;
+    padding:24px 24px;box-shadow:var(--shadow);margin-top:14px}
+  .deploy h3{font-size:17px;margin-bottom:8px;color:var(--gold-2)}
+  .deploy ul{margin:6px 0 0 20px;font-size:14px;color:var(--ink)}
+  .deploy li{margin:5px 0}
+  .deploy code{background:var(--gold-soft);color:#6b4500;padding:1px 6px;border-radius:5px;font-size:12.5px}
+  .deploy a{color:var(--blue);text-decoration:none;font-weight:600}
+
+  footer{text-align:center;color:var(--sub);font-size:12.5px;margin-top:46px;line-height:1.8}
+  footer .disc{max-width:760px;margin:0 auto;background:var(--gold-soft);border:1px solid #ecd9a0;
+    border-radius:12px;padding:14px 18px;color:#5b4a12}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="in">
+    <div class="brand">复利与财务自由 · <b>知识库</b></div>
+    <nav class="topnav">
+      <a href="#map">系列地图</a>
+      <a href="#cog">认知</a>
+      <a href="#math">数学</a>
+      <a href="#act">落地</a>
+      <a href="#goal">目标</a>
+      <a href="#deploy">部署</a>
+    </nav>
+  </div>
+</div>
+
+<header class="hero">
+  <span class="eyebrow">投资理财 · 从认知到自由的系统地图</span>
+  <h1>复利与财务自由</h1>
+  <p>一套可反复查阅的投资理财知识库：从「买什么、怎么便宜买、宏观怎么动」，
+     到「怎么配、税后多少、怎么守纪律、要攒多少」——全部串成一张行动地图。</p>
+  <div class="cta">
+    <a class="btn-primary" href="#map">浏览全部文章 ↓</a>
+    <a class="btn-ghost" href="#deploy">如何部署到 wuheping.top</a>
+  </div>
+  <div class="stats">
+    <div class="stat"><b>13</b><span>篇系统内容</span></div>
+    <div class="stat"><b>8</b><span>大知识模块</span></div>
+    <div class="stat"><b>20+</b><span>互动计算器</span></div>
+    <div class="stat"><b>0</b><span>构建依赖</span></div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <!-- 系列地图 -->
+  <div class="section" id="map">
+    <div class="section-title"><span class="dot"></span>系列地图</div>
+    <div class="section-sub">12 篇文章 + 1 份巩固书单，按「认知 → 数学 → 落地 → 目标」四层递进。点击任意卡片进入。</div>
+
+    <!-- 认知层 -->
+    <div class="layer" id="cog">
+      <div class="layer-h">
+        <span class="badge l-cog">认知层</span>
+        <span class="desc">建立世界观：买什么、避什么、宏观怎么动、央行怎么想</span>
+      </div>
+      <div class="grid">
+        <a class="acard" href="红利股指南.html">
+          <div class="no">① 红利股指南</div>
+          <h3>年化利率与成本损耗</h3>
+          <p>高股息行业分布、当前股息率快照、年化算法，以及被忽略的五类成本损耗量化。</p>
+          <div class="go">阅读 →</div>
+        </a>
+        <a class="acard" href="泡沫破裂征兆.html">
+          <div class="no">② 泡沫破裂征兆</div>
+          <h3>历史 9 大通用征兆</h3>
+          <p>泡沫前的共同指纹、刺破三要素、历史案例，以及 2026 当前温度计。</p>
+          <div class="go">阅读 →</div>
+        </a>
+        <a class="acard" href="美联储周期与资产走势.html">
+          <div class="no">③ 美联储周期</div>
+          <h3>周期与全球资产走势</h3>
+          <p>加息/降息全景时间线，黄金/股/债/中美利差/港股/A股 在周期中的对照矩阵。</p>
+          <div class="go">阅读 →</div>
+        </a>
+        <a class="acard" href="美联储决策依据与周期机会.html">
+          <div class="no">④ 决策与机会</div>
+          <h3>美联储决策依据</h3>
+          <p>双重使命框架、预防式 vs 纾困式降息，以及普通人的杠铃策略与周期机会。</p>
+          <div class="go">阅读 →</div>
+        </a>
+      </div>
+    </div>
+
+    <!-- 数学层 -->
+    <div class="layer" id="math">
+      <div class="layer-h">
+        <span class="badge l-math">数学层</span>
+        <span class="desc">把前面所有收益率用一套数学串起来</span>
+      </div>
+      <div class="grid">
+        <a class="acard" href="复利引擎.html">
+          <div class="no">⑤ 复利引擎</div>
+          <h3>72 法则与负复利</h3>
+          <p>72 法则、单利 vs 复利、负复利杀伤力、通胀侵蚀、早投威力——5 个互动计算器。</p>
+          <div class="go">阅读 →</div>
+        </a>
+        <a class="acard" href="估值安全边际.html">
+          <div class="no">⑥ 估值安全边际</div>
+          <h3>便宜才是硬道理</h3>
+          <p>8 大指标速查、三恒等式联动、PEG/分位/买入价——4 个互动计算器。</p>
+          <div class="go">阅读 →</div>
+        </a>
+      </div>
+    </div>
+
+    <!-- 落地层 -->
+    <div class="layer" id="act">
+      <div class="layer-h">
+        <span class="badge l-act">落地层</span>
+        <span class="desc">把认知变成可执行的组合、税后账单与行为护栏</span>
+      </div>
+      <div class="grid">
+        <a class="acard" href="资产配置再平衡.html">
+          <div class="no">⑦ 资产配置</div>
+          <h3>再平衡与美林时钟</h3>
+          <p>60/40、全天候、风险平价，再平衡=自动低买高卖，美林时钟四阶段——3 计算器。</p>
+          <div class="go">阅读 →</div>
+        </a>
+        <a class="acard" href="税务与渠道.html">
+          <div class="no">⑧ 税务与渠道</div>
+          <h3>A股/港股/美股税率</h3>
+          <p>三地税率与开户路径、个人养老金抵扣——把「成本损耗」变成可计算账单（4 计算器）。</p>
+          <div class="go">阅读 →</div>
+        </a>
+        <a class="acard" href="行为与纪律.html">
+          <div class="no">⑨ 行为与纪律</div>
+          <h3>守住才拿得住</h3>
+          <p>八大行为偏差、四条纪律护栏，以及一份行为偏差自检表。</p>
+          <div class="go">阅读 →</div>
+        </a>
+        <a class="acard" href="宏观监测仪表盘.html">
+          <div class="no">⑪ 宏观仪表盘</div>
+          <h3>每周自检红绿灯</h3>
+          <p>中美七灯红绿灯系统、PMI/社融/汇率解读，以及每周监测清单生成器。</p>
+          <div class="go">阅读 →</div>
+        </a>
+        <a class="acard" href="风险管理.html">
+          <div class="no">⑫ 风险管理</div>
+          <h3>先求不输再求赢</h3>
+          <p>六类风险、五件套防守、压力测试——把「泡沫里怎么活下来」变成数字（4 计算器）。</p>
+          <div class="go">阅读 →</div>
+        </a>
+      </div>
+    </div>
+
+    <!-- 目标层 -->
+    <div class="layer" id="goal">
+      <div class="layer-h">
+        <span class="badge l-goal">目标层</span>
+        <span class="desc">回到「财务自由」本身：要攒多少、何时能自由</span>
+      </div>
+      <div class="grid">
+        <a class="acard" href="财务自由路径.html">
+          <div class="no">⑩ 财务自由路径</div>
+          <h3>4% 安全提取率</h3>
+          <p>FI 数字 = 年支出 × 25、三段进阶路径，以及 4 个通往自由的计算器。</p>
+          <div class="go">阅读 →</div>
+        </a>
+        <a class="acard" href="巩固书单.html">
+          <div class="no">📚 巩固书单</div>
+          <h3>读什么书打底</h3>
+          <p>5 本核心必读 + 按 8 模块分书 + 8 步阅读顺序，每本对应你学过的篇章。</p>
+          <div class="go">阅读 →</div>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- 部署 -->
+  <div class="section" id="deploy">
+    <div class="section-title"><span class="dot"></span>部署到 wuheping.top</div>
+    <div class="section-sub">本站为纯静态页面（无构建步骤），已包含 <code>CNAME</code>、<code>.nojekyll</code> 与部署说明，可直接推送到 GitHub / Gitee Pages。</div>
+    <div class="deploy">
+      <h3>GitHub Pages</h3>
+      <ul>
+        <li>新建仓库 → 添加远程 <code>git remote add github &lt;url&gt;</code> → <code>git push -u github main</code></li>
+        <li>Settings → Pages → Source 选 <code>main</code> 分支、<code>/ (root)</code></li>
+        <li>Custom domain 填 <code>wuheping.top</code>，DNS 添加 4 条 A 记录指向
+          <code>185.199.108.153</code> / <code>.109</code> / <code>.110</code> / <code>.111</code>，开启 HTTPS</li>
+      </ul>
+      <h3 style="margin-top:16px">Gitee Pages</h3>
+      <ul>
+        <li>新建公开仓库 → <code>git remote add gitee &lt;url&gt;</code> → <code>git push -u gitee master</code></li>
+        <li>服务 → Gitee Pages → 根目录部署；自定义域名需 Gitee Pages Pro</li>
+      </ul>
+      <h3 style="margin-top:16px">双端同步</h3>
+      <ul>
+        <li><code>git push github main &amp;&amp; git push gitee master</code></li>
+        <li>完整步骤见仓库内 <a href="README.md">README.md</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <footer>
+    <div class="disc">
+      ⚠️ 免责声明：本站所有文章均为投资理财常识与公开资料整理，内置计算器为理论演示，
+      <b>不构成任何投资建议</b>。具体决策须结合实时数据与个人风险承受力，必要时咨询持牌顾问。
+    </div>
+    <div style="margin-top:14px">复利与财务自由 · 知识库 &nbsp;|&nbsp; 域名 wuheping.top &nbsp;|&nbsp; 纯静态 · 免构建</div>
+  </footer>
+
+</div>
+</body>
+</html>
