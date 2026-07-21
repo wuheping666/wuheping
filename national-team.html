@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>国家队护盘图谱 · 沪深300 K线标注</title>
+<script src="assets/echarts.min.js"></script>
+<style>
+  :root{
+    --bg:#f5f6f8; --card:#fff; --ink:#1f2329; --sub:#6b7280;
+    --line:#e6e8eb; --red:#e23b3b; --green:#16a34a; --brand:#c8102e;
+    --blue:#2563eb; --amber:#d97706;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+       background:var(--bg);color:var(--ink);line-height:1.6}
+  .wrap{max-width:1180px;margin:0 auto;padding:24px 18px 60px}
+  header h1{font-size:24px;margin:0 0 6px}
+  header p{margin:0;color:var(--sub);font-size:14px}
+  .badges{margin:10px 0 4px;display:flex;gap:8px;flex-wrap:wrap}
+  .badge{font-size:12px;padding:3px 10px;border-radius:20px;background:#eef2ff;color:#3949ab;border:1px solid #dde3ff}
+  .badge.live{background:#e8f6ee;color:#15803d;border-color:#cdeed5}
+  .badge.warn{background:#fff4e5;color:#b45309;border-color:#ffe2bd}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-top:16px;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+  .ctrls{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  .ctrls .grp{display:flex;gap:6px;background:#f0f1f4;padding:4px;border-radius:10px}
+  button{font-family:inherit;cursor:pointer;border:1px solid var(--line);background:#fff;
+         color:var(--ink);padding:6px 12px;border-radius:8px;font-size:13px;transition:.15s}
+  button:hover{border-color:#b9c0c9}
+  button.on{background:var(--brand);color:#fff;border-color:var(--brand)}
+  #chart{width:100%;height:540px}
+  .sec-title{font-size:16px;font-weight:700;margin:22px 0 10px;display:flex;align-items:center;gap:8px}
+  .sec-title:before{content:"";width:4px;height:16px;background:var(--brand);border-radius:2px}
+  .ep-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+  .ep{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--c,#999);
+      border-radius:10px;padding:12px;cursor:pointer;transition:.15s}
+  .ep:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.08)}
+  .ep.sel{outline:2px solid var(--brand);outline-offset:1px}
+  .ep .d{font-size:12px;color:var(--sub)}
+  .ep .t{font-weight:700;font-size:14px;margin:2px 0 4px}
+  .ep .a{font-size:12px;color:var(--brand);font-weight:600}
+  .detail{display:none}
+  .detail.show{display:block}
+  .kv{display:grid;grid-template-columns:96px 1fr;gap:8px 14px;margin-top:6px;font-size:14px}
+  .kv .k{color:var(--sub);font-weight:600}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin-top:6px}
+  th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+  th{background:#f7f8fa;font-weight:700}
+  td.amt{color:var(--brand);font-weight:600;white-space:nowrap}
+  .note{font-size:12px;color:var(--sub);margin-top:10px}
+  .up{color:var(--red)} .down{color:var(--green)}
+  .src{font-size:12px;color:var(--sub);margin-top:4px}
+  a{color:var(--blue)}
+  .legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--sub);margin-top:8px}
+  .legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:4px;vertical-align:middle}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>国家队护盘图谱 · 沪深300 K线标注</h1>
+    <p>在中国核心宽基指数（沪深300）的K线上，标注历次“国家队”入场维稳的时点、参与结构、买入规模与触发情形。红色标记为护盘事件。</p>
+    <div class="badges">
+      <span class="badge" id="srcBadge">数据加载中…</span>
+      <span class="badge">指数：沪深300</span>
+      <span class="badge">区间：2008–至今</span>
+      <span class="badge warn">仅供学习研究</span>
+    </div>
+  </header>
+
+  <div class="card">
+    <div class="ctrls">
+      <div class="grp" id="rangeBtns">
+        <button data-r="MAX" class="on">全部</button>
+        <button data-r="10Y">近10年</button>
+        <button data-r="5Y">近5年</button>
+        <button data-r="3Y">近3年</button>
+        <button data-r="1Y">近1年</button>
+      </div>
+      <button id="markBtn" class="on">显示护盘标记</button>
+      <button id="liveBtn">↻ 刷新实时行情</button>
+      <span class="src" id="updated"></span>
+    </div>
+    <div class="legend">
+      <span><i style="background:#c8102e"></i>全面救市 / 证金主导</span>
+      <span><i style="background:#2563eb"></i>汇金增持银行股</span>
+      <span><i style="background:#16a34a"></i>汇金增持ETF</span>
+      <span><i style="background:#d97706"></i>政策工具 / 盘中救市</span>
+      <span><i style="background:#7c3aed"></i>纾困基金</span>
+    </div>
+    <div id="chart"></div>
+    <div class="note">提示：拖动下方滑块或滚轮缩放；点击上方任意“护盘事件”卡片，图表将聚焦该时段并在下方展开详情。</div>
+  </div>
+
+  <div class="sec-title">历次护盘事件（点击展开详情）</div>
+  <div class="ep-grid" id="epGrid"></div>
+
+  <div class="card detail" id="detail">
+    <div class="sec-title" style="margin-top:0" id="dTitle"></div>
+    <div class="kv">
+      <div class="k">触发情形</div><div id="dCase"></div>
+      <div class="k">市场表现</div><div id="dMarket"></div>
+      <div class="k">总规模</div><div id="dTotal" class="up"></div>
+    </div>
+    <table id="dTable">
+      <thead><tr><th style="width:150px">参与结构</th><th style="width:140px">角色 / 资金</th><th>具体说明</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <div class="sec-title">汇总表：谁、买了多少、什么情况</div>
+  <div class="card" style="padding:0;overflow:auto">
+    <table id="sumTable">
+      <thead><tr>
+        <th style="width:120px">时间</th><th style="width:170px">主导结构</th>
+        <th style="width:200px">买入规模（估算）</th><th>触发情形</th>
+      </tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <div class="note">
+    数据说明：K线为沪深300指数日线（前复权），来源于腾讯财经公开行情接口（浏览器实时拉取，断网时回退至内置快照 2008-01-02 至 2026-07-21，共 4507 个交易日）。
+    “国家队”参与结构、规模与情形综合自公开报道与上市公司/基金定期报告（中央汇金、证金公司、中国诚通、中国国新、社保基金、险资、券商等），部分为市场估算口径，不构成任何投资建议。
+  </div>
+</div>
+
+<script src=".national_team_kline.js"></script>
+<script>
+// ---------- 护盘事件数据（公开资料整理） ----------
+const EPISODES = [
+  { date:'2008-09-18', short:'2008金融危机·汇金增持三大行', cat:'汇金银行股', color:'#2563eb',
+    title:'2008年全球金融危机：汇金首次公开增持银行股',
+    market:'出手次日沪指+9.45%（千股涨停），一个月内反弹约19%；10月28日见底1664',
+    total:'首轮购入工行2.8亿股、中行0.81亿股、建行1.29亿股，累计4.91亿股，市值约21.1亿元',
+    caseText:'全球金融危机蔓延，A股自6124点暴跌至1802点，市场恐慌。汇金以增持国有银行股释放“真金白银”救市信号。',
+    structures:[
+      {n:'中央汇金', r:'直接入市·银行股', a:'约21.1亿元', d:'9月18日宣布在二级市场自主购入工、中、建三大行股票（农行尚未上市），为A股史上首次“类平准基金”式操作'},
+      {n:'财政部/国资委', r:'配套政策', a:'—', d:'证券交易印花税改为单边征收；国资委支持央企增持/回购，多重利好形成合力'}
+    ]},
+
+  { date:'2013-06-25', short:'2011–2013 汇金持续增持四大行', cat:'汇金银行股', color:'#2563eb',
+    title:'2011–2013年：汇金多次追加增持四大行（政策底信号）',
+    market:'2013年“钱荒”后沪指于6月25日见底1849点，随后3个月反弹约15%',
+    total:'多次追加增持，未披露统一总额（2011年后将农业银行纳入增持范围）',
+    caseText:'欧债危机外溢 + 国内“钱荒”（2013年6月），市场持续低迷。汇金以持续增持银行股传递“政策底”信号，2013年6月“钱荒”期间扩大至光大银行、新华人寿等。',
+    structures:[
+      {n:'中央汇金', r:'持续增持·四大行+', a:'未披露总额', d:'2011–2013年多次追加增持工、农、中、建四大行，并扩大至光大银行、新华人寿等标的'}
+    ]},
+
+  { date:'2015-07-08', short:'2015股灾·证金主导万亿救市', cat:'全面救市', color:'#c8102e',
+    title:'2015年股灾：证金公司主导的万亿级全面救市',
+    market:'政策底约2850（2015-08），市场底2638（2016-01熔断后）；阻断了踩踏但未替代杠杆出清',
+    total:'证金体系+券商+基金合计约3–4万亿元量级（央行等提供2.5–3万亿流动性支持）',
+    caseText:'杠杆牛（场外配资）破裂引发“千股跌停”，上证从5178点暴跌至2850点，流动性枯竭。多部门联合救市。',
+    structures:[
+      {n:'证金公司(CSFC)', r:'核心操作平台', a:'2.5–3万亿元', d:'获央行等合计2.5–3万亿元流动性支持；17家商业银行借予1.3万亿；向21家券商提供2600亿信用额度；承接股权质押约3000亿'},
+      {n:'21家→50家券商', r:'出资入市', a:'约2200亿元', d:'以2015年6月底净资产15%出资首轮1280亿投蓝筹ETF；9月扩容至50家再筹约1000亿，交由证金统一运作'},
+      {n:'5只救市公募基金', r:'专户运作', a:'2000亿元', d:'证金出资委托易方达/嘉实/华夏/南方/招商各成立400亿基金（招商丰庆、南方消费活力、易方达瑞惠、华夏新经济、嘉实新机遇）'},
+      {n:'中央汇金', r:'协同增持', a:'注资1000亿+ETF300亿', d:'向证金注资1000亿（持股升至46.11%）；增持四大行ETF约300亿（工行ETF100亿、建行ETF80亿）；汇金资管受让证金股票转长期持有'},
+      {n:'保险资金', r:'放宽入市', a:'上限30%→40%', d:'保监会放宽股票投资上限至40%、单一蓝筹上限5%→10%'},
+      {n:'央行 / 社保', r:'流动性+持仓', a:'—', d:'央行提供5000亿流动性（3000亿拆借证金+2000亿定向两融）；社保等中长期资金协同'}
+    ]},
+
+  { date:'2016-01-28', short:'2016熔断·持仓托底', cat:'全面救市', color:'#c8102e',
+    title:'2016年熔断：证金/汇金持仓托底',
+    market:'1月28日沪指见底2638点（熔断机制引发），此后逐步企稳',
+    total:'延续2015年救市持仓，未大举新增',
+    caseText:'熔断机制实施引发流动性恐慌，沪指两度熔断跌至2638。证金、汇金维持既有持仓稳定市场，未大规模新增买入。',
+    structures:[
+      {n:'证金公司/中央汇金', r:'持仓托底', a:'延续持仓', d:'维持2015年救市形成的巨额持仓（证金+汇金年底持股约占全市场流通市值3.2%），稳定蓝筹估值中枢'}
+    ]},
+
+  { date:'2018-10-19', short:'2018股权质押纾困', cat:'纾困', color:'#7c3aed',
+    title:'2018年：股权质押纾困（地方国资+诚通+国新+险资）',
+    market:'10月19日沪指见政策底2449点；2019-01-04确认市场底2440，开启2019–2021结构性行情',
+    total:'数千亿专项纾困基金',
+    caseText:'中美贸易摩擦 + 上市公司股权质押集中爆仓风险，沪指跌至2449。主线是“纾困”而非全市场扫货；汇金未直接出手。',
+    structures:[
+      {n:'地方国资平台', r:'纾困基金', a:'数千亿', d:'各地方政府牵头设立专项纾困基金，化解上市公司股权质押爆仓、防止控制权风险向金融系统传导'},
+      {n:'中国诚通 / 中国国新', r:'国资运营平台', a:'—', d:'参与央企及上市公司增持与纾困'},
+      {n:'保险资金', r:'纾困专项产品', a:'—', d:'设立专项产品化解股权质押风险'}
+    ]},
+
+  { date:'2020-03-23', short:'2020新冠·汇金增持ETF', cat:'汇金ETF', color:'#16a34a',
+    title:'2020年新冠疫情：汇金增持ETF + 险资自购',
+    market:'3月23日沪指见底2646点（疫情全球冲击），随后随流动性宽松修复',
+    total:'未披露统一口径；汇金公告增持ETF',
+    caseText:'新冠疫情全球蔓延，2–3月A股剧烈波动。汇金公告增持ETF，险资、公募纷纷自购权益产品稳定预期。',
+    structures:[
+      {n:'中央汇金', r:'增持ETF', a:'未披露', d:'公告增持ETF，发挥“稳定器”作用'},
+      {n:'保险/公募', r:'自购权益', a:'—', d:'险资与公募基金大规模自购，向市场注入信心'}
+    ]},
+
+  { date:'2023-10-23', short:'2023汇金增持四大行+ETF', cat:'汇金ETF', color:'#16a34a',
+    title:'2023年10月：汇金增持四大行并买入ETF（温和政策信号）',
+    market:'10月23日沪深300见波段底；反弹持续至11月，但基本面压力未解，指数后续仍震荡',
+    total:'截至2024-04累计增持四大行约52.29亿元；ETF买入规模未单列',
+    caseText:'A股震荡下行、多次跌破3000点，地产下行+外部加息+风险偏好低迷。汇金时隔八年再出手，力度较2015年温和。',
+    structures:[
+      {n:'中央汇金', r:'先银行股后ETF', a:'四大行约52.29亿', d:'10月11日增持工、农、中、建四大行并计划6个月内继续；10月23日公告买入ETF并将持续增持'},
+      {n:'汇金资管', r:'ETF配置', a:'—', d:'下半年增持华夏上证50ETF超50亿份、嘉实沪深300ETF超25亿份、华夏沪深300ETF超10亿份'}
+    ]},
+
+  { date:'2024-02-05', short:'2024-02扩大ETF增持', cat:'汇金ETF', color:'#16a34a',
+    title:'2024年2月：汇金扩大ETF增持范围（宽基托底）',
+    market:'2月5日前后沪指见阶段底2635点，随后快速反弹，宽基ETF申购显著放量',
+    total:'2024Q1耗资2000多亿买宽基ETF；全年约6000亿（一说8760亿）；年末ETF持仓破万亿',
+    caseText:'市场持续阴跌，沪指击穿2700点（雪球、量化DMA敲入加剧抛压）。宽基ETF成为国家队资金最重要入口。',
+    structures:[
+      {n:'中央汇金', r:'宽基ETF', a:'全年约6000亿+，年末破万亿', d:'2024Q1耗资2000多亿；年末持有ETF市值合计约1.05万亿，其中沪深300ETF约6905亿、上证50约1111亿、中证1000约902亿、中证500约748亿'},
+      {n:'央行', r:'流动性配合', a:'降准', d:'2月5日降准0.5个百分点释放约1万亿长期流动性，与汇金增持形成双重支撑'}
+    ]},
+
+  { date:'2024-09-24', short:'2024-09一揽子政策工具', cat:'政策工具', color:'#d97706',
+    title:'2024年9月24日：一行一局一会超预期政策组合拳',
+    market:'当日沪指大涨4.15%，随后阶段低点到高点涨幅超两成',
+    total:'互换便利(SFISF)首期5000亿、股票回购增持再贷款首期3000亿',
+    caseText:'央行创设证券基金保险公司互换便利和股票回购增持再贷款，国资平台同步增持央企与宽基ETF，稳市走向机制化。',
+    structures:[
+      {n:'中国人民银行', r:'制度工具', a:'SFISF 5000亿+再贷款3000亿', d:'创设互换便利（首期5000亿）与股票回购增持再贷款（首期3000亿），为机构与上市公司提供流动性'},
+      {n:'国资平台', r:'增持', a:'—', d:'同步增持央企科技与宽基ETF，配合政策落地'}
+    ]},
+
+  { date:'2025-04-07', short:'2025-04关税冲击盘中救市', cat:'盘中救市', color:'#d97706',
+    title:'2025年4月7日：关税冲击下的“盘中救市”（教科书级）',
+    market:'危机约1.5小时被托起；两日内上证反弹5.3%、创业板指+8.7%、北证50+17.2%，逾百股涨停',
+    total:'4/7–4/21汇金ETF净流入约2152亿；4/7–4/8两日权益ETF净申购超1100亿/日，3交易日超2000亿',
+    caseText:'美国加征关税冲击A股，上证盘中逼近3000点。汇金罕见盘中出手，央行同步承诺“无限量再贷款”，多路长线资金协同。',
+    structures:[
+      {n:'中央汇金', r:'盘中增持ETF', a:'ETF净流入约2152亿', d:'盘中公告已增持ETF并坚决维护市场平稳（罕见盘中干预）；央行承诺必要时提供充足再贷款'},
+      {n:'中国国新', r:'专项再贷款', a:'首批800亿', d:'启动首批800亿元专项再贷款，重点增持央企及科技创新类股票'},
+      {n:'中国诚通', r:'再贷款增持', a:'拟追加1000亿', d:'拟追加1000亿元再贷款资金用于上市公司股票增持'},
+      {n:'社保基金', r:'主动增持', a:'—', d:'宣布主动增持国内股票'},
+      {n:'保险资金', r:'权益上限上调', a:'释放1.66万亿', d:'权益投资比例上限最高提升5%，直接释放约1.66万亿增量资金'}
+    ]}
+];
+
+// ---------- 数据加载：实时(腾讯) -> 内置快照 ----------
+let KLINE = (typeof NT_KLINE !== 'undefined') ? NT_KLINE.slice() : [];
+let usingLive = false;
+
+const TENCENT = 'https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=sh000300,day,2008-01-01,2026-12-31,4500,qfq';
+function parseTencent(json){
+  try{
+    const sh = json.data && json.data.sh000300;
+    const arr = (sh && (sh.day || sh.qfqday)) || [];
+    return arr.map(r=>[r[0], +r[1], +r[2], +r[4], +r[3], Math.round(+r[5])]);
+  }catch(e){ return null; }
+}
+async function loadLive(){
+  try{
+    const r = await fetch(TENCENT, {mode:'cors'});
+    const j = await r.json();
+    const d = parseTencent(j);
+    if(d && d.length > 100){ KLINE = d; usingLive = true; return true; }
+  }catch(e){}
+  return false;
+}
+
+// ---------- 图表 ----------
+let chart, showMarks = true;
+function buildOption(){
+  const dates = KLINE.map(r=>r[0]);
+  const ohlc  = KLINE.map(r=>[r[1], r[2], r[3], r[4]]);
+  const vol   = KLINE.map((r,i)=>({value:[i, r[5]], itemStyle:{color: r[2]>=r[1] ? 'rgba(226,59,59,.5)':'rgba(22,163,74,.5)'}}));
+  const markLine = showMarks ? { silent:false, symbol:'none',
+    lineStyle:{type:'dashed', width:1.4},
+    label:{ formatter:p=>p.name, fontSize:10, color:'#fff', backgroundColor:'rgba(0,0,0,.55)', padding:[2,4], borderRadius:3, distance:6, rotate:0 },
+    data: EPISODES.map(e=>({xAxis:snapDate(dates,e.date), name:e.short, lineStyle:{color:e.color}, label:{color:'#fff', backgroundColor:e.color}}))
+  } : undefined;
+  return {
+    animation:false,
+    grid:[{left:54,right:18,top:18,height:'62%'},{left:54,right:18,top:'74%',height:'15%'}],
+    tooltip:{trigger:'axis', axisPointer:{type:'cross'},
+      backgroundColor:'rgba(255,255,255,.96)', borderColor:'#e6e8eb',
+      formatter:function(ps){
+        const i = ps[0].dataIndex; const r = KLINE[i];
+        const chg = ((r[2]-r[1])/r[1]*100).toFixed(2);
+        const cls = r[2]>=r[1]?'up':'down';
+        return `<b>${r[0]}</b><br/>开 ${r[1]}　收 <span class="${cls}">${r[2]} (${chg}%)</span><br/>高 ${r[4]}　低 ${r[3]}<br/>量 ${(r[5]/1e6).toFixed(0)}百万`;
+      }},
+    axisPointer:{link:[{xAxisIndex:'all'}]},
+    xAxis:[
+      {type:'category', data:dates, boundaryGap:true, axisLine:{lineStyle:{color:'#c9ced6'}},
+       axisLabel:{fontSize:10}, splitLine:{show:false}, min:'dataMin', max:'dataMax'},
+      {type:'category', gridIndex:1, data:dates, axisLabel:{show:false}, axisLine:{show:false}, axisTick:{show:false}, splitLine:{show:false}}
+    ],
+    yAxis:[
+      {scale:true, position:'right', axisLabel:{fontSize:10}, splitLine:{lineStyle:{color:'#f0f1f4'}}},
+      {gridIndex:1, scale:true, axisLabel:{show:false}, axisLine:{show:false}, axisTick:{show:false}, splitLine:{show:false}}
+    ],
+    dataZoom:[
+      {type:'inside', xAxisIndex:[0,1], start:zoomStart(), end:100},
+      {type:'slider', xAxisIndex:[0,1], bottom:6, height:16, start:zoomStart(), end:100}
+    ],
+    series:[
+      {name:'沪深300', type:'candlestick', data:ohlc, xAxisIndex:0, yAxisIndex:0,
+       itemStyle:{color:'#e23b3b', color0:'#16a34a', borderColor:'#e23b3b', borderColor0:'#16a34a'},
+       markLine:markLine},
+      {name:'成交量', type:'bar', data:vol, xAxisIndex:1, yAxisIndex:1}
+    ]
+  };
+}
+function snapDate(dates, target){
+  if(dates.includes(target)) return target;
+  // 找最近交易日
+  let best = dates[0], bd = Infinity;
+  for(const d of dates){ const diff = Math.abs(Date.parse(d)-Date.parse(target)); if(diff<bd){bd=diff;best=d;} }
+  return best;
+}
+let _zoom = 100; // 默认末端
+function zoomStart(){ return Math.max(0, 100 - defaultWindow()); }
+function defaultWindow(){ return 35; } // 默认显示近~35% (约近数年)
+
+function render(){
+  if(!chart) chart = echarts.init(document.getElementById('chart'));
+  chart.setOption(buildOption(), true);
+}
+function focusEpisode(ep){
+  const dates = KLINE.map(r=>r[0]);
+  const idx = dates.indexOf(snapDate(dates, ep.date));
+  if(idx<0) return;
+  const N = dates.length;
+  const from = Math.max(0, idx - Math.round(N*0.18));
+  const to = Math.min(N-1, idx + Math.round(N*0.04));
+  chart.dispatchAction({type:'dataZoom', startValue:dates[from], endValue:dates[to]});
+}
+
+// ---------- 交互：卡片 / 详情 / 汇总 ----------
+function buildCards(){
+  const grid = document.getElementById('epGrid');
+  EPISODES.forEach((ep,i)=>{
+    const el = document.createElement('div');
+    el.className='ep'; el.style.setProperty('--c', ep.color);
+    el.innerHTML = `<div class="d">${ep.date}</div><div class="t">${ep.short}</div><div class="a">${ep.total.split('；')[0].split('（')[0].slice(0,42)}</div>`;
+    el.onclick = ()=>selectEp(i);
+    grid.appendChild(el);
+  });
+}
+function selectEp(i){
+  document.querySelectorAll('.ep').forEach((e,k)=>e.classList.toggle('sel', k===i));
+  const ep = EPISODES[i];
+  const d = document.getElementById('detail'); d.classList.add('show');
+  document.getElementById('dTitle').textContent = ep.title;
+  document.getElementById('dCase').textContent = ep.caseText;
+  document.getElementById('dMarket').textContent = ep.market;
+  document.getElementById('dTotal').textContent = ep.total;
+  const tb = document.querySelector('#dTable tbody'); tb.innerHTML='';
+  ep.structures.forEach(s=>{
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td><b>${s.n}</b></td><td>${s.r}<br/><span class="up">${s.a}</span></td><td>${s.d}</td>`;
+    tb.appendChild(tr);
+  });
+  focusEpisode(ep);
+  d.scrollIntoView({behavior:'smooth', block:'nearest'});
+}
+function buildSummary(){
+  const tb = document.querySelector('#sumTable tbody'); tb.innerHTML='';
+  EPISODES.forEach(ep=>{
+    const leads = ep.structures.slice(0,2).map(s=>s.n).join('、');
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td><b>${ep.date}</b></td><td>${leads}</td><td class="amt">${ep.total}</td><td>${ep.caseText}</td>`;
+    tb.appendChild(tr);
+  });
+}
+
+// ---------- 初始化 ----------
+(async function init(){
+  buildCards(); buildSummary();
+  const ok = await loadLive();
+  const badge = document.getElementById('srcBadge');
+  if(ok){ badge.textContent='实时行情（腾讯）'; badge.className='badge live'; }
+  else { badge.textContent='内置快照（断网兜底）'; badge.className='badge warn'; }
+  document.getElementById('updated').textContent = '数据至 ' + KLINE[KLINE.length-1][0];
+  render();
+
+  document.getElementById('rangeBtns').addEventListener('click', e=>{
+    const b = e.target.closest('button'); if(!b) return;
+    document.querySelectorAll('#rangeBtns button').forEach(x=>x.classList.remove('on'));
+    b.classList.add('on');
+    const r = b.dataset.r;
+    let s = 0;
+    if(r==='1Y') s = 92; else if(r==='3Y') s = 78; else if(r==='5Y') s = 62; else if(r==='10Y') s = 28; else s = 0;
+    chart.dispatchAction({type:'dataZoom', start:s, end:100});
+  });
+  document.getElementById('markBtn').addEventListener('click', e=>{
+    showMarks = !showMarks; e.target.classList.toggle('on', showMarks); render();
+  });
+  document.getElementById('liveBtn').addEventListener('click', async ()=>{
+    const badge = document.getElementById('srcBadge'); badge.textContent='刷新中…'; badge.className='badge';
+    const ok = await loadLive();
+    badge.textContent = ok ? '实时行情（腾讯）' : '内置快照（断网兜底）';
+    badge.className = ok ? 'badge live' : 'badge warn';
+    document.getElementById('updated').textContent = '数据至 ' + KLINE[KLINE.length-1][0];
+    render();
+  });
+  window.addEventListener('resize', ()=>chart && chart.resize());
+})();
+</script>
+</body>
+</html>
