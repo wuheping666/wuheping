@@ -101,13 +101,14 @@
 
   <footer>
     <p><b>数据口径：</b>本仪表盘为<b>全市场</b>（沪市+深市+北证）融资融券汇总，每交易日一行。所参照的样例站 <code>margin-dashboard-4z2.pages.dev</code> 为<b>上交所（沪市）单独</b>数据（如 2026-07-20 沪市两融≈1.37万亿），本版用同一数据源（东方财富）做了更完整的全市场口径，数值约为其 2 倍，属正常差异。</p>
-    <p><b>实时更新机制：</b>页面打开即向东方财富接口直连拉取最新数据（浏览器跨域，<code>Access-Control-Allow-Origin:*</code>），每 10 分钟自动刷新；若接口临时不可用，则回退到仓库内的 <code>margin-data.json</code> 缓存快照。另有 GitHub Actions 每日收盘后自动刷新该缓存。</p>
-    <p><b>实现要点（模仿原站）：</b>Cloudflare Pages 版用 <b>Pages Functions/Worker</b> 在服务端定时抓取上交所数据并缓存；本静态版用<b>纯前端直连 + 定时刷新 + JSON 缓存兜底</b>，无需服务器即可部署到 GitHub Pages / Gitee Pages。颜色遵循 A 股惯例：<span class="up">红涨</span> / <span class="down">绿跌</span>。</p>
+    <p><b>实时更新机制：</b>页面打开即向东方财富接口直连拉取最新数据（浏览器跨域，<code>Access-Control-Allow-Origin:*</code>），每 10 分钟自动刷新；若接口临时不可用，则回退到 <code>margin-data.json</code> 缓存快照；若仍失败（如 <code>file://</code> 协议限制），则使用页面内嵌的离线数据（3959 个交易日，2010 年至今），确保任何环境下均可正常展示。</p>
+    <p><b>实现要点（模仿原站）：</b>Cloudflare Pages 版用 <b>Pages Functions/Worker</b> 在服务端定时抓取上交所数据并缓存；本静态版采用<b>三级降级策略</b>（实时直联 → JSON 缓存 → 内嵌离线数据），无需服务器即可在任意环境运行。颜色遵循 A 股惯例：<span class="up">红涨</span> / <span class="down">绿跌</span>。</p>
     <p class="tiny">⚠️ 本页为公开数据可视化，所有数值以交易所/数据商原始披露为准；不构成任何投资建议。两融余额是杠杆情绪的高频指标，但需结合价格、成交、估值综合判断。</p>
   </footer>
 </div>
 <div class="tooltip" id="tip"></div>
 
+<script src=".fallback_embed.js"></script>
 <script>
 const API='https://datacenter-web.eastmoney.com/api/data/v1/get';
 const REPORT='RPTA_RZRQ_LSHJ';
@@ -244,9 +245,19 @@ async function init(){
       document.getElementById('err').textContent='⚠️ 实时接口暂时不可达，已回退到本地缓存快照（'+ALL.length+' 个交易日）。错误：'+err.message;
       render();
     }catch(e2){
-      document.getElementById('src').textContent='加载失败';
-      document.getElementById('err').style.display='block';
-      document.getElementById('err').textContent='数据加载失败：'+e2.message;
+      // 最终兜底：内嵌数据（解决 file:// 协议下 fetch 被拦截的问题）
+      if(typeof FALLBACK_DATA!=='undefined'&&FALLBACK_DATA&&FALLBACK_DATA.length){
+        ALL=FALLBACK_DATA.slice().sort((a,b)=>new Date(a.DIM_DATE)-new Date(b.DIM_DATE));
+        document.getElementById('src').textContent='内嵌数据';
+        document.getElementById('fetched').textContent=now.toLocaleString('zh-CN')+'（离线模式）';
+        document.getElementById('err').style.display='block';
+        document.getElementById('err').textContent='⚠️ 网络不可用或 file:// 协议限制，已加载内嵌离线数据（'+ALL.length+' 个交易日，截至 '+ALL[ALL.length-1].DIM_DATE.slice(0,10)+'）。部署到 HTTP 服务器后可启用实时更新。';
+        render();
+      }else{
+        document.getElementById('src').textContent='加载失败';
+        document.getElementById('err').style.display='block';
+        document.getElementById('err').textContent='数据加载失败：'+e2.message;
+      }
     }
   }
 }
