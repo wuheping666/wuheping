@@ -2,3 +2,7 @@
 .workbuddy/
 .DS_Store
 Thumbs.db
+
+# 构建中间产物
+.kline_raw.json
+scripts/fred_*.csv
