@@ -44,8 +44,6 @@
   .hero .cta a{text-decoration:none;padding:11px 22px;border-radius:24px;font-weight:700;font-size:14px;transition:.2s}
   .btn-primary{background:#fff;color:var(--gold-2)}
   .btn-primary:hover{transform:translateY(-2px)}
-  .btn-ghost{background:rgba(255,255,255,.14);color:#fff;border:1px solid rgba(255,255,255,.4)}
-  .btn-ghost:hover{background:rgba(255,255,255,.24)}
 
   .stats{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:26px}
   .stat{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);
@@ -77,15 +75,6 @@
   .acard p{font-size:13px;color:var(--sub);line-height:1.6}
   .acard .go{margin-top:10px;font-size:12.5px;color:var(--gold-2);font-weight:700}
 
-  /* 部署 */
-  .deploy{background:var(--card);border:1px solid var(--line);border-radius:16px;
-    padding:24px 24px;box-shadow:var(--shadow);margin-top:14px}
-  .deploy h3{font-size:17px;margin-bottom:8px;color:var(--gold-2)}
-  .deploy ul{margin:6px 0 0 20px;font-size:14px;color:var(--ink)}
-  .deploy li{margin:5px 0}
-  .deploy code{background:var(--gold-soft);color:#6b4500;padding:1px 6px;border-radius:5px;font-size:12.5px}
-  .deploy a{color:var(--blue);text-decoration:none;font-weight:600}
-
   footer{text-align:center;color:var(--sub);font-size:12.5px;margin-top:46px;line-height:1.8}
   footer .disc{max-width:760px;margin:0 auto;background:var(--gold-soft);border:1px solid #ecd9a0;
     border-radius:12px;padding:14px 18px;color:#5b4a12}
@@ -103,7 +92,6 @@
       <a href="#act">落地</a>
       <a href="#goal">目标</a>
       <a href="#tools">实时工具</a>
-      <a href="#deploy">部署</a>
     </nav>
   </div>
 </div>
@@ -115,7 +103,6 @@
      到「怎么配、税后多少、怎么守纪律、要攒多少」——全部串成一张行动地图。</p>
   <div class="cta">
     <a class="btn-primary" href="#map">浏览全部文章 ↓</a>
-    <a class="btn-ghost" href="#deploy">如何部署到 wuheping.top</a>
   </div>
   <div class="stats">
     <div class="stat"><b>13</b><span>篇系统内容</span></div>
@@ -266,37 +253,12 @@
     </div>
   </div>
 
-  <!-- 部署 -->
-  <div class="section" id="deploy">
-    <div class="section-title"><span class="dot"></span>部署到 wuheping.top</div>
-    <div class="section-sub">本站为纯静态页面（无构建步骤），已包含 <code>CNAME</code>、<code>.nojekyll</code> 与部署说明，可直接推送到 GitHub / Gitee Pages。</div>
-    <div class="deploy">
-      <h3>GitHub Pages</h3>
-      <ul>
-        <li>新建仓库 → 添加远程 <code>git remote add github &lt;url&gt;</code> → <code>git push -u github main</code></li>
-        <li>Settings → Pages → Source 选 <code>main</code> 分支、<code>/ (root)</code></li>
-        <li>Custom domain 填 <code>wuheping.top</code>，DNS 添加 4 条 A 记录指向
-          <code>185.199.108.153</code> / <code>.109</code> / <code>.110</code> / <code>.111</code>，开启 HTTPS</li>
-      </ul>
-      <h3 style="margin-top:16px">Gitee Pages</h3>
-      <ul>
-        <li>新建公开仓库 → <code>git remote add gitee &lt;url&gt;</code> → <code>git push -u gitee master</code></li>
-        <li>服务 → Gitee Pages → 根目录部署；自定义域名需 Gitee Pages Pro</li>
-      </ul>
-      <h3 style="margin-top:16px">双端同步</h3>
-      <ul>
-        <li><code>git push github main &amp;&amp; git push gitee master</code></li>
-        <li>完整步骤见仓库内 <a href="README.md">README.md</a></li>
-      </ul>
-    </div>
-  </div>
-
   <footer>
     <div class="disc">
       ⚠️ 免责声明：本站所有文章均为投资理财常识与公开资料整理，内置计算器为理论演示，
       <b>不构成任何投资建议</b>。具体决策须结合实时数据与个人风险承受力，必要时咨询持牌顾问。
     </div>
-    <div style="margin-top:14px">复利与财务自由 · 知识库 &nbsp;|&nbsp; 域名 wuheping.top &nbsp;|&nbsp; 纯静态 · 免构建</div>
+    <div style="margin-top:14px">复利与财务自由 · 知识库 &nbsp;|&nbsp; 纯静态 · 免构建</div>
   </footer>
 
 </div>
