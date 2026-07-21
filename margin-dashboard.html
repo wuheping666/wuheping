@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>融资融券实时仪表盘 · 全市场</title>
+<style>
+  :root{
+    --bg:#0f1419; --panel:#161c24; --panel2:#1d2630; --line:#2a3340;
+    --txt:#e6edf3; --sub:#8b98a8; --accent:#4ea1ff;
+    --up:#ff4d4f;   /* 涨=红（A股惯例） */
+    --down:#1fab73; /* 跌=绿 */
+    --gold:#f5c451;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--txt);font-family:-apple-system,"PingFang SC","Microsoft YaHei",Segoe UI,Roboto,sans-serif;line-height:1.5;padding:24px 16px 60px}
+  .wrap{max-width:960px;margin:0 auto}
+  header{margin-bottom:22px}
+  h1{font-size:22px;font-weight:700;letter-spacing:.5px}
+  .sub{color:var(--sub);font-size:13px;margin-top:6px}
+  .sub b{color:var(--accent)}
+  .badge{display:inline-block;background:var(--panel2);border:1px solid var(--line);color:var(--sub);font-size:11px;padding:2px 8px;border-radius:20px;margin-left:6px}
+  .live{color:var(--up)}
+  .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:18px 0}
+  @media(max-width:680px){.cards{grid-template-columns:repeat(2,1fr)}}
+  .card{background:linear-gradient(160deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:14px;padding:16px 16px 14px}
+  .card .lbl{color:var(--sub);font-size:12px}
+  .card .val{font-size:26px;font-weight:700;margin-top:6px;font-variant-numeric:tabular-nums}
+  .card .delta{font-size:12px;margin-top:4px;font-variant-numeric:tabular-nums}
+  .up{color:var(--up)} .down{color:var(--down)}
+  .flow{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin-bottom:18px;display:flex;flex-wrap:wrap;align-items:center;gap:18px}
+  .flow .formula{color:var(--sub);font-size:13px}
+  .flow .net{font-size:24px;font-weight:700;font-variant-numeric:tabular-nums}
+  .flow .item{font-size:13px;color:var(--sub)}
+  .flow .item b{color:var(--txt);font-size:16px;font-weight:600}
+  .chartbox{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px 14px 8px}
+  .chartbox .head{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:8px}
+  .chartbox .head .t{font-size:14px;font-weight:600}
+  .legend{display:flex;gap:14px;font-size:12px;color:var(--sub)}
+  .legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;vertical-align:middle}
+  .ranges{display:flex;gap:6px;flex-wrap:wrap}
+  .ranges button{background:var(--panel2);border:1px solid var(--line);color:var(--sub);font-size:12px;padding:4px 12px;border-radius:20px;cursor:pointer;transition:.15s}
+  .ranges button:hover{color:var(--txt)}
+  .ranges button.on{background:var(--accent);border-color:var(--accent);color:#06121f;font-weight:600}
+  canvas{width:100%;height:320px;display:block}
+  .tooltip{position:fixed;pointer-events:none;background:#000d18ee;border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-size:12px;color:var(--txt);opacity:0;transition:opacity .1s;z-index:50;white-space:nowrap}
+  .tooltip b{color:var(--gold)}
+  footer{color:var(--sub);font-size:12px;margin-top:22px;line-height:1.7;border-top:1px solid var(--line);padding-top:14px}
+  footer a{color:var(--accent);text-decoration:none}
+  .err{background:#3a1d1d;border:1px solid #5a2a2a;color:#ffb4b4;padding:12px 14px;border-radius:10px;font-size:13px;display:none}
+  .tiny{font-size:11px;color:var(--sub)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>融资融券实时仪表盘 <span class="badge">全市场 · 沪+深+北证</span></h1>
+    <div class="sub">
+      数据来源：东方财富数据中心（<b>RPTA_RZRQ_LSHJ</b>，每日交易所披露汇总）·
+      数据截至 <b id="asof">—</b> ·
+      <span class="live">● 实时</span> 更新于 <span id="fetched">—</span>
+      <span class="badge" id="src">加载中…</span>
+    </div>
+  </header>
+
+  <div class="err" id="err"></div>
+
+  <div class="cards">
+    <div class="card"><div class="lbl">融资融券余额</div><div class="val" id="c_rzrq">—</div><div class="delta" id="d_rzrq">—</div></div>
+    <div class="card"><div class="lbl">融资余额</div><div class="val" id="c_rzye">—</div><div class="delta" id="d_rzye">—</div></div>
+    <div class="card"><div class="lbl">融资买入额(当日)</div><div class="val" id="c_rzmre">—</div><div class="delta" id="d_rzmre">—</div></div>
+    <div class="card"><div class="lbl">融券余额(余量金额)</div><div class="val" id="c_rqye">—</div><div class="delta" id="d_rqye">—</div></div>
+  </div>
+
+  <div class="flow">
+    <div class="formula">融资资金流 ＝ 融资买入额 − 融资偿还额 ＝</div>
+    <div class="net" id="net">—</div>
+    <div class="item">融资买入 <b id="i_mre">—</b></div>
+    <div class="item">融资偿还 <b id="i_che">—</b></div>
+    <div class="item" style="margin-left:auto">融券余量 <b id="i_rqyl">—</b>（股）</div>
+  </div>
+
+  <div class="chartbox">
+    <div class="head">
+      <div class="t">两融余额走势 <span class="tiny">单位：亿元 · 融资余额(左轴) · 融券余额(右轴)</span></div>
+      <div class="legend">
+        <span><i style="background:#4ea1ff"></i>融资余额</span>
+        <span><i style="background:#f5c451"></i>融券余额</span>
+      </div>
+    </div>
+    <div class="ranges" id="ranges">
+      <button data-r="21">1M</button>
+      <button data-r="63">3M</button>
+      <button data-r="126">6M</button>
+      <button data-r="252" class="on">1Y</button>
+      <button data-r="756">3Y</button>
+      <button data-r="0">MAX</button>
+    </div>
+    <canvas id="chart"></canvas>
+  </div>
+
+  <footer>
+    <p><b>数据口径：</b>本仪表盘为<b>全市场</b>（沪市+深市+北证）融资融券汇总，每交易日一行。所参照的样例站 <code>margin-dashboard-4z2.pages.dev</code> 为<b>上交所（沪市）单独</b>数据（如 2026-07-20 沪市两融≈1.37万亿），本版用同一数据源（东方财富）做了更完整的全市场口径，数值约为其 2 倍，属正常差异。</p>
+    <p><b>实时更新机制：</b>页面打开即向东方财富接口直连拉取最新数据（浏览器跨域，<code>Access-Control-Allow-Origin:*</code>），每 10 分钟自动刷新；若接口临时不可用，则回退到仓库内的 <code>margin-data.json</code> 缓存快照。另有 GitHub Actions 每日收盘后自动刷新该缓存。</p>
+    <p><b>实现要点（模仿原站）：</b>Cloudflare Pages 版用 <b>Pages Functions/Worker</b> 在服务端定时抓取上交所数据并缓存；本静态版用<b>纯前端直连 + 定时刷新 + JSON 缓存兜底</b>，无需服务器即可部署到 GitHub Pages / Gitee Pages。颜色遵循 A 股惯例：<span class="up">红涨</span> / <span class="down">绿跌</span>。</p>
+    <p class="tiny">⚠️ 本页为公开数据可视化，所有数值以交易所/数据商原始披露为准；不构成任何投资建议。两融余额是杠杆情绪的高频指标，但需结合价格、成交、估值综合判断。</p>
+  </footer>
+</div>
+<div class="tooltip" id="tip"></div>
+
+<script>
+const API='https://datacenter-web.eastmoney.com/api/data/v1/get';
+const REPORT='RPTA_RZRQ_LSHJ';
+const COLS='RZRQYE,RZYE,RQYE,RZMRE,RZCHE,RZJME,RQYL,RZRQYECZ,DIM_DATE';
+const YI=1e8; // 浏览器直连返回单位为「元」，÷1e8 = 亿元
+let ALL=[]; let curRange=252;
+
+const fmt=(v)=> (v==null||isNaN(v))?'—':(v).toLocaleString('zh-CN',{maximumFractionDigits:1});
+const fmtSigned=(v)=> (v>=0?'+':'−')+fmt(Math.abs(v));
+const cls=(v)=> v>0?'up':(v<0?'down':'');
+const col=(v)=> v>0?'var(--up)':(v<0?'var(--down)':'var(--sub)');
+
+async function fetchPage(p){
+  const u=API+'?'+new URLSearchParams({reportName:REPORT,columns:COLS,pageSize:'500',
+    pageNumber:String(p),sortColumns:'DIM_DATE',sortTypes:'-1',source:'WEB',client:'WEB'});
+  const r=await fetch(u); const j=await r.json();
+  if(!j.success||!j.result) throw new Error(j.message||'接口异常');
+  return j.result.data||[];
+}
+async function loadLive(){
+  const pages=await Promise.all([1,2,3].map(fetchPage));
+  const seen=new Set(); let rows=[];
+  for(const p of pages) for(const r of p){
+    const d=r.DIM_DATE.slice(0,10); if(seen.has(d))continue; seen.add(d); rows.push(r);
+  }
+  rows.sort((a,b)=>new Date(a.DIM_DATE)-new Date(b.DIM_DATE)); // 升序供画图
+  return rows;
+}
+async function loadFallback(){
+  const r=await fetch('margin-data.json?t='+Date.now()); const j=await r.json();
+  return (j.data||[]).slice().sort((a,b)=>new Date(a.DIM_DATE)-new Date(b.DIM_DATE));
+}
+
+function render(){
+  if(!ALL.length) return;
+  const last=ALL[ALL.length-1];
+  const prev=(ALL.length>1)?ALL[ALL.length-2]:last;
+  const g=(r,k)=> (r[k]||0)/YI;
+  const setCard=(id,did,val,delta)=>{
+    document.getElementById(id).textContent=fmt(val)+' 亿';
+    const el=document.getElementById(did);
+    el.textContent='较前日 '+fmtSigned(delta)+' 亿';
+    el.className='delta '+cls(delta);
+  };
+  setCard('c_rzrq','d_rzrq', g(last,'RZRQYE'), g(last,'RZRQYE')-g(prev,'RZRQYE'));
+  setCard('c_rzye','d_rzye', g(last,'RZYE'),   g(last,'RZYE')-g(prev,'RZYE'));
+  setCard('c_rzmre','d_rzmre', g(last,'RZMRE'), g(last,'RZMRE')-g(prev,'RZMRE'));
+  setCard('c_rqye','d_rqye', g(last,'RQYE'),    g(last,'RQYE')-g(prev,'RQYE'));
+  const net=g(last,'RZMRE')-g(last,'RZCHE');
+  const ne=document.getElementById('net');
+  ne.textContent=fmtSigned(net)+' 亿'; ne.className='net '+cls(net);
+  document.getElementById('i_mre').textContent=fmt(g(last,'RZMRE'))+' 亿';
+  document.getElementById('i_che').textContent=fmt(g(last,'RZCHE'))+' 亿';
+  document.getElementById('i_rqyl').textContent=(last.RQYL/1e8).toFixed(2)+' 亿';
+  document.getElementById('asof').textContent=last.DIM_DATE.slice(0,10);
+  drawChart();
+}
+
+/* ---------- Canvas 双轴折线图 ---------- */
+const cv=document.getElementById('chart'), ctx=cv.getContext('2d'), tip=document.getElementById('tip');
+let chartPts=[];
+function drawChart(){
+  const W=cv.clientWidth, H=320, dpr=window.devicePixelRatio||1;
+  cv.width=W*dpr; cv.height=H*dpr; ctx.setTransform(dpr,0,0,dpr,0,0);
+  ctx.clearRect(0,0,W,H);
+  const data = curRange>0 ? ALL.slice(-curRange) : ALL;
+  const padL=58,padR=58,padT=18,padB=28;
+  const x0=padL,x1=W-padR,y0=padT,y1=H-padB;
+  const lV=data.map(r=>r.RZYE/YI), rV=data.map(r=>r.RQYE/YI);
+  const lMin=Math.min(...lV),lMax=Math.max(...lV);
+  const rMin=Math.min(...rV),rMax=Math.max(...rV);
+  const pad=(a,b)=>a===b?[a*0.99,a*1.01]:[a-(b-a)*0.08,b+(b-a)*0.08];
+  const [lA,lB]=pad(lMin,lMax),[rA,rB]=pad(rMin,rMax);
+  const X=i=> x0+(x1-x0)*(i/(data.length-1||1));
+  const YL=v=> y1-(y1-y0)*((v-lA)/(lB-lA||1));
+  const YR=v=> y1-(y1-y0)*((v-rA)/(rB-rA||1));
+  // 网格 + 左轴
+  ctx.font='11px sans-serif'; ctx.textBaseline='middle';
+  for(let i=0;i<=4;i++){
+    const y=y0+(y1-y0)*i/4;
+    ctx.strokeStyle='rgba(255,255,255,.06)'; ctx.beginPath();ctx.moveTo(x0,y);ctx.lineTo(x1,y);ctx.stroke();
+    ctx.fillStyle='#4ea1ff'; ctx.textAlign='right';
+    ctx.fillText(((lB-(lB-lA)*i/4)/1000).toFixed(1)+'k', x0-6, y);
+    ctx.fillStyle='#f5c451'; ctx.textAlign='left';
+    ctx.fillText(((rB-(rB-rA)*i/4)/1000).toFixed(1)+'k', x1+6, y);
+  }
+  // 右轴标签提示
+  ctx.fillStyle='#8b98a8'; ctx.textAlign='center';
+  ctx.fillText('融资(左) / 融券(右) · 千亿元', (x0+x1)/2, y0-8);
+  // x 轴日期
+  const ticks=5;
+  for(let i=0;i<=ticks;i++){
+    const idx=Math.min(data.length-1,Math.round((data.length-1)*i/ticks));
+    ctx.fillStyle='#8b98a8'; ctx.textAlign='center';
+    ctx.fillText(data[idx].DIM_DATE.slice(5,10), X(idx), y1+16);
+  }
+  const line=(arr,Y,color)=>{
+    ctx.strokeStyle=color; ctx.lineWidth=1.8; ctx.beginPath();
+    arr.forEach((v,i)=>{const x=X(i),y=Y(v); i?ctx.lineTo(x,y):ctx.moveTo(x,y);});
+    ctx.stroke();
+  };
+  line(lV,YL,'#4ea1ff'); line(rV,YR,'#f5c451');
+  chartPts=data.map((r,i)=>({x:X(i),yL:YL(lV[i]),yR:YR(rV[i]),r}));
+}
+cv.addEventListener('mousemove',e=>{
+  if(!chartPts.length)return;
+  const rect=cv.getBoundingClientRect(); const mx=e.clientX-rect.left;
+  let best=0,bd=1e9; chartPts.forEach((p,i)=>{const d=Math.abs(p.x-mx);if(d<bd){bd=d;best=i;}});
+  const p=chartPts[best];
+  tip.style.opacity=1; tip.style.left=(e.clientX+14)+'px'; tip.style.top=(e.clientY-10)+'px';
+  tip.innerHTML=`<b>${p.r.DIM_DATE.slice(0,10)}</b><br>融资余额：${(p.r.RZYE/YI).toLocaleString('zh-CN',{maximumFractionDigits:1})} 亿<br>融券余额：${(p.r.RQYE/YI).toLocaleString('zh-CN',{maximumFractionDigits:1})} 亿<br>融资买入：${(p.r.RZMRE/YI).toLocaleString('zh-CN',{maximumFractionDigits:1})} 亿`;
+});
+cv.addEventListener('mouseleave',()=>tip.style.opacity=0);
+
+document.getElementById('ranges').addEventListener('click',e=>{
+  if(e.target.tagName!=='BUTTON')return;
+  document.querySelectorAll('#ranges button').forEach(b=>b.classList.remove('on'));
+  e.target.classList.add('on'); curRange=+e.target.dataset.r; drawChart();
+});
+
+async function init(){
+  const now=new Date();
+  try{
+    ALL=await loadLive();
+    document.getElementById('src').textContent='直连实时';
+    document.getElementById('fetched').textContent=now.toLocaleString('zh-CN');
+    render();
+  }catch(err){
+    try{
+      ALL=await loadFallback();
+      document.getElementById('src').textContent='缓存快照';
+      document.getElementById('fetched').textContent=now.toLocaleString('zh-CN')+'（实时失败）';
+      document.getElementById('err').style.display='block';
+      document.getElementById('err').textContent='⚠️ 实时接口暂时不可达，已回退到本地缓存快照（'+ALL.length+' 个交易日）。错误：'+err.message;
+      render();
+    }catch(e2){
+      document.getElementById('src').textContent='加载失败';
+      document.getElementById('err').style.display='block';
+      document.getElementById('err').textContent='数据加载失败：'+e2.message;
+    }
+  }
+}
+init();
+setInterval(init, 10*60*1000);   // 每 10 分钟自动刷新（实时）
+window.addEventListener('resize',()=>{if(ALL.length)drawChart();});
+</script>
+<script src="assets/site.js"></script>
+</body>
+</html>

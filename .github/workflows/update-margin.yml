@@ -1,0 +1,40 @@
+name: 更新两融数据缓存
+
+on:
+  schedule:
+    # 每个交易日收盘后刷新（北京时间 16:30 ≈ UTC 08:30）；非交易日会重新拉取相同数据，幂等无害
+    - cron: "30 8 * * 1-5"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 检出仓库
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 配置 Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: 拉取最新两融数据并生成 margin-data.json
+        run: python scripts/build_margin.py
+
+      - name: 提交更新（仅当内容变化）
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          if [ -n "$(git status --porcelain margin-data.json)" ]; then
+            git add margin-data.json
+            git commit -m "chore: 刷新两融缓存 $(date +%Y-%m-%d)"
+            git push
+            echo "已推送更新"
+          else
+            echo "数据无变化，跳过提交"
+          fi
