@@ -3,8 +3,9 @@
 """
 生成 margin-data.json 缓存快照（融资融券全市场每日汇总）。
 数据源：东方财富数据中心 RPTA_RZRQ_LSHJ（每交易日一行，沪+深+北证）。
-注意：带 Referer 请求时东财返回「万元」，本脚本统一转换为「元」，
-与前端浏览器直连（无 Referer，返回元）的口径一致，前端再 ÷1e8 显示为亿元。
+单位说明：东方财富接口返回的数值单位随请求头（Referer / UA）变化——
+浏览器 fetch（无 Referer）与服务端 urllib 请求均返回「元」。
+因此本脚本直接按「元」存储，与前端浏览器直连口径一致，前端再 ÷1e8 显示为亿元。
 用法：python3 scripts/build_margin.py  ->  写出 margin-data.json
 """
 import json, urllib.request, urllib.parse, datetime, sys
