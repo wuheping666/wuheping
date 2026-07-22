@@ -75,8 +75,8 @@
   .layer-h{display:flex;align-items:center;gap:10px;margin:18px 0 12px}
   .layer-h .badge{font-size:13px;font-weight:700;color:#fff;padding:4px 12px;border-radius:20px}
   .layer-h .desc{color:var(--sub);font-size:13px}
-  .l-cog{background:var(--blue)} .l-math{background:var(--purple)}
-  .l-act{background:var(--teal)} .l-goal{background:var(--gold-2)}
+  .l-base{background:var(--blue)} .l-tool{background:var(--teal)}
+  .l-hist{background:var(--gold-2)}
 
   /* 卡片网格 */
   .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
@@ -100,10 +100,9 @@
     <div class="brand">财务自由之路</div>
     <nav class="topnav">
       <a href="#about">关于</a>
-      <a href="#map">文章系列</a>
-      <a href="#tools">实时工具</a>
-      <a href="us-inflation.html">美国通胀·利率</a>
-      <a href="national-team.html">国家队护盘</a>
+      <a href="#basic">基础知识</a>
+      <a href="#tools">金融工具</a>
+      <a href="#history">历史前瞻总结</a>
     </nav>
   </div>
 </div>
@@ -114,14 +113,14 @@
   <p>一个普通人把投资理财常识串成行动地图的博客：从「买什么、怎么便宜买、宏观怎么动」，
      到「怎么配、税后多少、怎么守纪律、要攒多少」——用可查证的数据和能动手算的工具，陪自己走完这条路。</p>
   <div class="cta">
-    <a class="btn-primary" href="#map">浏览全部文章 ↓</a>
+    <a class="btn-primary" href="#basic">浏览全部内容 ↓</a>
     <a class="btn-ghost" href="#about">关于这个博客</a>
   </div>
   <div class="stats">
-    <div class="stat"><b>13</b><span>篇系统笔记</span></div>
-    <div class="stat"><b>4</b><span>大知识层级</span></div>
+    <div class="stat"><b>14</b><span>篇系统笔记</span></div>
+    <div class="stat"><b>3</b><span>大内容板块</span></div>
     <div class="stat"><b>20+</b><span>互动计算器</span></div>
-    <div class="stat"><b>3</b><span>实时数据工具</span></div>
+    <div class="stat"><b>4</b><span>金融数据工具</span></div>
   </div>
 </header>
 
@@ -132,134 +131,73 @@
     <h2><span class="dot"></span>关于「财务自由之路」</h2>
     <p>这不是一个喊单账号，而是一份<b>给自己写的投资理财说明书</b>。我把读过、算过、验证过的常识整理成系列文章，
        目标只有一个：让「财务自由」从一个模糊的渴望，变成一组可以一步步执行的数字与动作。</p>
-    <p>内容按 <b>认知 → 数学 → 落地 → 目标</b> 四层递进：先建立世界观（买什么、避什么、央行怎么想），
-       再用数学把收益率串起来（复利、估值），然后落到可执行的组合、税务与纪律，最后回到「到底要攒多少才算自由」。</p>
+    <p>内容分三大板块：<b>基础知识</b>——评估、复利、估值、配置、税务、纪律、风险与自由路径的常青方法；
+       <b>金融工具</b>——能动手算的计算器与打开即刷新的实时数据看板；
+       <b>历史前瞻总结</b>——周期复盘与市场前瞻，把「过去发生过什么、下一步可能怎么走」讲清楚。</p>
     <p>所有内置计算器都是<b>理论演示</b>，所有实时数据工具都直连公开交易所 / 统计局接口——
        本站只做知识的整理与呈现，<b>不构成任何投资建议</b>。谨慎决策，对自己负责。</p>
   </div>
 
-  <!-- 系列地图 -->
-  <div class="section" id="map">
-    <div class="section-title"><span class="dot"></span>文章系列</div>
-    <div class="section-sub">14 篇笔记 + 1 份巩固书单，按「认知 → 数学 → 落地 → 目标」四层递进。点击任意卡片进入阅读。</div>
-
-    <!-- 认知层 -->
-    <div class="layer" id="cog">
+  <!-- 基础知识 -->
+  <div class="section" id="basic">
+    <div class="section-title"><span class="dot"></span>基础知识</div>
+    <div class="section-sub">投资理财的常青方法：从评估、复利、估值到配置、税务、纪律、风险与自由路径——不随行情过期的底层功课，多数篇内含互动计算器。</div>
+    <div class="layer">
       <div class="layer-h">
-        <span class="badge l-cog">认知层</span>
-        <span class="desc">建立世界观：买什么、避什么、宏观怎么动、央行怎么想</span>
+        <span class="badge l-base">基础知识</span>
+        <span class="desc">买什么、怎么便宜买、怎么配、税后多少、怎么守纪律、要攒多少</span>
       </div>
       <div class="grid">
         <a class="acard" href="红利股指南.html">
-          <div class="no">① 红利股指南</div>
+          <div class="no">01 红利股指南</div>
           <h3>年化利率与成本损耗</h3>
           <p>高股息行业分布、当前股息率快照、年化算法，以及被忽略的五类成本损耗量化。</p>
           <div class="go">阅读 →</div>
         </a>
-        <a class="acard" href="泡沫破裂征兆.html">
-          <div class="no">② 泡沫破裂征兆</div>
-          <h3>历史 9 大通用征兆</h3>
-          <p>泡沫前的共同指纹、刺破三要素、历史案例，以及 2026 当前温度计。</p>
-          <div class="go">阅读 →</div>
-        </a>
-        <a class="acard" href="美联储周期与资产走势.html">
-          <div class="no">③ 美联储周期</div>
-          <h3>周期与全球资产走势</h3>
-          <p>加息/降息全景时间线，黄金/股/债/中美利差/港股/A股 在周期中的对照矩阵。</p>
-          <div class="go">阅读 →</div>
-        </a>
-        <a class="acard" href="美联储决策依据与周期机会.html">
-          <div class="no">④ 决策与机会</div>
-          <h3>美联储决策依据</h3>
-          <p>双重使命框架、预防式 vs 纾困式降息，以及普通人的杠铃策略与周期机会。</p>
-          <div class="go">阅读 →</div>
-        </a>
-        <a class="acard" href="美股下半年展望.html">
-          <div class="no">⑤ 美股下半年展望</div>
-          <h3>2 大风险 + 1 大致富机会</h3>
-          <p>美投讲美股视频观后总结：加息危机被夸大、中期选举短期波动、AI 从存量转向增量。</p>
-          <div class="go">阅读 →</div>
-        </a>
-      </div>
-    </div>
-
-    <!-- 数学层 -->
-    <div class="layer" id="math">
-      <div class="layer-h">
-        <span class="badge l-math">数学层</span>
-        <span class="desc">把前面所有收益率用一套数学串起来</span>
-      </div>
-      <div class="grid">
         <a class="acard" href="复利引擎.html">
-          <div class="no">⑤ 复利引擎</div>
+          <div class="no">02 复利引擎</div>
           <h3>72 法则与负复利</h3>
           <p>72 法则、单利 vs 复利、负复利杀伤力、通胀侵蚀、早投威力——5 个互动计算器。</p>
           <div class="go">阅读 →</div>
         </a>
         <a class="acard" href="估值安全边际.html">
-          <div class="no">⑥ 估值安全边际</div>
+          <div class="no">03 估值安全边际</div>
           <h3>便宜才是硬道理</h3>
           <p>8 大指标速查、三恒等式联动、PEG/分位/买入价——4 个互动计算器。</p>
           <div class="go">阅读 →</div>
         </a>
-      </div>
-    </div>
-
-    <!-- 落地层 -->
-    <div class="layer" id="act">
-      <div class="layer-h">
-        <span class="badge l-act">落地层</span>
-        <span class="desc">把认知变成可执行的组合、税后账单与行为护栏</span>
-      </div>
-      <div class="grid">
         <a class="acard" href="资产配置再平衡.html">
-          <div class="no">⑦ 资产配置</div>
+          <div class="no">04 资产配置</div>
           <h3>再平衡与美林时钟</h3>
           <p>60/40、全天候、风险平价，再平衡=自动低买高卖，美林时钟四阶段——3 计算器。</p>
           <div class="go">阅读 →</div>
         </a>
         <a class="acard" href="税务与渠道.html">
-          <div class="no">⑧ 税务与渠道</div>
+          <div class="no">05 税务与渠道</div>
           <h3>A股/港股/美股税率</h3>
           <p>三地税率与开户路径、个人养老金抵扣——把「成本损耗」变成可计算账单（4 计算器）。</p>
           <div class="go">阅读 →</div>
         </a>
         <a class="acard" href="行为与纪律.html">
-          <div class="no">⑨ 行为与纪律</div>
+          <div class="no">06 行为与纪律</div>
           <h3>守住才拿得住</h3>
           <p>八大行为偏差、四条纪律护栏，以及一份行为偏差自检表。</p>
           <div class="go">阅读 →</div>
         </a>
-        <a class="acard" href="宏观监测仪表盘.html">
-          <div class="no">⑪ 宏观仪表盘</div>
-          <h3>每周自检红绿灯</h3>
-          <p>中美七灯红绿灯系统、PMI/社融/汇率解读，以及每周监测清单生成器。</p>
-          <div class="go">阅读 →</div>
-        </a>
         <a class="acard" href="风险管理.html">
-          <div class="no">⑫ 风险管理</div>
+          <div class="no">07 风险管理</div>
           <h3>先求不输再求赢</h3>
           <p>六类风险、五件套防守、压力测试——把「泡沫里怎么活下来」变成数字（4 计算器）。</p>
           <div class="go">阅读 →</div>
         </a>
-      </div>
-    </div>
-
-    <!-- 目标层 -->
-    <div class="layer" id="goal">
-      <div class="layer-h">
-        <span class="badge l-goal">目标层</span>
-        <span class="desc">回到「财务自由」本身：要攒多少、何时能自由</span>
-      </div>
-      <div class="grid">
         <a class="acard" href="财务自由路径.html">
-          <div class="no">⑩ 财务自由路径</div>
+          <div class="no">08 财务自由路径</div>
           <h3>4% 安全提取率</h3>
           <p>FI 数字 = 年支出 × 25、三段进阶路径，以及 4 个通往自由的计算器。</p>
           <div class="go">阅读 →</div>
         </a>
         <a class="acard" href="巩固书单.html">
-          <div class="no">📚 巩固书单</div>
+          <div class="no">09 巩固书单</div>
           <h3>读什么书打底</h3>
           <p>5 本核心必读 + 按 8 模块分书 + 8 步阅读顺序，每本对应你学过的篇章。</p>
           <div class="go">阅读 →</div>
@@ -268,32 +206,82 @@
     </div>
   </div>
 
-  <!-- 实时工具 -->
+  <!-- 金融工具 -->
   <div class="section" id="tools">
-    <div class="section-title"><span class="dot"></span>实时数据工具</div>
-    <div class="section-sub">把博客里的「宏观监测」「风险管理」落到可刷新的实时数据上——打开即拉取交易所 / 统计局最新披露，无需手动更新。</div>
-    <div class="grid">
-      <a class="acard" href="margin-dashboard.html" style="border-color:var(--gold)">
-        <div class="no">🔴 实时 · 融资融券</div>
-        <h3>两融余额仪表盘</h3>
-        <p>全市场（沪+深+北证）融资融券每日汇总：余额、融资买入、净买入、走势图，
-           浏览器直连东方财富接口，每 10 分钟自动刷新。</p>
-        <div class="go">打开仪表盘 →</div>
-      </a>
-      <a class="acard" href="us-inflation.html" style="border-color:var(--gold)">
-        <div class="no">🇺🇸 实时 · 美国通胀·利率·美股</div>
-        <h3>美国通胀·利率·美股 看板</h3>
-        <p>CPI、核心CPI、PPI（BLS 实时直连）＋ PCE、核心PCE、<b>联邦基金利率、10/20/30 年国债收益率、标普500</b>（FRED）：
-           按月份汇总成一张表，标注美联储「加息 / 降息 / 维持」，每 30 分钟自动刷新。</p>
-        <div class="go">打开看板 →</div>
-      </a>
-      <a class="acard" href="national-team.html" style="border-color:var(--brand-2,#b00)">
-        <div class="no">🛡️ 实时 · 国家队护盘</div>
-        <h3>国家队护盘图谱（沪深300 K线）</h3>
-        <p>在沪深300 K线上标注历次“国家队”入场时点，点开即可看：哪些结构（汇金/证金/诚通/国新/社保/险资）、
-           各买入多少资金、分别在什么情形下维稳。K线浏览器实时拉取，断网回退内置快照。</p>
-        <div class="go">打开图谱 →</div>
-      </a>
+    <div class="section-title"><span class="dot"></span>金融工具</div>
+    <div class="section-sub">能动手用的工具：宏观自检清单生成器，加上打开即拉取交易所 / 统计局最新披露的实时数据看板，无需手动更新。</div>
+    <div class="layer">
+      <div class="layer-h">
+        <span class="badge l-tool">金融工具</span>
+        <span class="desc">监测清单生成器 + 实时数据看板</span>
+      </div>
+      <div class="grid">
+        <a class="acard" href="宏观监测仪表盘.html">
+          <div class="no">📊 宏观监测仪表盘</div>
+          <h3>每周自检红绿灯</h3>
+          <p>中美七灯红绿灯系统、PMI/社融/汇率解读，以及每周监测清单生成器。</p>
+          <div class="go">打开工具 →</div>
+        </a>
+        <a class="acard" href="margin-dashboard.html" style="border-color:var(--gold)">
+          <div class="no">🔴 实时 · 融资融券</div>
+          <h3>两融余额仪表盘</h3>
+          <p>全市场（沪+深+北证）融资融券每日汇总：余额、融资买入、净买入、走势图，
+             浏览器直连东方财富接口，每 10 分钟自动刷新。</p>
+          <div class="go">打开仪表盘 →</div>
+        </a>
+        <a class="acard" href="us-inflation.html" style="border-color:var(--gold)">
+          <div class="no">🇺🇸 实时 · 美国通胀·利率·美股</div>
+          <h3>美国通胀·利率·美股 看板</h3>
+          <p>CPI、核心CPI、PPI（BLS 实时直连）＋ PCE、核心PCE、<b>联邦基金利率、10/20/30 年国债收益率、标普500</b>（FRED）：
+             按月份汇总成一张表，标注美联储「加息 / 降息 / 维持」，每 30 分钟自动刷新。</p>
+          <div class="go">打开看板 →</div>
+        </a>
+        <a class="acard" href="national-team.html" style="border-color:var(--brand-2,#b00)">
+          <div class="no">🛡️ 实时 · 国家队护盘</div>
+          <h3>国家队护盘图谱（沪深300 K线）</h3>
+          <p>在沪深300 K线上标注历次“国家队”入场时点，点开即可看：哪些结构（汇金/证金/诚通/国新/社保/险资）、
+             各买入多少资金、分别在什么情形下维稳。K线浏览器实时拉取，断网回退内置快照。</p>
+          <div class="go">打开图谱 →</div>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- 历史前瞻总结 -->
+  <div class="section" id="history">
+    <div class="section-title"><span class="dot"></span>历史前瞻总结</div>
+    <div class="section-sub">周期复盘与市场前瞻：过去发生过什么、当下处在周期哪一段、下一步可能怎么走——含对第三方观点的观后总结。</div>
+    <div class="layer">
+      <div class="layer-h">
+        <span class="badge l-hist">历史前瞻总结</span>
+        <span class="desc">读懂周期、复盘历史、前瞻后市</span>
+      </div>
+      <div class="grid">
+        <a class="acard" href="美联储周期与资产走势.html">
+          <div class="no">01 美联储周期</div>
+          <h3>周期与全球资产走势</h3>
+          <p>加息/降息全景时间线，黄金/股/债/中美利差/港股/A股 在周期中的对照矩阵。</p>
+          <div class="go">阅读 →</div>
+        </a>
+        <a class="acard" href="美联储决策依据与周期机会.html">
+          <div class="no">02 决策与机会</div>
+          <h3>美联储决策依据</h3>
+          <p>双重使命框架、预防式 vs 纾困式降息，以及普通人的杠铃策略与周期机会。</p>
+          <div class="go">阅读 →</div>
+        </a>
+        <a class="acard" href="泡沫破裂征兆.html">
+          <div class="no">03 泡沫破裂征兆</div>
+          <h3>历史 9 大通用征兆</h3>
+          <p>泡沫前的共同指纹、刺破三要素、历史案例，以及 2026 当前温度计。</p>
+          <div class="go">阅读 →</div>
+        </a>
+        <a class="acard" href="美股下半年展望.html">
+          <div class="no">04 美股下半年展望</div>
+          <h3>2 大风险 + 1 大致富机会</h3>
+          <p>美投讲美股视频观后总结：加息危机被夸大、中期选举短期波动、AI 从存量转向增量。</p>
+          <div class="go">阅读 →</div>
+        </a>
+      </div>
     </div>
   </div>
 
