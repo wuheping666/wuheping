@@ -1,0 +1,26 @@
+name: Refresh US Market embed data
+on:
+  schedule:
+    - cron: '0 6 25 * *'   # 每月 25 日 06:00 UTC（FINRA 通常第三周发布上一月末数据；GDP/CAPE 同步刷新）
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Build margin debt embed (FINRA / thetrading)
+        run: python scripts/build_us_margin_debt.py
+      - name: Build market gauge macro embed (GDP / CAPE / 引用值)
+        run: python scripts/build_us_market_gauge.py
+      - name: Commit & push
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add us-margin-debt-embed.js us-market-gauge-embed.js
+          git diff --cached --quiet || git commit -m "auto: refresh US market embed data (margin debt + gauge macro)"
+          git push
