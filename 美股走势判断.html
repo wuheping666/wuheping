@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>美股走势判断：杠杆风险温度计 | 财务自由之路</title>
+<style>
+  :root{
+    --green:#3B6D11; --green-l:#EAF3DE; --green-m:#97C459;
+    --amber:#854F0B; --amber-l:#FAEEDA;
+    --blue:#185FA5; --blue-l:#E6F1FB;
+    --red:#A32D2D; --red-l:#FCEBEB;
+    --ink:#1a2b3c; --muted:#5f6b78; --line:#e3e8ee;
+    --bg:#f7f9fb; --card:#ffffff;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.7}
+  .wrap{max-width:1080px;margin:0 auto;padding:32px 20px 64px}
+  header.hero{background:linear-gradient(135deg,#7a1d1d,#b8432e);color:#fff;border-radius:18px;padding:34px 32px;margin-bottom:26px}
+  header.hero h1{font-size:27px;font-weight:700;letter-spacing:.5px;line-height:1.35}
+  header.hero p{margin-top:12px;font-size:15px;opacity:.93;max-width:780px}
+  .pill{display:inline-block;background:rgba(255,255,255,.18);border-radius:999px;padding:4px 12px;font-size:12px;margin-bottom:14px}
+  .src{margin-top:16px;font-size:13px;opacity:.92}
+  .src a{color:#fff;text-decoration:underline}
+  section{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:26px 28px;margin-bottom:22px}
+  h2{font-size:20px;margin-bottom:6px;display:flex;align-items:center;gap:10px}
+  h2 .num{background:var(--red);color:#fff;font-size:13px;width:26px;height:26px;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;flex:none}
+  .lead{color:var(--muted);font-size:14px;margin-bottom:16px}
+  p{margin:10px 0;font-size:14.5px}
+  b{color:var(--ink)}
+  ul{margin:10px 0 10px 20px;font-size:14.5px}
+  li{margin:7px 0}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .box{background:#fbfcfe;border:1px solid var(--line);border-radius:12px;padding:16px 18px}
+  .box h3{font-size:15px;margin-bottom:8px;color:var(--ink)}
+  .tag{display:inline-block;padding:2px 9px;border-radius:6px;font-size:12.5px;font-weight:700}
+  .t-red{background:var(--red-l);color:var(--red)}
+  .t-green{background:var(--green-l);color:var(--green)}
+  .t-amber{background:var(--amber-l);color:var(--amber)}
+  .t-blue{background:var(--blue-l);color:var(--blue)}
+  .note{background:var(--amber-l);border-left:4px solid var(--amber);border-radius:8px;padding:13px 16px;font-size:13.5px;color:#633806;margin:14px 0}
+  .risk{background:var(--red-l);border-left:4px solid var(--red);border-radius:8px;padding:13px 16px;font-size:13.8px;color:#7a1d1d;margin:14px 0}
+  .chance{background:var(--green-l);border-left:4px solid var(--green);border-radius:8px;padding:13px 16px;font-size:13.8px;color:#2c4d10;margin:14px 0}
+  .key{background:#f0f7ea;border:1px solid var(--green-m);border-radius:12px;padding:18px 20px}
+  .key li{margin:8px 0 8px 20px;font-size:14.5px}
+  .disclaim{font-size:12.5px;color:var(--muted);border-top:1px dashed var(--line);padding-top:16px;margin-top:8px}
+  .foot{text-align:center;color:var(--muted);font-size:12.5px;margin-top:10px}
+  .videolink{background:var(--blue-l);border:1px solid #cfe0f5;border-radius:12px;padding:16px 18px;font-size:14px}
+  .videolink a{color:var(--blue);font-weight:600;text-decoration:none}
+  .videolink a:hover{text-decoration:underline}
+  .embed{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px 18px 8px;margin-bottom:22px}
+  .embed h2 .num{background:var(--blue)}
+  .embed .frame-wrap{border-radius:12px;overflow:hidden;border:1px solid var(--line)}
+  iframe{width:100%;border:0;display:block;min-height:1980px}
+  .embed .cap{font-size:12.5px;color:var(--muted);padding:10px 4px 4px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <span class="pill">框架转译 · 来自公众号「寒叔聊投资」</span>
+    <h1>美股走势判断：杠杆风险温度计</h1>
+    <p>不是预测明天涨跌，而是把「美股处于什么风险位置」量化成一组可实时跟踪的信号。本文转译寒叔《面临暴力去杠杆的，不止是韩国股市》的判断框架，并把文章里的工具做成可实时刷新的仪表，直接嵌在下方。</p>
+    <div class="src">原文来源：<a href="https://mp.weixin.qq.com/s/b-Vg6Gz6dXR9uf79dZQ5qg" target="_blank" rel="noopener">《面临暴力去杠杆的，不止是韩国股市》</a> · 寒叔聊投资 · 2026-07-29</div>
+  </header>
+
+  <div class="note">
+    <b>说明：</b>本文是对寒叔原文<b>判断框架的转译与实时化</b>，观点与数据归属原作者，并非本人原创，也<b>不构成任何投资建议</b>。下方仪表由本博客实时拉取公开数据生成，综合风险分为启发式加权，仅作风险温度计参考。
+  </div>
+
+  <section>
+    <h2><span class="num">0</span>一句话核心：看仓位，别只看观点</h2>
+    <p class="lead">原文的态度很克制——"本文不看多也不看空，真正的观点是仓位的净值曲线"。</p>
+    <p>但文中给出了一整套用来给美股"量体温"的工具：<b>融资杠杆、现金缓冲、表外影子借贷、CDS、长债利差、席勒 CAPE</b>。当一个"充分定价的股市，站在有史以来最薄的现金缓冲之上，旁边还堆着看不见的杠杆"时，引爆点虽不可预测，但内部积聚的力量已经清晰可见。</p>
+    <p>下面先把这套工具拆开讲，最后用实时仪表把它们全部接上。</p>
+  </section>
+
+  <section>
+    <h2><span class="num">1</span>工具一：融资余额——但关键是"增速"</h2>
+    <p class="lead">融资债务（Margin Debt）是美股杠杆最权威的月度指标（FINRA Rule 4521(d)）。</p>
+    <ul>
+      <li><b>余额本身：</b>目前站上 <b>1.5 万亿美元</b>，为有记录以来最高。但原文强调："这个指标并不是最重要的。"</li>
+      <li><b>增速才是领先信号：</b>融资债务的 12 个月增速超过 <b>50%</b> 的情况，过去 29 年只出现过 <b>4 次</b>——2000 互联网泡沫、2007 金融危机前、2021 疫情后牛市高点，以及<b>现在</b>。</li>
+      <li><b>拐点领先股市：</b>融资余额增速从 50% 上方<b>拐头向下</b>，在过去 3 次中平均<b>领先标普 500 顶部 0–6 个月</b>。推动上涨的杠杆，在下跌中会转化为强制抛售。</li>
+    </ul>
+    <div class="risk">本轮突破 50% 是这 4 次里<b>最温和</b>的一次（2000/2021 曾达 70–80%）。目前增速已开始出现拐头迹象，未来是继续向下还是重新向上，是接下来最该盯的指标。</div>
+  </section>
+
+  <section>
+    <h2><span class="num">2</span>工具二：现金缓冲——比"借了多少"更重要</h2>
+    <p class="lead">支撑融资的是融资本身；比债务规模更重要的是"安全垫"还剩多少。</p>
+    <ul>
+      <li><b>融资/市值：</b>白线约 <b>1.7%</b>，明显低于 2000/2007 峰值，处于正常范围（这是原文里的"安抚信号"）。</li>
+      <li><b>净融资杠杆：</b>扣掉账户现金后的净杠杆目前在 <b>1.14%</b> 附近，已超过 2021 年高点 0.82%，处历史高位。</li>
+      <li><b>缓冲垫消失：</b>现金占市值仅约 <b>0.56%</b>——每借 1 美元，账上只留约 <b>0.3 美元</b>现金。过去大部分时间投资者账户现金多于债务，现在这个缓冲垫已经消失。</li>
+    </ul>
+    <div class="risk">下跌时，卖家同时涌出：追加保证金通知逼出卖单 → 股价下跌 → 触发下一批追保 → 抛售自我强化。薄弱的现金才是真正的风险，而非杠杆比例本身。</div>
+  </section>
+
+  <section>
+    <h2><span class="num">3</span>工具三：看不见的杠杆——表外影子借贷</h2>
+    <p class="lead">还有一部分杠杆，根本不在记分牌上，藏在"金融创新"的包装里。</p>
+    <ul>
+      <li><b>巨头担保链：</b>英伟达/谷歌为 AI 数据中心租赁提供担保，让买家凭自身还不了债的 AI 公司拿到巨额贷款（2026 年以来英伟达相关交易累计超 5400 亿美元）。</li>
+      <li><b>三层杠杆：</b>① 云厂商发超长债（十年期以上占 43%）；② 合资 SPV，私募信贷出大头债务，巨头仅持少数股权（如 Meta/Blue Owl 的 Hyperion，杠杆率近 90%）；③ 表外担保（仅写进年报附注）。</li>
+      <li><b>规模：</b>据 BIS（2026-03）与相关机构，美股五大科技巨头表外"隐性债务"约 <b>1.65 万亿美元</b>，相当于其表内债务的 <b>122%</b>。</li>
+    </ul>
+    <div class="risk">代价是风险转移：买方违约风险挪到卖方身上，而卖方收入又来自这些买方。需求兑现迟缓时，损失会在同一个人身上出现两次。</div>
+  </section>
+
+  <section>
+    <h2><span class="num">4</span>工具四：市场的"保险费率"——CDS 与长债利差</h2>
+    <p class="lead">债券市场已经开始为科技巨头的长债能力担忧。</p>
+    <ul>
+      <li><b>CDS 集体走高：</b>超大规模云厂商的信用违约互换（本质是信用风险保险）保费在增加，部分巨头超长债利差已接近 BB 级（垃圾债）水平，逼近 2022 年熊市。</li>
+      <li><b>极端案例：</b>Oracle(ORCL) 的 CDS 达到 2008 年金融危机水平；连现金流充沛的英伟达，在担保新闻出来后 5 年期 CDS 也发生飙涨。</li>
+      <li><b>席勒 CAPE：</b>已连续 3 个月高于 <b>40</b>，处历史最高区域——"市场已充分定价了利好"。</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2><span class="num">5</span>结论：怎么用这套工具</h2>
+    <div class="key">
+      <p style="margin-top:0"><b>把判断转化为可验证、可执行、可重复的动作：</b></p>
+      <ul>
+        <li><b>盯住领先信号：</b>融资增速是否从 50% 上方拐头——这是标普顶部的 0–6 个月领先指标，比点位本身更值得每天看。</li>
+        <li><b>守住现金缓冲：</b>在现金/债务比极薄的环境里，保留自身弹药比追逐收益更重要。</li>
+        <li><b>降低集中度：</b>表外杠杆集中在 AI/科技链，回撤时容易连锁反应，宜分散、控仓。</li>
+        <li><b>不预测引爆点：</b>火星不可知，但内部积聚的力量清晰；用仓位管理而非方向押注来应对。</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 实时模块嵌入 -->
+  <div class="embed">
+    <h2><span class="num">★</span>实时模块：美股杠杆风险温度计</h2>
+    <p class="lead">下方仪表实时拉取公开数据（融资杠杆来自 thetrading.tools / FINRA，美股行情来自腾讯财经，GDP/CAPE 为构建时内嵌），把上面 1–4 的工具全部量化成可刷新的信号与综合风险分。</p>
+    <div class="frame-wrap">
+      <iframe src="us-market-gauge.html" title="美股杠杆风险温度计实时看板" loading="lazy"></iframe>
+    </div>
+    <div class="cap">↻ 页面打开即自动刷新；若实时源不可用，会自动回退到最近一次内嵌快照。完整看板可<a href="us-market-gauge.html" style="color:var(--blue)">单独打开 ↗</a>。</div>
+  </div>
+
+  <div class="disclaim">
+    数据来源：FINRA Margin Statistics（via thetrading.tools）、腾讯财经、FRED、寒叔《面临暴力去杠杆的，不止是韩国股市》。本页为框架转译与实时化演示，<b>不构成投资建议</b>。市场有风险，决策需独立。
+  </div>
+
+  <div class="foot">财务自由之路 · 投资理财与个人财务自由实践笔记</div>
+</div>
+
+<script src="assets/site.js"></script>
+</body>
+</html>

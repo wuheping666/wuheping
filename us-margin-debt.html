@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>美股融资杠杆 · Margin Debt 实时看板 | 财务自由之路</title>
+<style>
+  :root{
+    --bg:#0e1116; --panel:#161b22; --panel2:#1c232d; --line:#2a313c;
+    --txt:#e6edf3; --muted:#9aa7b4; --gold:#d9b36a;
+    --blue:#4ea1ff; --red:#ff5c5c; --green:#36c98d; --orange:#ff9f43; --teal:#3dd6c4;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--txt);font-family:-apple-system,"PingFang SC","Microsoft YaHei",Segoe UI,Roboto,sans-serif;line-height:1.6}
+  .wrap{max-width:1180px;margin:0 auto;padding:28px 20px 60px}
+  header.hero{border-bottom:1px solid var(--line);padding-bottom:18px;margin-bottom:22px}
+  .kicker{color:var(--gold);font-weight:700;letter-spacing:1px;font-size:13px}
+  h1{margin:6px 0 4px;font-size:28px}
+  .sub{color:var(--muted);font-size:14px}
+  .src{margin-top:8px;font-size:12px;color:var(--muted)}
+  .src b{color:var(--teal)}
+  .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:18px 0 8px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px}
+  .card .lbl{color:var(--muted);font-size:12px}
+  .card .val{font-size:26px;font-weight:800;margin:4px 0 2px}
+  .card .tag{font-size:12px;font-weight:600}
+  .card .hint{font-size:11px;color:var(--muted);margin-top:4px}
+  .hot{color:var(--red)} .cool{color:var(--green)} .neutral{color:var(--muted)}
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px 16px 6px;margin:18px 0}
+  .panel h2{margin:2px 0 2px;font-size:17px}
+  .panel .desc{color:var(--muted);font-size:13px;margin:0 0 8px}
+  .chart{width:100%;height:380px}
+  .toolbar{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 4px}
+  .toolbar button{background:var(--panel2);color:var(--muted);border:1px solid var(--line);border-radius:8px;padding:5px 12px;font-size:13px;cursor:pointer}
+  .toolbar button.on{color:#0e1116;background:var(--gold);border-color:var(--gold);font-weight:700}
+  footer{margin-top:26px;border-top:1px solid var(--line);padding-top:14px;color:var(--muted);font-size:12.5px}
+  footer b{color:var(--txt)}
+  .tiny{font-size:11.5px;color:#7d8a97}
+  @media(max-width:760px){.cards{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="hero">
+    <div class="kicker">🇺🇸 实时数据工具 · 美股杠杆温度计</div>
+    <h1>美股融资杠杆 · Margin Debt 看板</h1>
+    <div class="sub">FINRA 会员券商每月报送的客户融资余额（Debit Balances）与其增速、超额杠杆 —— 衡量美股散户投机热度最干净的指标。</div>
+    <div class="src">数据来源：<b id="src">加载中…</b> · 数据截至：<b id="asof">—</b></div>
+  </header>
+
+  <div class="cards" id="cards"></div>
+
+  <!-- 图1 融资余额 -->
+  <div class="panel">
+    <h2>① 美股融资余额（Margin Debt）</h2>
+    <p class="desc">单位：万亿美元（$T）。灰色虚线为历史均值，红点为历史峰值。最新一期已创历史新高。</p>
+    <div class="toolbar" id="rangeBar"></div>
+    <div id="c1" class="chart"></div>
+  </div>
+
+  <!-- 图2 增速 + 超额杠杆 -->
+  <div class="panel">
+    <h2>② 融资余额同比增速 & 超额杠杆</h2>
+    <p class="desc">蓝线 = 融资余额 YoY%；橙线 = 超额杠杆（融资 YoY − 标普 YoY）。+30% 红虚线为历史顶部警戒（2000/2007/2021 皆在此附近见顶）；−20% 绿虚线为历史底部拐点。</p>
+    <div id="c2" class="chart"></div>
+  </div>
+
+  <!-- 图3 余额 vs 自由信用 -->
+  <div class="panel">
+    <h2>③ 融资余额 vs 自由信用余额（Dry Powder）</h2>
+    <p class="desc">金线 = 融资借入（杠杆）；青色面积 = 现金账户自由信用余额（未动用的"弹药"）。二者背离：杠杆回落而自由信用抬升，往往是防御/去杠杆信号。</p>
+    <div id="c3" class="chart"></div>
+  </div>
+
+  <footer>
+    <p><b>实时更新机制：</b>页面打开即向 <code>thetrading.tools</code> 的 FINRA Margin Debt CSV <b>直连拉取最新月度数据（CORS 开放，浏览器实时刷新）</b>；若该源不可用，则回退到构建时内嵌的兜底快照。FINRA 每月第三周左右发布上一月末数据，故"最新"通常滞后市场约 2–3 周。重新运行 <code>scripts/build_us_margin_debt.py</code> 可刷新内嵌兜底。</p>
+    <p><b>怎么读：</b>融资余额绝对值高 ≠ 马上见顶，关键是<b>增速</b>与<b>超额杠杆</b>。历史经验：融资 YoY 突破 +30%~+60% 后 6–18 个月内常伴随美股显著回撤；连续两月下滑（尤其从新高回落）是经典见顶特征；而融资 YoY 跌至 −20% 以下、自由信用抬升，常对应阶段底部。</p>
+    <p class="tiny">⚠️ 本页为公开数据的可视化笔记，数值以 FINRA 原始披露为准；不构成任何投资建议。杠杆是双刃剑——放大收益也放大回撤，margin call 会迫使抛售、加速下跌。</p>
+  </footer>
+</div>
+
+<script src="assets/echarts.min.js"></script>
+<script src="us-margin-debt-embed.js"></script>
+<script>
+const CSV_URL = "https://www.thetrading.tools/data/indicators/margin-debt.csv";
+let DATA = (window.US_MARGIN_DEBT && window.US_MARGIN_DEBT.length) ? window.US_MARGIN_DEBT.slice() : [];
+let curRange = 'all';
+
+const fmtT = v => (v==null||isNaN(v)) ? '—' : (v/1e6).toFixed(3) + 'T';   // $百万 -> $万亿
+const fmtB = v => (v==null||isNaN(v)) ? '—' : (v/1e3).toFixed(0) + 'B';   // $百万 -> $十亿
+const fmtP = v => (v==null||isNaN(v)) ? '—' : (v>0?'+':'') + v.toFixed(1) + '%';
+
+function setSource(s){ document.getElementById('src').textContent = s; }
+
+function parseCSV(text){
+  const lines = text.trim().split(/\r?\n/);
+  if(lines.length<2) return [];
+  const hdr = lines[0].split(',');
+  const idx = {}; hdr.forEach((h,i)=>idx[h.trim()]=i);
+  const out = [];
+  for(let i=1;i<lines.length;i++){
+    const c = lines[i].split(',');
+    const g = k => { const v=c[idx[k]]; return (v===''||v==null)?null:parseFloat(v); };
+    const d = c[idx['date']];
+    if(!d) continue;
+    out.push({
+      date:d,
+      debit:g('debit_balances'),
+      debit_yoy:g('debit_yoy'),
+      spy_yoy:g('spy_yoy'),
+      excess:g('excess_leverage'),
+      fc_cash:g('free_credit_cash'),
+      fc_margin:g('free_credit_margin'),
+    });
+  }
+  return out;
+}
+
+function ranged(){
+  if(curRange==='all' || !DATA.length) return DATA;
+  const last = DATA[DATA.length-1].date;
+  const y = parseInt(last.slice(0,4),10) - (curRange==='2y'?2:curRange==='5y'?5:10);
+  return DATA.filter(r => parseInt(r.date.slice(0,4),10) >= y);
+}
+
+async function init(){
+  try{
+    const r = await fetch(CSV_URL, {cache:'no-store', headers:{'Origin':'https://wuheping.top'}});
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    const arr = parseCSV(await r.text());
+    if(arr.length){ DATA = arr; setSource('实时 · thetrading.tools / FINRA Rule 4521(d)（CORS 直连）'); }
+    else setSource('内嵌兜底（实时源返回空）');
+  }catch(e){
+    setSource('内嵌兜底（实时源不可用：'+e.message+'）');
+  }
+  if(!DATA.length){ document.getElementById('src').textContent='无数据'; return; }
+  renderCards();
+  renderRangeBar();
+  renderC1(); renderC2(); renderC3();
+  window.addEventListener('resize', ()=>{ [c1,c2,c3].forEach(c=>c&&c.resize()); });
+}
+
+function renderCards(){
+  const last = DATA[DATA.length-1];
+  const dry = (last.fc_cash||0)+(last.fc_margin||0);
+  const fc = [
+    {lbl:'融资余额（最新）', val:fmtT(last.debit), tag:'Debit Balances', hint:last.date, cls:'neutral'},
+    {lbl:'融资余额同比增速', val:fmtP(last.debit_yoy), tag: last.debit_yoy>=30?'偏高·警戒区':(last.debit_yoy<=-20?'底部区':'正常'), cls: last.debit_yoy>=30?'hot':(last.debit_yoy<=-20?'cool':'neutral')},
+    {lbl:'超额杠杆 Excess', val:fmtP(last.excess), tag: last.excess>=30?'风险积聚':(last.excess<=-10?'去杠杆':'温和'), cls: last.excess>=30?'hot':(last.excess<=-10?'cool':'neutral')},
+    {lbl:'自由信用（弹药）', val:fmtB(dry), tag:'现金+保证金账户', hint:last.date, cls:'neutral'},
+  ];
+  document.getElementById('cards').innerHTML = fc.map(c=>
+    `<div class="card"><div class="lbl">${c.lbl}</div><div class="val ${c.cls}">${c.val}</div>
+     <div class="tag ${c.cls}">${c.tag}</div>${c.hint?`<div class="hint">${c.hint}</div>`:''}</div>`).join('');
+  document.getElementById('asof').textContent = last.date;
+}
+
+function renderRangeBar(){
+  const opts = [['all','全量(1997+)'],['10y','近10年'],['5y','近5年'],['2y','近2年']];
+  document.getElementById('rangeBar').innerHTML = opts.map(([k,t])=>
+    `<button data-r="${k}" class="${k===curRange?'on':''}">${t}</button>`).join('');
+  document.querySelectorAll('#rangeBar button').forEach(b=>{
+    b.onclick = ()=>{ curRange=b.dataset.r; document.querySelectorAll('#rangeBar button').forEach(x=>x.classList.remove('on')); b.classList.add('on'); renderC1(); };
+  });
+}
+
+let c1,c2,c3;
+const AX = {axisLine:{lineStyle:{color:'#3a424d'}}, axisLabel:{color:'#9aa7b4'}, splitLine:{lineStyle:{color:'#222932'}}};
+const TT = {trigger:'axis', backgroundColor:'#0e1116', borderColor:'#2a313c', textStyle:{color:'#e6edf3'}};
+
+function renderC1(){
+  const d = ranged();
+  const x = d.map(r=>r.date), y = d.map(r=> r.debit==null?null:+(r.debit/1e6).toFixed(3));
+  const mean = y.filter(v=>v!=null).reduce((a,b)=>a+b,0)/(y.filter(v=>v!=null).length||1);
+  c1 = echarts.init(document.getElementById('c1'), 'dark');
+  c1.setOption({
+    backgroundColor:'transparent', tooltip:TT,
+    grid:{left:64,right:24,top:30,bottom:60},
+    xAxis:{type:'category', data:x, ...AX, axisLabel:{color:'#9aa7b4', interval: Math.floor(x.length/10)}},
+    yAxis:{type:'value', name:'$万亿', ...AX, axisLabel:{color:'#9aa7b4', formatter:'{value}T'}},
+    dataZoom:[{type:'inside'},{type:'slider', height:18, bottom:18, borderColor:'#2a313c', textStyle:{color:'#9aa7b4'}}],
+    series:[{
+      type:'line', data:y, smooth:true, showSymbol:false,
+      lineStyle:{color:'#d9b36a', width:2},
+      areaStyle:{color:new echarts.graphic.LinearGradient(0,0,0,1,[{offset:0,color:'rgba(217,179,106,.35)'},{offset:1,color:'rgba(217,179,106,.02)'}])},
+      markLine:{symbol:'none', data:[{yAxis:+mean.toFixed(3), name:'均值', lineStyle:{color:'#7d8a97', type:'dashed'}}],
+        label:{color:'#9aa7b4', formatter:'均值 '+mean.toFixed(2)+'T'}},
+      markPoint:{symbolSize:46, data:[{type:'max', name:'峰值', itemStyle:{color:'#ff5c5c'}}]}
+    }]
+  });
+}
+
+function renderC2(){
+  const d = DATA;
+  const x = d.map(r=>r.date);
+  const y1 = d.map(r=> r.debit_yoy==null?null:+r.debit_yoy.toFixed(2));
+  const y2 = d.map(r=> r.excess==null?null:+r.excess.toFixed(2));
+  c2 = echarts.init(document.getElementById('c2'), 'dark');
+  c2.setOption({
+    backgroundColor:'transparent', tooltip:TT,
+    legend:{data:['融资余额 YoY%','超额杠杆%'], textStyle:{color:'#e6edf3'}, top:2},
+    grid:{left:54,right:24,top:40,bottom:60},
+    xAxis:{type:'category', data:x, ...AX, axisLabel:{color:'#9aa7b4', interval: Math.floor(x.length/10)}},
+    yAxis:{type:'value', name:'%', ...AX},
+    dataZoom:[{type:'inside'},{type:'slider', height:18, bottom:18, borderColor:'#2a313c', textStyle:{color:'#9aa7b4'}}],
+    series:[
+      {name:'融资余额 YoY%', type:'line', data:y1, smooth:true, showSymbol:false, lineStyle:{color:'#4ea1ff', width:2}},
+      {name:'超额杠杆%', type:'line', data:y2, smooth:true, showSymbol:false, lineStyle:{color:'#ff9f43', width:2}},
+      {name:'+30% 顶部警戒', type:'line', data:x.map(()=>30), symbol:'none', lineStyle:{color:'#ff5c5c', type:'dashed', width:1}, tooltip:{show:false}},
+      {name:'-20% 底部拐点', type:'line', data:x.map(()=>-20), symbol:'none', lineStyle:{color:'#36c98d', type:'dashed', width:1}, tooltip:{show:false}}
+    ]
+  });
+}
+
+function renderC3(){
+  const d = DATA;
+  const x = d.map(r=>r.date);
+  const yDebt = d.map(r=> r.debit==null?null:+(r.debit/1e3).toFixed(0));
+  const yDry = d.map(r=> ((r.fc_cash||0)+(r.fc_margin||0))==0?null:+(((r.fc_cash||0)+(r.fc_margin||0))/1e3).toFixed(0));
+  c3 = echarts.init(document.getElementById('c3'), 'dark');
+  c3.setOption({
+    backgroundColor:'transparent', tooltip:TT,
+    legend:{data:['融资余额','自由信用余额'], textStyle:{color:'#e6edf3'}, top:2},
+    grid:{left:64,right:24,top:40,bottom:60},
+    xAxis:{type:'category', data:x, ...AX, axisLabel:{color:'#9aa7b4', interval: Math.floor(x.length/10)}},
+    yAxis:{type:'value', name:'$十亿', ...AX},
+    dataZoom:[{type:'inside'},{type:'slider', height:18, bottom:18, borderColor:'#2a313c', textStyle:{color:'#9aa7b4'}}],
+    series:[
+      {name:'融资余额', type:'line', data:yDebt, smooth:true, showSymbol:false, lineStyle:{color:'#d9b36a', width:2},
+        areaStyle:{color:'rgba(217,179,106,.20)'}},
+      {name:'自由信用余额', type:'line', data:yDry, smooth:true, showSymbol:false, lineStyle:{color:'#3dd6c4', width:2},
+        areaStyle:{color:'rgba(61,214,196,.12)'}}
+    ]
+  });
+}
+
+init();
+</script>
+<script src="assets/site.js"></script>
+</body>
+</html>

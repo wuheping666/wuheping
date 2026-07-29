@@ -6,3 +6,7 @@ Thumbs.db
 # 构建中间产物
 .kline_raw.json
 scripts/fred_*.csv
+
+# 临时探针文件
+_*.html
+_*.csv

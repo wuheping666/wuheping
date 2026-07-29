@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>美股走势判断 · 杠杆风险温度计 | 财务自由之路</title>
+<style>
+  :root{
+    --bg:#0e1116; --panel:#161b22; --panel2:#1c232c; --bd:#2a313c;
+    --txt:#e6edf3; --muted:#9aa7b4; --gold:#d9b36a; --gold2:#f0c987;
+    --red:#ff5b5b; --orange:#ff9f43; --green:#3fd07f; --blue:#5aa9ff;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--txt);font-family:-apple-system,"PingFang SC","Microsoft YaHei",Segoe UI,sans-serif;line-height:1.6}
+  .wrap{max-width:1100px;margin:0 auto;padding:28px 18px 60px}
+  header h1{font-size:26px;margin:0 0 6px;color:var(--gold2)}
+  header .sub{color:var(--muted);font-size:14px}
+  #src{display:inline-block;margin-top:10px;font-size:12px;padding:4px 10px;border-radius:20px;
+       background:var(--panel2);border:1px solid var(--bd);color:var(--muted)}
+  .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:22px 0}
+  .card{background:var(--panel);border:1px solid var(--bd);border-radius:12px;padding:14px 16px}
+  .card .k{font-size:12px;color:var(--muted)}
+  .card .v{font-size:24px;font-weight:700;margin-top:4px}
+  .card .d{font-size:12px;color:var(--muted);margin-top:2px}
+  .v.red{color:var(--red)} .v.orange{color:var(--orange)} .v.green{color:var(--green)}
+  .panel{background:var(--panel);border:1px solid var(--bd);border-radius:12px;padding:16px 18px;margin:18px 0}
+  .panel h2{font-size:17px;margin:0 0 12px;color:var(--gold2);display:flex;align-items:center;gap:8px}
+  .panel h2::before{content:"";width:5px;height:18px;background:var(--gold);border-radius:3px;display:inline-block}
+  table{width:100%;border-collapse:collapse;font-size:13.5px}
+  th,td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--bd)}
+  th{color:var(--muted);font-weight:600}
+  .badge{display:inline-block;padding:2px 9px;border-radius:20px;font-size:12px;font-weight:700}
+  .badge.ok{background:rgba(63,208,127,.15);color:var(--green)}
+  .badge.warn{background:rgba(255,159,67,.15);color:var(--orange)}
+  .badge.danger{background:rgba(255,91,91,.15);color:var(--red)}
+  .note{color:var(--muted);font-size:12.5px;max-width:420px}
+  .charts{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .chart{background:var(--panel);border:1px solid var(--bd);border-radius:12px;padding:10px}
+  .chart .t{font-size:14px;color:var(--gold2);padding:4px 6px 0}
+  .chart div[id]{height:300px}
+  #gauge{height:260px}
+  .verdict{font-size:14px;background:linear-gradient(180deg,var(--panel2),var(--panel));
+           border-left:4px solid var(--gold);padding:14px 16px;border-radius:8px;margin-top:10px}
+  .verdict b{color:var(--gold2)}
+  .src{font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.8}
+  .src a{color:var(--blue);text-decoration:none}
+  .src a:hover{text-decoration:underline}
+  @media(max-width:760px){.cards{grid-template-columns:repeat(2,1fr)}.charts{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>美股走势判断 · 杠杆风险温度计</h1>
+    <div class="sub">用「寒叔《面临暴力去杠杆的，不止是韩国股市》」框架，把文章里的判断工具变成可实时刷新的仪表</div>
+    <div id="src">数据加载中…</div>
+  </header>
+
+  <div class="cards">
+    <div class="card"><div class="k">融资余额（Margin Debt）</div><div class="v" id="c-debit">—</div><div class="d" id="c-debit-d">FINRA 月度</div></div>
+    <div class="card"><div class="k">融资增速（同比）</div><div class="v" id="c-yoy">—</div><div class="d">>50% 仅 29 年 4 次</div></div>
+    <div class="card"><div class="k">美股实时（纳斯达克）</div><div class="v" id="c-spx">—</div><div class="d" id="c-spx-d">腾讯实时</div></div>
+    <div class="card"><div class="k">综合风险分</div><div class="v" id="c-score">—</div><div class="d" id="c-score-d">0–100，越高越危险</div></div>
+  </div>
+
+  <div class="panel">
+    <h2>七大判断信号（按文章框架）</h2>
+    <table>
+      <thead><tr><th>信号</th><th>当前值</th><th>状态</th><th>含义（来自原文）</th></tr></thead>
+      <tbody id="sig"></tbody>
+    </table>
+  </div>
+
+  <div class="panel">
+    <h2>综合风险温度计</h2>
+    <div id="gauge"></div>
+    <div class="verdict" id="verdict">—</div>
+  </div>
+
+  <div class="charts">
+    <div class="chart"><div class="t">① 融资余额（面积图，标注历史峰值）</div><div id="c1"></div></div>
+    <div class="chart"><div class="t">② 融资增速 + 超额杠杆（警戒线 50% / 30%）</div><div id="c2"></div></div>
+    <div class="chart" style="grid-column:1 / -1"><div class="t">③ 纳斯达克综合指数 近期日 K（实时）</div><div id="c3"></div></div>
+  </div>
+
+  <div class="src">
+    <b>数据来源与实时机制：</b><br>
+    · 融资杠杆（余额 / 增速 / 超额杠杆 / 现金缓冲）：浏览器直连 <code>thetrading.tools</code> 的 FINRA Margin Debt CSV（CORS 开放，实时刷新；FINRA 每月第三周左右发布上月末数据，故最新值滞后约 2–3 周），源不可用时回退内嵌快照。<br>
+    · 美股行情（纳斯达克）：浏览器直连腾讯财经 <code>qt.gtimg.cn</code>（CORS 开放，盘中实时）。<br>
+    · GDP / 总市值 / 席勒 CAPE：无浏览器 CORS，采用构建时内嵌（GDP 取自 FRED；CAPE 与融资/市值比采用原文引用值，需周期更新）。<br>
+    <b>框架来源：</b>寒叔《<a href="https://mp.weixin.qq.com/s/b-Vg6Gz6dXR9uf79dZQ5qg" target="_blank" rel="noopener">面临暴力去杠杆的，不止是韩国股市</a>》（2026-07-29）。本页为对该文判断框架的量化转译与实时化，<b>不构成任何投资建议</b>；综合风险分为启发式加权，仅作风险温度计参考。
+  </div>
+</div>
+
+<script src="assets/echarts.min.js"></script>
+<script src="us-margin-debt-embed.js"></script>
+<script src="us-market-gauge-embed.js"></script>
+<script src="assets/site.js"></script>
+<script>
+const MARGIN_URL = "https://www.thetrading.tools/data/indicators/margin-debt.csv";
+let MARGIN = (window.US_MARGIN_DEBT && window.US_MARGIN_DEBT.length) ? window.US_MARGIN_DEBT.slice() : [];
+const MACRO = window.US_GAUGE_MACRO || {};
+let SPX = null, KLINE = [];
+
+const num = s => { const v = parseFloat(String(s).replace(/,/g,'')); return isFinite(v) ? v : null; };
+const fmtT = m => (m/1e6).toFixed(3) + "T";   // $百万 -> $万亿
+const $ = id => document.getElementById(id);
+
+function setSource(txt){ $("src").textContent = "数据源：" + txt; }
+
+// ---------- 解析 thetrading CSV ----------
+function parseMarginCSV(t){
+  const lines = t.trim().split(/\r?\n/).filter(x=>x.trim());
+  if(!lines.length) return [];
+  const hdr = lines[0].split(',').map(s=>s.trim());
+  const out = [];
+  for(let i=1;i<lines.length;i++){
+    const c = lines[i].split(',');
+    const rec = {}; hdr.forEach((h,j)=>rec[h]=c[j]);
+    const o = {
+      date: (rec.date||'').slice(0,10),
+      debit: num(rec.debit_balances),
+      yoy: num(rec.debit_yoy),
+      spy_yoy: num(rec.spy_yoy),
+      excess: num(rec.excess_leverage),
+      fc_cash: num(rec.free_credit_cash),
+      fc_margin: num(rec.free_credit_margin),
+    };
+    if(o.date && o.debit!=null) out.push(o);
+  }
+  return out.sort((a,b)=> a.date<b.date?-1:1);
+}
+
+async function loadMargin(){
+  try{
+    const r = await fetch(MARGIN_URL, {cache:'no-store'});
+    const t = await r.text();
+    const rows = parseMarginCSV(t);
+    if(rows.length){ MARGIN = rows; setSource('实时 · thetrading.tools / FINRA Rule 4521(d)'); return; }
+  }catch(e){}
+  if(window.US_MARGIN_DEBT && window.US_MARGIN_DEBT.length){ setSource('兜底 · 内嵌快照（实时源不可用）'); }
+}
+
+// ---------- 腾讯 美股实时 ----------
+async function loadSPX(){
+  try{
+    const r = await fetch("https://qt.gtimg.cn/q=usIXIC,usSPX,usDJI", {cache:'no-store'});
+    const t = await r.text();
+    const m = t.match(/v_usSPX="([^"]+)"/) || t.match(/v_usIXIC="([^"]+)"/) || t.match(/v_usDJI="([^"]+)"/);
+    if(m){
+      const f = m[1].split('~');
+      SPX = {name:f[1], price:num(f[3]), prevClose:num(f[4]), chgPct:num(f[32]), high:num(f[33]), low:num(f[34]), time:f[30]};
+    }
+  }catch(e){}
+}
+async function loadKline(){
+  try{
+    const r = await fetch("https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=usIXIC,day,,,180,qfq", {cache:'no-store'});
+    const j = await r.json();
+    const day = (j.data && j.data.usIXIC && j.data.usIXIC.day) || [];
+    KLINE = day.map(r=>({date:r[0], open:num(r[1]), close:num(r[2]), high:num(r[3]), low:num(r[4]), vol:num(r[5])})).filter(x=>x.close!=null);
+  }catch(e){}
+}
+
+// ---------- 计算 + 渲染 ----------
+function band(v, okMax, warnMax){ if(v<=okMax) return 'ok'; if(v<=warnMax) return 'warn'; return 'danger'; }
+
+function render(){
+  const last = MARGIN[MARGIN.length-1];
+  if(!last) return;
+  const debit = last.debit, yoy = last.yoy, excess = last.excess;
+  const cash = (last.fc_cash||0) + (last.fc_margin||0);
+  const cashRatio = cash/debit*100;
+  const gdpB = (MACRO.gdp && MACRO.gdp.value_billion) || 31865.721;
+  const marginGdp = debit/(gdpB*1000)*100;                 // 占GDP%
+  const mktcapPct = (MACRO.margin_mktcap_pct!=null)?MACRO.margin_mktcap_pct:1.7;
+  const cape = (MACRO.cape && MACRO.cape.value) || 40.5;
+
+  // 卡片
+  $("c-debit").textContent = fmtT(debit);
+  $("c-debit-d").textContent = "截至 " + last.date.slice(0,7) + " · 历史新高";
+  const yoyEl = $("c-yoy"); yoyEl.textContent = yoy.toFixed(1)+"%";
+  yoyEl.className = "v " + (yoy>=50?'red':(yoy>=30?'orange':'green'));
+
+  if(SPX){
+    const se = $("c-spx"); se.textContent = SPX.price.toLocaleString();
+    se.className = "v " + (SPX.chgPct>=0?'green':'red');
+    $("c-spx-d").textContent = SPX.name + " " + (SPX.chgPct>=0?'+':'') + SPX.chgPct.toFixed(2) + "% · " + (SPX.time||'');
+  } else { $("c-spx").textContent="—"; $("c-spx-d").textContent="需联网获取实时行情"; }
+
+  // 信号面板
+  const sig = [
+    {n:'融资余额（绝对值）', v:fmtT(debit)+'T', s:'warn', t:'历史新高；但原文强调"这个指标不是最重要的"，关键在于增速'},
+    {n:'融资余额增速（同比）', v:yoy.toFixed(1)+'%', s:(yoy>=50?'danger':'warn'), t:'>50% 仅 29 年出现 4 次（2000/2007/2021/今）；拐点平均领先标普顶部 0–6 个月'},
+    {n:'超额杠杆 Excess Leverage', v:excess.toFixed(1)+'%', s:(excess>=30?'danger':'warn'), t:'逼近 +30% 历史警戒（2000/2007/2021 顶部皆在此附近）'},
+    {n:'现金缓冲（自由信用/融资）', v:cashRatio.toFixed(1)+'%', s:(cashRatio>=45?'ok':(cashRatio>=30?'warn':'danger')), t:'每借 1 美元仅留 '+(cashRatio/100).toFixed(2)+' 美元现金；缓冲垫薄，下跌时被迫抛售'},
+    {n:'融资余额 / GDP', v:marginGdp.toFixed(2)+'%', s:band(marginGdp,2.8,4.0), t:'高于 2000(~2.5%)/2007(~2.8%)/2021(~3.5%)'},
+    {n:'融资余额 / 总市值', v:mktcapPct.toFixed(1)+'%', s:'ok', t:'原文引用 ~1.7%，低于 2000/2007 峰值，尚处正常区间（安抚信号）'},
+    {n:'席勒 CAPE', v:cape.toFixed(1), s:(cape>=40?'danger':'warn'), t:'连续 3 个月 >40，处历史最高区域（原文引用）'},
+  ];
+  $("sig").innerHTML = sig.map(r=>`<tr><td>${r.n}</td><td><b>${r.v}</b></td><td><span class="badge ${r.s}">${r.s==='ok'?'正常':(r.s==='warn'?'偏高':'危险')}</span></td><td class="note">${r.t}</td></tr>`).join('');
+
+  // 综合风险分（启发式加权）
+  const part = (v,ok,warn,max)=> v<=ok?0:(v>=max?100:Math.max(0,Math.min(100,(v-ok)/(max-ok)*100)));
+  const partInv = (v,ok,warn,min)=> v>=ok?0:(v<=min?100:Math.max(0,Math.min(100,(ok-v)/(ok-min)*100)));
+  const sYoy = part(yoy,30,55,60);
+  const sEx  = part(excess,20,35,40);
+  const sCash= partInv(cashRatio,45,30,20);
+  const sCape= part(cape,30,45,50);
+  const sMkt = part(mktcapPct,1.5,3.0,3.5);
+  const sGdp = part(marginGdp,2.8,4.5,5.5);
+  const score = Math.round(0.30*sYoy + 0.20*sEx + 0.15*sCash + 0.20*sCape + 0.10*sMkt + 0.05*sGdp);
+  const sc = $("c-score"); sc.textContent = score;
+  sc.className = "v " + (score>=70?'red':(score>=40?'orange':'green'));
+
+  renderGauge(score);
+  renderVerdict(score, yoy, excess, cashRatio, cape, marginGdp, mktcapPct);
+  renderC1(); renderC2(); if(KLINE.length) renderC3();
+}
+
+function renderGauge(score){
+  const c = echarts.init($("gauge"),'dark');
+  const color = score>=70?'#ff5b5b':(score>=40?'#ff9f43':'#3fd07f');
+  c.setOption({
+    backgroundColor:'transparent',
+    series:[{type:'gauge', min:0, max:100, radius:'92%', center:['50%','58%'],
+      progress:{show:true, width:14, itemStyle:{color}},
+      axisLine:{lineStyle:{width:14, color:[[0.4,'#3fd07f'],[0.7,'#ff9f43'],[1,'#ff5b5b']]}},
+      pointer:{itemStyle:{color}}, axisTick:{show:false}, splitLine:{length:12,lineStyle:{color:'#666'}},
+      axisLabel:{color:'#9aa7b4', fontSize:11, distance:14},
+      detail:{valueAnimation:true, formatter:'{value}', color, fontSize:40, offsetCenter:[0,'38%']},
+      title:{offsetCenter:[0,'72%'], color:'#9aa7b4', fontSize:13},
+      data:[{value:score, name:'综合风险分（越高越危险）'}]
+    }]
+  });
+}
+
+function renderVerdict(score, yoy, excess, cashRatio, cape, marginGdp, mktcapPct){
+  let level, color;
+  if(score>=70){ level='危险（红灯）'; } else if(score>=40){ level='偏高 / 观望（橙灯）'; } else { level='可控（绿灯）'; }
+  const lead = yoy>=50 ? '融资增速已突破 50% 警戒，这是过去 29 年第四次；历史上该增速从高位<b>拐头</b>平均领先美股顶部 0–6 个月，是当前最该盯住的领先信号。'
+                       : '融资增速仍在 30–50% 区间，尚未突破 50% 极端值，但已处偏高区。';
+  $("verdict").innerHTML =
+    `当前综合风险分 <b>${score}/100</b>，属 <b style="color:${color=score>=70?'#ff5b5b':(score>=40?'#ff9f43':'#3fd07f')}">${level}</b>。` +
+    `${lead} 估值端席勒 CAPE≈${cape}（连续 3 月>40，历史最高区），超额杠杆 ${excess.toFixed(1)}% 逼近 +30% 警戒，` +
+    `而现金缓冲仅 ${cashRatio.toFixed(1)}%（每借 1 美元留 ${(cashRatio/100).toFixed(2)} 美元），下跌时易触发"追加保证金→抛售→再下跌"的自我强化。` +
+    `不过融资/总市值约 ${mktcapPct}% 仍低于 2000/2007 峰值（原文安抚信号）。结论：<b>不是明天就跌，而是内部积聚的杠杆风险已清晰可见，宜降低仓位集中度、保留现金缓冲。</b>`;
+}
+
+function renderC1(){
+  const c = echarts.init($("c1"),'dark');
+  const x = MARGIN.map(d=>d.date), y = MARGIN.map(d=>d.debit/1e6);
+  c.setOption({ backgroundColor:'transparent',
+    grid:{left:55,right:18,top:20,bottom:30},
+    tooltip:{trigger:'axis', valueFormatter:v=>v.toFixed(3)+'T'},
+    xAxis:{type:'category', data:x, axisLabel:{color:'#9aa7b4', fontSize:10, interval:Math.floor(x.length/8)}},
+    yAxis:{type:'value', name:'$万亿', nameTextStyle:{color:'#9aa7b4'}, axisLabel:{color:'#9aa7b4'}},
+    dataZoom:[{type:'inside'},{type:'slider', height:14, bottom:4, borderColor:'#2a313c', textStyle:{color:'#9aa7b4'}}],
+    series:[{type:'line', data:y, smooth:true, showSymbol:false,
+      lineStyle:{color:'#d9b36a', width:1.5},
+      areaStyle:{color:new echarts.graphic.LinearGradient(0,0,0,1,[{offset:0,color:'rgba(217,179,106,.35)'},{offset:1,color:'rgba(217,179,106,.02)'}])},
+      markLine:{symbol:'none', lineStyle:{color:'#ff9f43', type:'dashed'},
+        data:[{yAxis:1.0, name:'1T'},{yAxis:1.5, name:'1.5T'}]},
+      markPoint:{symbolSize:46, data:[{type:'max', name:'峰值'}]}
+    }]
+  });
+}
+function renderC2(){
+  const c = echarts.init($("c2"),'dark');
+  const x = MARGIN.map(d=>d.date);
+  const y1 = MARGIN.map(d=>d.yoy), y2 = MARGIN.map(d=>d.excess);
+  c.setOption({ backgroundColor:'transparent',
+    grid:{left:48,right:48,top:30,bottom:30},
+    tooltip:{trigger:'axis'},
+    legend:{data:['融资增速%','超额杠杆%'], textStyle:{color:'#9aa7b4'}, top:0},
+    xAxis:{type:'category', data:x, axisLabel:{color:'#9aa7b4', fontSize:10, interval:Math.floor(x.length/8)}},
+    yAxis:[{type:'value', name:'%', axisLabel:{color:'#9aa7b4'}},
+           {type:'value', name:'%', axisLabel:{color:'#9aa7b4'}}],
+    dataZoom:[{type:'inside'},{type:'slider', height:14, bottom:4, borderColor:'#2a313c', textStyle:{color:'#9aa7b4'}}],
+    series:[
+      {name:'融资增速%', type:'line', data:y1, showSymbol:false, smooth:true, lineStyle:{color:'#ff5b5b',width:1.5},
+        markLine:{symbol:'none', lineStyle:{color:'#ff5b5b', type:'dashed'}, data:[{yAxis:50, name:'50%警戒'}]}},
+      {name:'超额杠杆%', type:'line', yAxisIndex:1, data:y2, showSymbol:false, smooth:true, lineStyle:{color:'#5aa9ff',width:1.5},
+        markLine:{symbol:'none', lineStyle:{color:'#5aa9ff', type:'dashed'}, data:[{yAxis:30, name:'+30%警戒'}]}}
+    ]
+  });
+}
+function renderC3(){
+  const c = echarts.init($("c3"),'dark');
+  const cats = KLINE.map(d=>d.date);
+  const data = KLINE.map(d=>[d.open, d.close, d.low, d.high]);
+  c.setOption({ backgroundColor:'transparent',
+    grid:{left:55,right:18,top:20,bottom:55},
+    tooltip:{trigger:'axis', axisPointer:{type:'cross'}},
+    xAxis:{type:'category', data:cats, axisLabel:{color:'#9aa7b4', fontSize:10, interval:Math.floor(cats.length/10)}},
+    yAxis:{scale:true, axisLabel:{color:'#9aa7b4'}, splitLine:{lineStyle:{color:'#222'}}},
+    dataZoom:[{type:'inside', start:60},{type:'slider', height:16, bottom:18, borderColor:'#2a313c', textStyle:{color:'#9aa7b4'}}],
+    series:[{type:'candlestick', data, itemStyle:{
+      color:'#ff5b5b', color0:'#3fd07f', borderColor:'#ff5b5b', borderColor0:'#3fd07f'}}]
+  });
+}
+
+(async ()=>{
+  await Promise.all([loadMargin(), loadSPX(), loadKline()]);
+  render();
+  window.addEventListener('resize', ()=>{ ['gauge','c1','c2','c3'].forEach(id=>{const el=$(id); if(el) echarts.getInstanceByDom(el)&&echarts.getInstanceByDom(el).resize();}); });
+})();
+</script>
+</body>
+</html>
