@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PharmaLex · 药企英语背单词</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand" id="brandHome">
+      <span class="logo">💊</span>
+      <div>
+        <div class="brand-name">PharmaLex</div>
+        <div class="brand-sub">药企英语 · 专业词汇记忆系统</div>
+      </div>
+    </div>
+    <nav class="nav" id="nav">
+      <button class="nav-btn active" data-view="home">首页</button>
+      <button class="nav-btn" data-view="banks">词库</button>
+      <button class="nav-btn" data-view="learn">学习</button>
+      <button class="nav-btn" data-view="quiz">测验</button>
+      <button class="nav-btn" data-view="dictation">听写</button>
+      <button class="nav-btn" data-view="stats">统计</button>
+      <button class="nav-btn" data-view="custom">我的词库</button>
+    </nav>
+  </header>
+
+  <main id="view"></main>
+
+  <footer class="footer">
+    <span>PharmaLex · 数据本地存储于浏览器，刷新不丢失</span>
+    <span id="dueBadge" class="due-badge"></span>
+  </footer>
+
+  <!-- 模板区 -->
+  <template id="tpl-home">
+    <section class="home">
+      <div class="hero">
+        <h1>把专业术语，变成你的肌肉记忆</h1>
+        <p>面向制药企业的英语学习工具：覆盖法规注册、临床医学、药物化学、质量体系与商务沟通五大场景，搭配间隔重复与听写训练。</p>
+        <div class="hero-actions">
+          <button class="btn btn-primary" data-act="start-learn">开始复习 (<span class="due-count">0</span>)</button>
+          <button class="btn" data-act="start-quiz">做一组测验</button>
+        </div>
+      </div>
+      <div class="mode-grid" id="modeGrid"></div>
+    </section>
+  </template>
+
+  <template id="tpl-banks">
+    <section class="banks">
+      <h2>词库</h2>
+      <p class="muted">选择一个分类开始学习，或浏览全部词条。</p>
+      <div class="bank-grid" id="bankGrid"></div>
+      <div id="wordListWrap" class="word-list-wrap hidden"></div>
+    </section>
+  </template>
+
+  <template id="tpl-learn">
+    <section class="learn">
+      <div class="learn-head">
+        <h2>卡片记忆</h2>
+        <div class="learn-meta" id="learnMeta"></div>
+      </div>
+      <div class="flashcard" id="flashcard">
+        <div class="fc-front" id="fcFront"></div>
+        <div class="fc-back hidden" id="fcBack"></div>
+      </div>
+      <div class="fc-controls" id="fcControls"></div>
+    </section>
+  </template>
+
+  <template id="tpl-quiz">
+    <section class="quiz">
+      <h2>选择题测验</h2>
+      <div class="quiz-meta" id="quizMeta"></div>
+      <div class="quiz-card" id="quizCard"></div>
+    </section>
+  </template>
+
+  <template id="tpl-dictation">
+    <section class="dictation">
+      <h2>听写拼写</h2>
+      <div class="quiz-meta" id="dictMeta"></div>
+      <div class="dict-card" id="dictCard"></div>
+    </section>
+  </template>
+
+  <template id="tpl-stats">
+    <section class="stats">
+      <h2>学习统计</h2>
+      <div class="stat-cards" id="statCards"></div>
+      <div class="stat-bars" id="statBars"></div>
+    </section>
+  </template>
+
+  <template id="tpl-custom">
+    <section class="custom">
+      <h2>我的词库</h2>
+      <p class="muted">添加你所在岗位的高频词，或补充部门专属术语。点击发音可试听。</p>
+      <form class="custom-form" id="customForm">
+        <input type="text" id="cWord" placeholder="英文单词 / 短语" required />
+        <input type="text" id="cPos" placeholder="词性(可空)" />
+        <input type="text" id="cCn" placeholder="中文释义" required />
+        <input type="text" id="cEn" placeholder="英文例句(可空)" />
+        <input type="text" id="cEnCn" placeholder="例句中文(可空)" />
+        <button class="btn btn-primary" type="submit">添加</button>
+      </form>
+      <div class="custom-list" id="customList"></div>
+    </section>
+  </template>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+  <script src="../assets/site.js"></script>
+</body>
+</html>

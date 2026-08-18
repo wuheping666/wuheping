@@ -5,8 +5,14 @@
   if (p === 'index.html' || p === '') return;
 
   // —— 悬浮返回按钮 ——
+  // 按目录深度自动计算回博客根的路径：根级页 -> index.html；子文件夹页 -> ../index.html
+  var segs = location.pathname.replace(/^\/+/, '').split('/');
+  segs.pop(); // 去掉文件名或末尾空段
+  var rel = segs.map(function () { return '..'; }).join('/');
+  var homeHref = (rel ? rel + '/' : '') + 'index.html';
+
   var btn = document.createElement('a');
-  btn.href = 'index.html';
+  btn.href = homeHref;
   btn.textContent = '🏠 财务自由之路';
   btn.setAttribute('aria-label', '返回博客首页');
   btn.style.cssText = 'position:fixed;right:16px;bottom:16px;z-index:99999;text-decoration:none;'
